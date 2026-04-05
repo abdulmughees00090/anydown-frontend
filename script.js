@@ -5,7 +5,7 @@
 /* ──────────────────────────────────────────────
    CONFIG — replace with your Oracle Cloud IP
    ────────────────────────────────────────────── */
-const API_BASE = "https://YOUR_ORACLE_CLOUD_IP:5000";
+const API_BASE = "https://139.185.61.225:5000";
 // Example: const API_BASE = "https://152.67.xxx.xxx:5000";
 
 /* ──────────────────────────────────────────────
