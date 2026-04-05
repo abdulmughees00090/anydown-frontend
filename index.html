@@ -1,3 +1,5 @@
+Here is an HTML document that integrates strategic, non-intrusive ad placeholders into your existing video downloader interface, keeping all functionality intact.
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +9,137 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ──────────────────────────────────────────────
+       AD PLACEMENT STYLES (responsive, unobtrusive)
+       All ad containers are clearly marked with comments
+       and do NOT affect core functionality or layout.
+       ────────────────────────────────────────────── */
+    
+    /* Base ad container styling - clean, non-intrusive */
+    .ad-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+      text-align: center;
+      background: rgba(10, 10, 10, 0.3);
+      border-radius: var(--radius-sm, 8px);
+      transition: opacity 0.2s ease;
+    }
+    
+    .ad-container > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+    
+    /* Banner ad wrapper - standard sizes */
+    .ad-banner-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Desktop leaderboard (728x90) */
+    .ad-leaderboard {
+      min-height: 90px;
+      margin: 16px auto;
+    }
+    
+    /* Mobile leaderboard / banner (320x50, 320x100) */
+    .ad-mobile-banner {
+      min-height: 50px;
+      margin: 12px auto;
+    }
+    
+    /* Medium rectangle (300x250) - sidebar / content */
+    .ad-medium-rectangle {
+      min-height: 250px;
+      margin: 20px auto;
+    }
+    
+    /* Skyscraper (160x600) - only on desktop side */
+    .ad-skyscraper {
+      min-height: 600px;
+      margin: 20px 0;
+    }
+    
+    /* Native / in-feed ad style */
+    .ad-native {
+      min-height: 120px;
+      margin: 24px auto;
+      background: rgba(232, 184, 0, 0.03);
+      border: 1px dashed rgba(232, 184, 0, 0.2);
+      border-radius: var(--radius-md, 14px);
+    }
+    
+    /* Social bar container (floating but controlled) */
+    .ad-social-bar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 999;
+      background: transparent;
+      pointer-events: auto;
+    }
+    
+    /* Popunder container (does not affect UI - hidden trigger) */
+    .ad-popunder-trigger {
+      display: none;
+    }
+    
+    /* Smartlink container (text link style) */
+    .ad-smartlink {
+      display: inline-block;
+      margin: 12px 0;
+      font-size: 0.85rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .ad-leaderboard { min-height: 50px; }
+      .ad-skyscraper { display: none; }
+      .ad-social-bar { bottom: 12px; right: 12px; transform: scale(0.9); }
+    }
+    
+    @media (min-width: 769px) {
+      .ad-mobile-banner { display: none; }
+    }
+    
+    /* Optional subtle label for ad transparency */
+    .ad-label {
+      font-size: 0.65rem;
+      color: var(--text-muted, #4A4030);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+      display: block;
+    }
+    
+    /* Sidebar container for skyscraper (desktop only) */
+    .ad-sidebar-wrapper {
+      position: absolute;
+      right: -180px;
+      top: 200px;
+      width: 160px;
+      pointer-events: none;
+    }
+    .ad-sidebar-wrapper .ad-container {
+      pointer-events: auto;
+    }
+    
+    /* For responsive layout - wrapper relative positioning */
+    .wrapper {
+      position: relative;
+    }
+    
+    /* Inline native ad between result and banner */
+    .ad-native-inline {
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
 
@@ -24,6 +157,34 @@
       <h1 class="brand">AnyDown</h1>
       <p class="tagline">Paste a link. Pick a quality. Download.</p>
     </header>
+
+    <!-- ══════════ AD PLACEMENT 1: Leaderboard (728x90) - Desktop / 320x50 on mobile ══════════ -->
+    <!-- Adsterra Ad Unit: Banner 728x90 (ID: 28971618) & Banner 320x50 (ID: 28971617) -->
+    <div class="ad-container ad-leaderboard">
+      <div class="ad-banner-wrapper">
+        <!-- DESKTOP: 728x90 Leaderboard (Adsterra Unit ID: 28971618) -->
+        <div class="ad-desktop-leaderboard" style="min-width: 728px; max-width: 100%;">
+          <!-- =============================================================== -->
+          <!-- PLACEHOLDER: Adsterra Banner 728x90                              -->
+          <!-- Ad Unit Name: Banner 728x90_1 | ID: 28971618                    -->
+          <!-- Replace this comment with actual Adsterra script:               -->
+          <!-- <script type="text/javascript" src="//...adsterra.../728x90.js"></script> -->
+          <!-- =============================================================== -->
+          <div class="ad-label">Advertisement</div>
+          <div style="background: rgba(232,184,0,0.05); border-radius: 8px; min-height: 90px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 12px;">[Adsterra 728x90 Banner]</div>
+        </div>
+        <!-- MOBILE: 320x50 Banner (Adsterra Unit ID: 28971617) -->
+        <div class="ad-mobile-leaderboard" style="min-width: 320px; max-width: 100%;">
+          <!-- =============================================================== -->
+          <!-- PLACEHOLDER: Adsterra Banner 320x50                              -->
+          <!-- Ad Unit Name: Banner 320x50_1 | ID: 28971617                    -->
+          <!-- <script type="text/javascript" src="//...adsterra.../320x50.js"></script> -->
+          <!-- =============================================================== -->
+          <div class="ad-label" style="font-size: 10px;">Ad</div>
+          <div style="background: rgba(232,184,0,0.05); border-radius: 8px; min-height: 50px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 10px;">[Adsterra 320x50]</div>
+        </div>
+      </div>
+    </div>
 
     <!-- ══════════ SEARCH BAR ══════════ -->
     <section class="search-section">
@@ -43,6 +204,19 @@
       </div>
       <p class="supported-hint">Supports YouTube, Instagram, TikTok, Twitter/X, Facebook, Vimeo, Dailymotion &amp; 1000+ more</p>
     </section>
+
+    <!-- ══════════ AD PLACEMENT 2: Medium Rectangle (300x250) - Below search bar, above results ══════════ -->
+    <!-- Adsterra Ad Unit: Banner 300x250 (ID: 28971620) -->
+    <div class="ad-container ad-medium-rectangle">
+      <!-- =============================================================== -->
+      <!-- PLACEHOLDER: Adsterra Banner 300x250                            -->
+      <!-- Ad Unit Name: Banner 300x250_1 | ID: 28971620                   -->
+      <!-- Replace with actual script:                                     -->
+      <!-- <script type="text/javascript" src="//...adsterra.../300x250.js"></script> -->
+      <!-- =============================================================== -->
+      <div class="ad-label">Sponsored</div>
+      <div style="background: rgba(232,184,0,0.04); border-radius: 12px; width: 100%; max-width: 300px; min-height: 250px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 12px; margin: 0 auto;">[Adsterra 300x250 Rectangle]</div>
+    </div>
 
     <!-- ══════════ RESULT AREA ══════════ -->
     <section class="result-section" id="resultSection" aria-live="polite">
@@ -103,6 +277,19 @@
 
     </section>
 
+    <!-- ══════════ AD PLACEMENT 3: Native Banner / In-Feed (Between result and app banner) ══════════ -->
+    <!-- Adsterra Ad Unit: Native Banner (ID: 28971614) -->
+    <div class="ad-container ad-native ad-native-inline">
+      <!-- =============================================================== -->
+      <!-- PLACEHOLDER: Adsterra Native Banner                             -->
+      <!-- Ad Unit Name: NativeBanner_1 | ID: 28971614                    -->
+      <!-- Replace with actual native ad script:                          -->
+      <!-- <script type="text/javascript" src="//...adsterra.../native.js"></script> -->
+      <!-- =============================================================== -->
+      <div class="ad-label">Recommended</div>
+      <div style="background: rgba(232,184,0,0.03); border-radius: 12px; min-height: 100px; width: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 12px; padding: 16px;">[Adsterra Native Banner - Responsive]</div>
+    </div>
+
     <!-- ══════════ APP BANNER ══════════ -->
     <section class="app-banner">
       <div class="app-banner-inner">
@@ -135,6 +322,18 @@
       </div>
     </section>
 
+    <!-- ══════════ AD PLACEMENT 4: Banner 468x60 (Below app banner, above footer) ══════════ -->
+    <!-- Adsterra Ad Unit: Banner 468x60 (ID: 28971615) -->
+    <div class="ad-container" style="margin: 24px auto; min-height: 60px;">
+      <!-- =============================================================== -->
+      <!-- PLACEHOLDER: Adsterra Banner 468x60                             -->
+      <!-- Ad Unit Name: 468x60_1 | ID: 28971615                          -->
+      <!-- <script type="text/javascript" src="//...adsterra.../468x60.js"></script> -->
+      <!-- =============================================================== -->
+      <div class="ad-label">Advertisement</div>
+      <div style="background: rgba(232,184,0,0.04); border-radius: 8px; min-width: 468px; max-width: 100%; min-height: 60px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 11px;">[Adsterra 468x60 Banner]</div>
+    </div>
+
     <!-- ══════════ FOOTER ══════════ -->
     <footer class="footer">
       <p>AnyDown · For personal use only · Respect content creators' rights</p>
@@ -142,6 +341,107 @@
 
   </div>
 
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <!-- NON-INTRUSIVE AD PLACEMENTS (FLOATING / SIDEBAR / SOCIAL / POPUNDER)  -->
+  <!-- These do NOT affect core functionality, layout shifts, or user flow   -->
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+
+  <!-- AD PLACEMENT 5: Skyscraper 160x600 (Desktop only, right side, non-overlapping) -->
+  <!-- Adsterra Ad Unit: Banner 160x600 (ID: 28971619) -->
+  <div class="ad-sidebar-wrapper ad-skyscraper-wrapper">
+    <div class="ad-container ad-skyscraper">
+      <!-- =============================================================== -->
+      <!-- PLACEHOLDER: Adsterra Skyscraper 160x600                        -->
+      <!-- Ad Unit Name: Banner 160x600_1 | ID: 28971619                   -->
+      <!-- <script type="text/javascript" src="//...adsterra.../160x600.js"></script> -->
+      <!-- =============================================================== -->
+      <div class="ad-label" style="font-size: 9px;">Sponsor</div>
+      <div style="background: rgba(232,184,0,0.03); border-radius: 12px; width: 160px; min-height: 600px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 11px; writing-mode: vertical-rl; text-orientation: mixed;">[Adsterra 160x600]</div>
+    </div>
+  </div>
+
+  <!-- AD PLACEMENT 6: Social Bar (fixed position bottom-right, non-intrusive) -->
+  <!-- Adsterra Ad Unit: Social Bar (ID: 28971613) -->
+  <div class="ad-social-bar">
+    <!-- =============================================================== -->
+    <!-- PLACEHOLDER: Adsterra Social Bar                                 -->
+    <!-- Ad Unit Name: SocialBar_1 | ID: 28971613                         -->
+    <!-- Replace with actual social bar script:                           -->
+    <!-- <script type="text/javascript" src="//...adsterra.../socialbar.js"></script> -->
+    <!-- =============================================================== -->
+    <div style="background: rgba(232,184,0,0.1); backdrop-filter: blur(4px); border-radius: 40px; padding: 8px 16px; font-size: 12px; color: var(--mustard); border: 1px solid rgba(232,184,0,0.3);">
+      [Adsterra Social Bar]
+    </div>
+  </div>
+
+  <!-- AD PLACEMENT 7: Smartlink (text link, subtle integration) -->
+  <!-- Adsterra Ad Unit: Smartlink (ID: 28971612) -->
+  <div style="position: relative; text-align: center; margin: 8px auto 0; z-index: 5;">
+    <div class="ad-container ad-smartlink">
+      <!-- =============================================================== -->
+      <!-- PLACEHOLDER: Adsterra Smartlink                                  -->
+      <!-- Ad Unit Name: Smartlink_1 | ID: 28971612                        -->
+      <!-- Smartlink typically appears as a text link or small widget      -->
+      <!-- <script type="text/javascript" src="//...adsterra.../smartlink.js"></script> -->
+      <!-- =============================================================== -->
+      <span style="color: var(--text-muted); font-size: 0.75rem;">[Adsterra Smartlink - contextual offers]</span>
+    </div>
+  </div>
+
+  <!-- AD PLACEMENT 8: Popunder (Hidden trigger - does not affect UI/UX, only loads on user interaction if needed) -->
+  <!-- Adsterra Ad Unit: Popunder (ID: 28971611) -->
+  <!-- 
+    ===============================================================
+    PLACEHOLDER: Adsterra Popunder
+    Ad Unit Name: Popunder_1 | ID: 28971611
+    Popunder scripts are typically loaded in <head> or via event.
+    To avoid disruption, this placeholder is intentionally hidden.
+    Replace with actual popunder script (e.g., on body click or timer).
+    Example:
+    <script>
+      // Popunder integration (non-intrusive, triggered on first click)
+      (function() {
+        var puScript = document.createElement('script');
+        puScript.src = '//...adsterra.../popunder.js';
+        document.body.appendChild(puScript);
+      })();
+    </script>
+    ===============================================================
+  -->
+  <div class="ad-popunder-trigger" data-adsterra-popunder="28971611">
+    <!-- Popunder script placeholder: Insert Adsterra popunder code here. It will not alter page layout. -->
+  </div>
+
+  <!-- ═════════════════════════════════════════════════════════════════════ -->
+  <!-- ADDITIONAL AD PLACEMENT: Banner 160x300 (small vertical, desktop/mobile) -->
+  <!-- Adsterra Ad Unit: Banner 160x300 (ID: 28971616) -->
+  <!-- Positioned in footer area as subtle secondary -->
+  <div style="display: flex; justify-content: center; margin: 12px auto 20px;">
+    <div class="ad-container" style="min-height: 300px;">
+      <!-- =============================================================== -->
+      <!-- PLACEHOLDER: Adsterra Banner 160x300                             -->
+      <!-- Ad Unit Name: 160x300_1 | ID: 28971616                          -->
+      <!-- <script type="text/javascript" src="//...adsterra.../160x300.js"></script> -->
+      <!-- =============================================================== -->
+      <div class="ad-label">Promoted</div>
+      <div style="background: rgba(232,184,0,0.03); border-radius: 12px; width: 160px; min-height: 300px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 10px;">[160x300]</div>
+    </div>
+  </div>
+
+  <!-- Original script (core functionality unchanged) -->
   <script src="script.js"></script>
+  <!-- Add any ad initialization scripts safely here without breaking core -->
+  <script>
+    (function() {
+      // Ensure no conflict with existing functionality.
+      // All ad containers are purely presentational and do not override any core logic.
+      // For future: insert Adsterra script initialization here if needed (e.g., popunder on first click).
+      // This script block is separate from original fetch logic.
+      console.log("AnyDown ready — ad placeholders integrated (no actual ads loaded)");
+    })();
+  </script>
+  <!-- Note: script.js contains full fetch logic, background animation, and UI state management. 
+       Ad placeholders do not alter any of those behaviors. -->
 </body>
 </html>
+```
