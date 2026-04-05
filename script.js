@@ -182,7 +182,14 @@ function renderFormats(formats) {
       dl.className = "dl-btn";
       dl.title = "Download";
       dl.innerHTML = "↓";
-      dl.href = `${API_BASE}/dl?url=${encodeURIComponent(urlInput.value.trim())}&format_id=${encodeURIComponent(fmt.format_id)}`;
+      const dlParams = new URLSearchParams({
+  url:       urlInput.value.trim(),
+  format_id: fmt.format_id,
+  height:    fmt.height    || "",
+  vcodec:    fmt.vcodec    || "",
+  acodec:    fmt.acodec    || "",
+});
+dl.href = `${API_BASE}/dl?${dlParams.toString()}`;
       dl.target = "_blank";
       dl.rel = "noopener noreferrer";
 
