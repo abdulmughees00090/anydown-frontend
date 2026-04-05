@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AnyDown – Download Any Video</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Background canvas for animated particles -->
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- Noise overlay -->
+  <div class="noise"></div>
+
+  <div class="wrapper">
+
+    <!-- ══════════ HEADER ══════════ -->
+    <header class="header">
+      <div class="logo-mark">
+        <img src="favicon.ico" alt="AnyDown logo" class="favicon-img" onerror="this.style.display='none'" />
+        <span class="logo-fallback">▼</span>
+      </div>
+      <h1 class="brand">AnyDown</h1>
+      <p class="tagline">Paste a link. Pick a quality. Download.</p>
+    </header>
+
+    <!-- ══════════ SEARCH BAR ══════════ -->
+    <section class="search-section">
+      <div class="search-bar" id="searchBar">
+        <input
+          type="url"
+          id="urlInput"
+          class="url-input"
+          placeholder="https://youtube.com/watch?v=…"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button id="fetchBtn" class="fetch-btn" aria-label="Fetch video">
+          <span class="btn-text">Fetch</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+      <p class="supported-hint">Supports YouTube, Instagram, TikTok, Twitter/X, Facebook, Vimeo, Dailymotion &amp; 1000+ more</p>
+    </section>
+
+    <!-- ══════════ RESULT AREA ══════════ -->
+    <section class="result-section" id="resultSection" aria-live="polite">
+
+      <!-- Loading state -->
+      <div class="state-loading" id="stateLoading" hidden>
+        <div class="spinner">
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring spinner-ring--2"></div>
+        </div>
+        <p class="loading-text">Fetching video info…</p>
+      </div>
+
+      <!-- Error state -->
+      <div class="state-error" id="stateError" hidden>
+        <div class="error-icon">✕</div>
+        <p class="error-msg" id="errorMsg">Something went wrong. Please check the URL and try again.</p>
+      </div>
+
+      <!-- Video result card -->
+      <div class="result-card" id="resultCard" hidden>
+        <div class="card-media">
+          <img id="thumbImg" src="" alt="Video thumbnail" class="thumb" />
+          <div class="card-overlay"></div>
+        </div>
+        <div class="card-body">
+          <h2 class="video-title" id="videoTitle"></h2>
+          <p class="video-meta" id="videoMeta"></p>
+
+          <div class="formats-label">Available formats</div>
+          <div class="formats-grid" id="formatsGrid">
+            <!-- format items injected by JS -->
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ══════════ FOOTER ══════════ -->
+    <footer class="footer">
+      <p>AnyDown · For personal use only · Respect content creators' rights</p>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
