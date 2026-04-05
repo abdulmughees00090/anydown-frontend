@@ -3,11 +3,6 @@
    Palette: Mustard (#E8B800) + Black/Near-Black
    ═══════════════════════════════════════════════ */
 
-/* ── Google font import is in HTML; "itckrist" is
-   a commercial font – we approximate with Bebas Neue
-   for the brand mark and DM Sans for body ── */
-
-/* ── CSS Custom Properties ── */
 :root {
   --mustard:        #E8B800;
   --mustard-light:  #FFD43B;
@@ -26,9 +21,7 @@
   --transition:     0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { font-size: 16px; scroll-behavior: smooth; }
 
 body {
@@ -40,7 +33,6 @@ body {
   position: relative;
 }
 
-/* ── Animated Background Canvas ── */
 #bgCanvas {
   position: fixed;
   inset: 0;
@@ -50,7 +42,6 @@ body {
   pointer-events: none;
 }
 
-/* ── Noise texture overlay ── */
 .noise {
   position: fixed;
   inset: 0;
@@ -61,7 +52,6 @@ body {
   background-size: 256px 256px;
 }
 
-/* ── Wrapper ── */
 .wrapper {
   position: relative;
   z-index: 2;
@@ -122,22 +112,15 @@ body {
   font-weight: 900;
   line-height: 1;
 }
-/* Hide fallback if image loads */
 .favicon-img + .logo-fallback { display: none; }
 
-/* Brand title — Bebas Neue approximates "itckrist" weight/tracking */
 .brand {
   font-family: 'Bebas Neue', 'Impact', sans-serif;
   font-size: clamp(3.2rem, 10vw, 5.5rem);
   font-weight: 400;
   letter-spacing: 0.08em;
   line-height: 1;
-  background: linear-gradient(
-    135deg,
-    var(--mustard-light) 0%,
-    var(--mustard) 40%,
-    var(--mustard-dark) 100%
-  );
+  background: linear-gradient(135deg, var(--mustard-light) 0%, var(--mustard) 40%, var(--mustard-dark) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -188,9 +171,7 @@ body {
 
 .search-bar:focus-within {
   border-color: var(--mustard);
-  box-shadow:
-    0 0 0 3px var(--mustard-glow),
-    0 8px 32px rgba(0,0,0,0.5);
+  box-shadow: 0 0 0 3px var(--mustard-glow), 0 8px 32px rgba(0,0,0,0.5);
 }
 
 .url-input {
@@ -222,18 +203,10 @@ body {
   transition: filter var(--transition), transform var(--transition);
   white-space: nowrap;
 }
-.fetch-btn:hover {
-  filter: brightness(1.1);
-}
-.fetch-btn:active {
-  transform: scale(0.97);
-  filter: brightness(0.95);
-}
-.fetch-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
+.fetch-btn:hover { filter: brightness(1.1); }
+.fetch-btn:active { transform: scale(0.97); filter: brightness(0.95); }
+.fetch-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
 .btn-arrow {
   display: inline-block;
   transition: transform var(--transition);
@@ -294,7 +267,7 @@ body {
   font-weight: 300;
 }
 
-/* ── Error ── */
+/* ── Generic Error ── */
 .state-error {
   display: flex;
   flex-direction: column;
@@ -325,6 +298,90 @@ body {
   line-height: 1.6;
 }
 
+/* ── YouTube Busy Card ── */
+.state-yt-busy {
+  animation: fadeUp 0.5s both;
+}
+
+.yt-busy-card {
+  background: var(--surface);
+  border: 1.5px solid rgba(232, 184, 0, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 40px 32px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  box-shadow: 0 4px 32px rgba(232, 184, 0, 0.08);
+}
+
+.yt-busy-icon {
+  margin-bottom: 4px;
+}
+
+.yt-busy-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--mustard-light);
+  line-height: 1.3;
+}
+
+.yt-busy-desc {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 420px;
+}
+
+.yt-busy-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  margin-top: -4px;
+}
+
+/* ── Play Store Button (shared) ── */
+.playstore-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--mustard);
+  color: var(--black);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 14px 24px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: filter var(--transition), transform var(--transition), box-shadow var(--transition);
+  white-space: nowrap;
+}
+.playstore-btn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(232, 184, 0, 0.35);
+}
+.playstore-btn:active {
+  transform: translateY(0) scale(0.97);
+  filter: brightness(0.95);
+}
+
+/* Dark variant used in banner (black bg on mustard border) */
+.playstore-btn--dark {
+  background: var(--black);
+  color: var(--mustard);
+  border: 1.5px solid var(--mustard);
+}
+.playstore-btn--dark:hover {
+  background: var(--mustard);
+  color: var(--black);
+}
+
 /* ── Result Card ── */
 .result-card {
   background: var(--surface);
@@ -340,7 +397,6 @@ body {
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Thumbnail */
 .card-media {
   position: relative;
   width: 100%;
@@ -360,17 +416,10 @@ body {
 .card-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 50%,
-    rgba(10,10,10,0.75) 100%
-  );
+  background: linear-gradient(to bottom, transparent 50%, rgba(10,10,10,0.75) 100%);
 }
 
-/* Card body */
-.card-body {
-  padding: 28px 28px 32px;
-}
+.card-body { padding: 28px 28px 32px; }
 
 .video-title {
   font-family: 'DM Sans', sans-serif;
@@ -388,7 +437,6 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* Formats */
 .formats-label {
   font-size: 0.72rem;
   font-weight: 600;
@@ -422,24 +470,9 @@ body {
 }
 
 .format-info { flex: 1; min-width: 0; }
-.format-quality {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  line-height: 1.2;
-}
-.format-ext {
-  font-size: 0.72rem;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-top: 2px;
-}
-.format-size {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
+.format-quality { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
+.format-ext { font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+.format-size { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
 
 .dl-btn {
   background: transparent;
@@ -465,7 +498,6 @@ body {
 }
 .dl-btn:active { transform: scale(0.95); }
 
-/* ── Divider / audio group ── */
 .format-group-label {
   grid-column: 1 / -1;
   font-size: 0.68rem;
@@ -476,6 +508,91 @@ body {
   padding: 8px 0 4px;
   border-top: 1px solid var(--surface-3);
   margin-top: 6px;
+}
+
+/* ════════════════════════════
+   APP BANNER
+════════════════════════════ */
+.app-banner {
+  width: 100%;
+  margin-top: 64px;
+  background: var(--surface);
+  border: 1.5px solid rgba(232, 184, 0, 0.2);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.4);
+  animation: fadeUp 0.7s 0.6s both;
+}
+
+.app-banner-inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 36px 36px;
+}
+
+.app-banner-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.app-banner-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mustard);
+}
+
+.app-banner-title {
+  font-family: 'Bebas Neue', 'Impact', sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.app-banner-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 380px;
+}
+
+/* QR code box */
+.app-banner-qr {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.qr-frame {
+  background: #111111;
+  border: 1.5px solid rgba(232,184,0,0.3);
+  border-radius: var(--radius-md);
+  padding: 14px 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.qr-img {
+  display: block;
+  border-radius: 6px;
+}
+
+.qr-label {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
 }
 
 /* ════════════════════════════
@@ -493,17 +610,28 @@ body {
 }
 
 /* ════════════════════════════
-   HIDDEN UTILITY
+   UTILITIES
 ════════════════════════════ */
 [hidden] { display: none !important; }
 
 /* ════════════════════════════
    RESPONSIVE
 ════════════════════════════ */
-@media (max-width: 520px) {
+@media (max-width: 600px) {
   .header { padding: 48px 0 36px; }
   .card-body { padding: 20px 18px 24px; }
   .fetch-btn { padding: 18px 18px; }
   .btn-text { display: none; }
   .formats-grid { grid-template-columns: 1fr 1fr; }
+
+  .app-banner-inner {
+    flex-direction: column;
+    padding: 28px 24px;
+    text-align: center;
+  }
+  .app-banner-text { align-items: center; }
+  .app-banner-desc { max-width: 100%; }
+  .app-banner-qr { display: none; }
+
+  .yt-busy-card { padding: 28px 20px 24px; }
 }
