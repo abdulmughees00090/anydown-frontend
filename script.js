@@ -5,15 +5,7 @@
 /* ──────────────────────────────────────────────
    CONFIG — replace with your Oracle Cloud IP
    ────────────────────────────────────────────── */
-//const API_BASE = "https://139.185.61.225:5000";
-// Instead of hardcoding IP
-// const API_BASE = "http://139.185.61.225:5000";
-
-// Use relative path (works for both HTTP and HTTPS)
-const API_BASE = "";
-
-// OR use same protocol dynamically
-const API_BASE = window.location.protocol + "//" + window.location.hostname + ":5000";
+const API_BASE = "https://139.185.61.225:5000";
 // Example: const API_BASE = "https://152.67.xxx.xxx:5000";
 
 /* ──────────────────────────────────────────────
