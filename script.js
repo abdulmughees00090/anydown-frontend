@@ -5,7 +5,7 @@
 /* ──────────────────────────────────────────────
    CONFIG — replace with your Oracle Cloud IP
    ────────────────────────────────────────────── */
-const API_BASE = "https://api.silverfoxdynamics.com:5000";
+const API_BASE = "https://api.silverfoxdynamics.com";
 // Example: const API_BASE = "https://152.67.xxx.xxx:5000";
 
 /* ──────────────────────────────────────────────
