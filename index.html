@@ -15,16 +15,11 @@
 
   <!-- ═══════════════════════════════════════════════════════════════ -->
   <!-- DESKTOP RAIL ADS (takes advantage of unused horizontal space)   -->
-  <!-- Only visible on large screens, non-intrusive, no layout shift   -->
   <!-- ═══════════════════════════════════════════════════════════════ -->
   
   <!-- RIGHT RAIL: Skyscraper (160x600) - Adsterra Unit: 160x600 (ID: 28971619) -->
   <div class="desktop-right-rail">
     <div class="ad-slot">
-      <!-- ============================================================= -->
-      <!-- ADSTERRA - Skyscraper 160x600                                 -->
-      <!-- Ad Unit Name: Banner 160x600_1 | ID: 28971619                -->
-      <!-- ============================================================= -->
       <div class="ad-inner ad-skyscraper-inner">
         <span class="ad-label-micro">Advertisement</span>
         <div class="ad-vertical-text">
@@ -46,10 +41,6 @@
   <!-- LEFT RAIL: Small banner (160x300) - Adsterra Unit: 160x300 (ID: 28971616) -->
   <div class="desktop-left-rail">
     <div class="ad-slot">
-      <!-- ============================================================= -->
-      <!-- ADSTERRA - Vertical Banner 160x300                            -->
-      <!-- Ad Unit Name: Banner 160x300_1 | ID: 28971616                -->
-      <!-- ============================================================= -->
       <div class="ad-inner ad-leftrail-inner">
         <span class="ad-label-micro ad-rotated-label">
           <script>
@@ -68,7 +59,7 @@
   </div>
 
   <div class="wrapper">
-    <!-- ══════════ HEADER ══════════ -->
+    <!-- HEADER -->
     <header class="header">
       <div class="logo-mark">
         <img src="favicon.ico" alt="AnyDown logo" class="favicon-img" onerror="this.style.display='none'" />
@@ -78,15 +69,10 @@
       <p class="tagline">Paste a link. Pick a quality. Download.</p>
     </header>
 
-    <!-- ══════════ TOP LEADERBOARD (Full width, responsive) ══════════ -->
-    <!-- Leaderboard 728x90 / 320x50 (Adsterra Units: 728x90 ID:28971618, 320x50 ID:28971617) -->
+    <!-- TOP LEADERBOARD -->
     <div class="leaderboard-wrap">
       <!-- Desktop 728x90 -->
       <div class="ad-slot desktop-leaderboard">
-        <!-- ============================================================= -->
-        <!-- ADSTERRA - Leaderboard 728x90                                 -->
-        <!-- Ad Unit Name: Banner 728x90_1 | ID: 28971618                -->
-        <!-- ============================================================= -->
         <div class="ad-inner ad-leaderboard-inner">
           <span class="ad-label-micro">Sponsor</span>
           <div>
@@ -104,12 +90,8 @@
         </div>
       </div>
       
-      <!-- Mobile 320x50 (compact, never exceeds 320px) -->
+      <!-- Mobile 320x50 -->
       <div class="ad-slot mobile-compact-banner">
-        <!-- ============================================================= -->
-        <!-- ADSTERRA - Mobile Banner 320x50                               -->
-        <!-- Ad Unit Name: Banner 320x50_1 | ID: 28971617                -->
-        <!-- ============================================================= -->
         <div class="ad-inner ad-mobile-banner-inner">
           <span class="ad-label-micro">Ad</span>
           <div>
@@ -128,7 +110,7 @@
       </div>
     </div>
 
-    <!-- ══════════ SEARCH BAR ══════════ -->
+    <!-- SEARCH BAR (No ad trigger attached to this button) -->
     <section class="search-section">
       <div class="search-bar" id="searchBar">
         <input
@@ -147,13 +129,8 @@
       <p class="supported-hint">Supports YouTube, Instagram, TikTok, Twitter/X, Facebook, Vimeo, Dailymotion &amp; 1000+ more</p>
     </section>
 
-    <!-- ══════════ SOFT AD BREAK (Medium Rectangle - 300x250 - fully responsive) ══════════ -->
-    <!-- Adsterra Unit: Banner 300x250 (ID: 28971620) -->
+    <!-- SOFT AD BREAK (Medium Rectangle - 300x250) -->
     <div class="ad-slot soft-ad-break">
-      <!-- ============================================================= -->
-      <!-- ADSTERRA - Medium Rectangle 300x250                           -->
-      <!-- Ad Unit Name: Banner 300x250_1 | ID: 28971620                -->
-      <!-- ============================================================= -->
       <div class="ad-inner ad-rectangle-inner">
         <span class="ad-label-micro">Promoted</span>
         <div>
@@ -171,190 +148,99 @@
       </div>
     </div>
 
-    <!-- ══════════ RESULT AREA (core functionality untouched) ══════════ -->
+    <!-- RESULT AREA (core functionality untouched) -->
     <section class="result-section" id="resultSection" aria-live="polite">
-
-      <!-- Loading -->
       <div class="state-loading" id="stateLoading" hidden>
-        <div class="spinner">
-          <div class="spinner-ring"></div>
-          <div class="spinner-ring spinner-ring--2"></div>
-        </div>
+        <div class="spinner"><div class="spinner-ring"></div><div class="spinner-ring spinner-ring--2"></div></div>
         <p class="loading-text">Fetching video info…</p>
       </div>
-
-      <!-- Generic error -->
       <div class="state-error" id="stateError" hidden>
         <div class="error-icon">✕</div>
         <p class="error-msg" id="errorMsg">Something went wrong. Please check the URL and try again.</p>
       </div>
-
-      <!-- YouTube busy -->
       <div class="state-yt-busy" id="stateYtBusy" hidden>
         <div class="yt-busy-card">
-          <div class="yt-busy-icon">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="44" height="44">
-              <rect width="48" height="48" rx="12" fill="#E8B800" opacity="0.12"/>
-              <path d="M34.5 16.8C34.2 15.7 33.3 14.8 32.2 14.5C30.2 14 24 14 24 14C24 14 17.8 14 15.8 14.5C14.7 14.8 13.8 15.7 13.5 16.8C13 18.8 13 24 13 24C13 24 13 29.2 13.5 31.2C13.8 32.3 14.7 33.2 15.8 33.5C17.8 34 24 34 24 34C24 34 30.2 34 32.2 33.5C33.3 33.2 34.2 32.3 34.5 31.2C35 29.2 35 24 35 24C35 24 35 18.8 34.5 16.8Z" fill="#E8B800"/>
-              <path d="M21 28.5L28.5 24L21 19.5V28.5Z" fill="#0A0A0A"/>
-            </svg>
-          </div>
+          <div class="yt-busy-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="44" height="44"><rect width="48" height="48" rx="12" fill="#E8B800" opacity="0.12"/><path d="M34.5 16.8C34.2 15.7 33.3 14.8 32.2 14.5C30.2 14 24 14 24 14C24 14 17.8 14 15.8 14.5C14.7 14.8 13.8 15.7 13.5 16.8C13 18.8 13 24 13 24C13 24 13 29.2 13.5 31.2C13.8 32.3 14.7 33.2 15.8 33.5C17.8 34 24 34 24 34C24 34 30.2 34 32.2 33.5C33.3 33.2 34.2 32.3 34.5 31.2C35 29.2 35 24 35 24C35 24 35 18.8 34.5 16.8Z" fill="#E8B800"/><path d="M21 28.5L28.5 24L21 19.5V28.5Z" fill="#0A0A0A"/></svg></div>
           <h3 class="yt-busy-title">YouTube is a bit busy right now</h3>
           <p class="yt-busy-desc">Our web server can't reach YouTube at the moment due to bot protection. For instant YouTube downloads, use our free Android app — it works perfectly.</p>
-          <a
-            href="https://play.google.com/store/apps/details?id=com.any.down.video.downloader.videodownloader"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="playstore-btn"
-          >
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M3.18 23.76c.3.17.64.24.98.2l12.49-11.9-3.47-3.47L3.18 23.76zM.48 1.6A1.5 1.5 0 0 0 0 2.7v18.6c0 .43.17.83.48 1.1l.08.08 10.43-10.43v-.25L.56 1.52.48 1.6zM22.3 10.5l-2.97-1.69-3.3 3.14 3.3 3.15 3-1.71c.85-.48.85-1.27-.03-1.89zM4.16.24L16.65 12.1l-3.47 3.47L3.18.44A1.2 1.2 0 0 1 4.16.24z"/></svg>
-            Get it on Google Play
-          </a>
+          <a href="https://play.google.com/store/apps/details?id=com.any.down.video.downloader.videodownloader" target="_blank" rel="noopener noreferrer" class="playstore-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M3.18 23.76c.3.17.64.24.98.2l12.49-11.9-3.47-3.47L3.18 23.76zM.48 1.6A1.5 1.5 0 0 0 0 2.7v18.6c0 .43.17.83.48 1.1l.08.08 10.43-10.43v-.25L.56 1.52.48 1.6zM22.3 10.5l-2.97-1.69-3.3 3.14 3.3 3.15 3-1.71c.85-.48.85-1.27-.03-1.89zM4.16.24L16.65 12.1l-3.47 3.47L3.18.44A1.2 1.2 0 0 1 4.16.24z"/></svg>Get it on Google Play</a>
           <p class="yt-busy-hint">Free · No ads · Works on all Android devices</p>
         </div>
       </div>
-
-      <!-- Video result card -->
       <div class="result-card" id="resultCard" hidden>
-        <div class="card-media">
-          <img id="thumbImg" src="" alt="Video thumbnail" class="thumb" />
-          <div class="card-overlay"></div>
-        </div>
-        <div class="card-body">
-          <h2 class="video-title" id="videoTitle"></h2>
-          <p class="video-meta" id="videoMeta"></p>
-          <div class="formats-label">Available formats</div>
-          <div class="formats-grid" id="formatsGrid"></div>
-        </div>
+        <div class="card-media"><img id="thumbImg" src="" alt="Video thumbnail" class="thumb" /><div class="card-overlay"></div></div>
+        <div class="card-body"><h2 class="video-title" id="videoTitle"></h2><p class="video-meta" id="videoMeta"></p><div class="formats-label">Available formats</div><div class="formats-grid" id="formatsGrid"></div></div>
       </div>
     </section>
 
-    <!-- ══════════ NATIVE IN-FEED AD (blends with content, non-intrusive) ══════════ -->
-    <!-- Adsterra Native Banner (ID: 28971614) -->
+    <!-- NATIVE IN-FEED AD -->
     <div class="native-ad-inline ad-slot">
-      <!-- ============================================================= -->
-      <!-- ADSTERRA - Native Banner / In-Feed                            -->
-      <!-- Ad Unit Name: NativeBanner_1 | ID: 28971614                  -->
-      <!-- ============================================================= -->
       <div class="native-ad-content">
-        <div class="native-ad-text">
-          <span class="ad-label-micro">Recommended for you</span>
-          <div>
-            <script async="async" data-cfasync="false" src="https://pl29072113.profitablecpmratenetwork.com/c2fa730f6e3eee470efcee0fdd0c2302/invoke.js"></script>
-            <div id="container-c2fa730f6e3eee470efcee0fdd0c2302"></div>
-          </div>
-        </div>
+        <div class="native-ad-text"><span class="ad-label-micro">Recommended for you</span><div><script async="async" data-cfasync="false" src="https://pl29072113.profitablecpmratenetwork.com/c2fa730f6e3eee470efcee0fdd0c2302/invoke.js"></script><div id="container-c2fa730f6e3eee470efcee0fdd0c2302"></div></div></div>
         <div class="native-ad-preview"></div>
       </div>
     </div>
 
-    <!-- ══════════ APP BANNER (original untouched) ══════════ -->
+    <!-- APP BANNER -->
     <section class="app-banner">
       <div class="app-banner-inner">
-        <div class="app-banner-text">
-          <p class="app-banner-eyebrow">▼ Android App</p>
-          <h2 class="app-banner-title">Download even faster with our app</h2>
-          <p class="app-banner-desc">YouTube, Instagram, TikTok and 1000+ sites — all working seamlessly. No browser limits, no bot detection. Just paste and download.</p>
-          <a
-            href="https://play.google.com/store/apps/details?id=com.any.down.video.downloader.videodownloader"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="playstore-btn playstore-btn--dark"
-          >
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M3.18 23.76c.3.17.64.24.98.2l12.49-11.9-3.47-3.47L3.18 23.76zM.48 1.6A1.5 1.5 0 0 0 0 2.7v18.6c0 .43.17.83.48 1.1l.08.08 10.43-10.43v-.25L.56 1.52.48 1.6zM22.3 10.5l-2.97-1.69-3.3 3.14 3.3 3.15 3-1.71c.85-.48.85-1.27-.03-1.89zM4.16.24L16.65 12.1l-3.47 3.47L3.18.44A1.2 1.2 0 0 1 4.16.24z"/></svg>
-            Get it on Google Play
-          </a>
-        </div>
-        <div class="app-banner-qr">
-          <div class="qr-frame">
-            <img
-              src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.any.down.video.downloader.videodownloader&bgcolor=111111&color=E8B800&qzone=2"
-              alt="Scan to download AnyDown on Android"
-              class="qr-img"
-              width="130"
-              height="130"
-            />
-            <p class="qr-label">Scan to download</p>
-          </div>
-        </div>
+        <div class="app-banner-text"><p class="app-banner-eyebrow">▼ Android App</p><h2 class="app-banner-title">Download even faster with our app</h2><p class="app-banner-desc">YouTube, Instagram, TikTok and 1000+ sites — all working seamlessly. No browser limits, no bot detection. Just paste and download.</p><a href="https://play.google.com/store/apps/details?id=com.any.down.video.downloader.videodownloader" target="_blank" rel="noopener noreferrer" class="playstore-btn playstore-btn--dark"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M3.18 23.76c.3.17.64.24.98.2l12.49-11.9-3.47-3.47L3.18 23.76zM.48 1.6A1.5 1.5 0 0 0 0 2.7v18.6c0 .43.17.83.48 1.1l.08.08 10.43-10.43v-.25L.56 1.52.48 1.6zM22.3 10.5l-2.97-1.69-3.3 3.14 3.3 3.15 3-1.71c.85-.48.85-1.27-.03-1.89zM4.16.24L16.65 12.1l-3.47 3.47L3.18.44A1.2 1.2 0 0 1 4.16.24z"/></svg>Get it on Google Play</a></div>
+        <div class="app-banner-qr"><div class="qr-frame"><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.any.down.video.downloader.videodownloader&bgcolor=111111&color=E8B800&qzone=2" alt="Scan to download AnyDown on Android" class="qr-img" width="130" height="130" /><p class="qr-label">Scan to download</p></div></div>
       </div>
     </section>
 
-    <!-- ══════════ BANNER 468x60 (hidden on mobile, desktop only) ══════════ -->
-    <!-- Adsterra Unit: Banner 468x60 (ID: 28971615) -->
+    <!-- BANNER 468x60 (Desktop only) -->
     <div class="ad-slot desktop-only-banner">
-      <!-- ============================================================= -->
-      <!-- ADSTERRA - Banner 468x60 (Desktop only)                       -->
-      <!-- Ad Unit Name: 468x60_1 | ID: 28971615                        -->
-      <!-- ============================================================= -->
       <div class="ad-inner ad-banner468-inner">
         <span class="ad-label-micro">Advertisement</span>
-        <div>
-          <script>
-            atOptions = {
-              'key' : '5c46d258532be8fa2965609bc742548c',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script src="https://www.highperformanceformat.com/5c46d258532be8fa2965609bc742548c/invoke.js"></script>
-        </div>
+        <div><script>atOptions = {'key' : '5c46d258532be8fa2965609bc742548c','format' : 'iframe','height' : 60,'width' : 468,'params' : {}};</script><script src="https://www.highperformanceformat.com/5c46d258532be8fa2965609bc742548c/invoke.js"></script></div>
       </div>
     </div>
 
-    <!-- ══════════ FOOTER ══════════ -->
-    <footer class="footer">
-      <p>AnyDown · For personal use only · Respect content creators' rights</p>
-    </footer>
+    <!-- FOOTER -->
+    <footer class="footer"><p>AnyDown · For personal use only · Respect content creators' rights</p></footer>
 
-    <!-- footer smartlink unit (discreet) -->
-    <!-- Adsterra Unit: Smartlink (ID: 28971612) -->
-    <div class="footer-ad ad-slot">
-      <!-- ============================================================= -->
-      <!-- ADSTERRA - Smartlink (text/link based)                        -->
-      <!-- Ad Unit Name: Smartlink_1 | ID: 28971612                     -->
-      <!-- ============================================================= -->
-      <div class="smartlink-container">
-        <span class="ad-label-micro">Deals</span>
-        <span class="ad-placeholder-text-small">
-          <!-- Smartlink code is intentionally empty - actual code would go here -->
-          [Adsterra Smartlink]
-        </span>
-      </div>
-    </div>
+    <!-- FOOTER SMARTLINK (Adsterra required ad link) -->
+<div class="footer-ad ad-slot">
+  <div class="smartlink-container">
+    <span class="ad-label-micro">Sponsored Link</span>
+    <a href="https://www.profitablecpmratenetwork.com/hmsgefqpcn?key=4d6e7561a3b59bff0fdc75b8e69f21e9" 
+       target="_blank" 
+       rel="noopener noreferrer nofollow"
+       style="color: var(--text-secondary); font-size: 0.75rem; text-decoration: underline; transition: color 0.2s;">
+      Visit our partner
+    </a>
   </div>
+</div>
 
-  <!-- ═════════════════════════════════════════════════════════════════════════ -->
-  <!-- SOCIAL BAR (minimal floating, bottom right, non-obstructive)              -->
-  <!-- Adsterra Unit: Social Bar (ID: 28971613)                                  -->
-  <!-- ========================================================================= -->
-  <div style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-    <div class="ad-slot">
-      <!-- ============================================================= -->
-      <!-- ADSTERRA - Social Bar (floating widget)                       -->
-      <!-- Ad Unit Name: SocialBar_1 | ID: 28971613                      -->
-      <!-- ============================================================= -->
-      <div style="background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); border-radius: 40px; padding: 8px 18px; border: 1px solid rgba(232,184,0,0.3);">
-        <span style="color: var(--mustard); font-size: 12px; font-weight: 500;">[Social Bar]</span>
-      </div>
-    </div>
-  </div>
+  <!-- SOCIAL BAR (Floating) -->
+ <!-- BRANDED FOOTER LINK - SilverFox Dynamics -->
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+  <a href="https://silverfoxdynamics.com" 
+     target="_blank" 
+     rel="noopener noreferrer"
+     style="display: block; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); border-radius: 40px; padding: 8px 16px; border: 1px solid rgba(232,184,0,0.4); transition: all 0.3s ease; text-decoration: none;"
+     onmouseover="this.style.transform='scale(1.05)'; this.style.borderColor='var(--mustard)';"
+     onmouseout="this.style.transform='scale(1)'; this.style.borderColor='rgba(232,184,0,0.4)';">
+    <img src="sfd.png" 
+         alt="SilverFox Dynamics" 
+         style="height: 32px; width: auto; display: block;"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+    <span style="display: none; color: var(--mustard); font-size: 14px; font-weight: 500;">SilverFox</span>
+  </a>
+</div>
 
-  <!-- ═════════════════════════════════════════════════════════════════════════ -->
-  <!-- POPUNDER TRIGGER (hidden - does NOT affect UI/UX, loads on download click)-->
-  <!-- Adsterra Unit: Popunder (ID: 28971611)                                    -->
-  <!-- ========================================================================= -->
+  <!-- POPUNDER TRIGGER PLACEHOLDER -->
   <div data-adsterra-popunder="28971611" style="display: none;"></div>
 
-  <!-- DOWNLOAD-TRIGGERED POPUNDER AD (Triggers on download button click)       -->
-  <!-- Your popunder script: pl29072110.profitablecpmratenetwork.com            -->
-  <!-- ========================================================================= -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- AD TRIGGER LOGIC: BOUND EXCLUSIVELY TO DOWNLOAD BUTTONS (.dl-btn) -->
+  <!-- No trigger attached to #fetchBtn                                -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
   <script>
     (function() {
       // =============================================================
-      // POPUNDER AD - Triggers when user clicks any download button
+      // POPUNDER AD - Triggers ONLY when user clicks a download button (.dl-btn)
       // Script source: https://pl29072110.profitablecpmratenetwork.com/55/dd/73/55dd73715e9302d1ad25acf93c9fb0f6.js
       // =============================================================
       
@@ -366,7 +252,6 @@
         if (adTriggered) return;
         adTriggered = true;
         
-        // Create script element with your popunder code
         var script = document.createElement('script');
         script.src = 'https://pl29072110.profitablecpmratenetwork.com/55/dd/73/55dd73715e9302d1ad25acf93c9fb0f6.js';
         script.async = true;
@@ -377,12 +262,11 @@
           adTriggered = false; // Allow retry on next click
         };
         
-        // Append to document head to execute
         document.head.appendChild(script);
         console.log('Popunder ad triggered on download click');
       }
       
-      // Trigger popunder with delay (ensures download starts first)
+      // Trigger popunder with a slight delay to not interfere with the download
       function triggerDownloadAd() {
         if (adTriggered) return;
         
@@ -390,24 +274,26 @@
         
         triggerTimeout = setTimeout(function() {
           executePopunderAd();
-        }, 350); // 350ms delay - smooth user experience
+        }, 300); // 300ms delay - download starts immediately, ad fires in background
       }
       
-      // Attach click listeners to all download buttons
+      // Attach click listeners to all download buttons (.dl-btn)
       function attachDownloadListeners() {
         const downloadBtns = document.querySelectorAll('.dl-btn');
         downloadBtns.forEach(btn => {
+          // Avoid duplicate listeners
           if (btn.hasAttribute('data-ad-listener')) return;
           btn.setAttribute('data-ad-listener', 'true');
           
           btn.addEventListener('click', function(e) {
+            // Trigger popunder ad (non-blocking)
             triggerDownloadAd();
-            // Download continues normally via href + target="_blank"
+            // Download proceeds normally via the anchor's href and target="_blank"
           });
         });
       }
       
-      // Watch for dynamically added download buttons
+      // Watch for dynamically added download buttons (when video formats are fetched)
       const observer = new MutationObserver(function(mutations) {
         let shouldCheck = false;
         mutations.forEach(function(mutation) {
@@ -422,7 +308,7 @@
       
       observer.observe(document.body, { childList: true, subtree: true });
       
-      // Initial attachment
+      // Initial attachment in case buttons exist early
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', attachDownloadListeners);
       } else {
@@ -434,11 +320,10 @@
   <!-- original script.js (core functionality unchanged) -->
   <script src="script.js"></script>
   
-  <!-- Safe initialization -->
   <script>
     (function() {
       if (typeof window !== 'undefined') {
-        console.log('AnyDown with strategic ad placeholders — ready.');
+        console.log('AnyDown ready — ad trigger is bound to DOWNLOAD buttons only.');
       }
     })();
   </script>
