@@ -635,3 +635,250 @@ body {
 
   .yt-busy-card { padding: 28px 20px 24px; }
 }
+
+/* ═══════════════════════════════════════════════
+   ADDITIONAL AD STYLES (responsive, non-intrusive)
+   ═══════════════════════════════════════════════ */
+
+/* Ad slot base styles */
+.ad-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  text-align: center;
+  background: transparent;
+  transition: opacity 0.2s ease;
+}
+
+.ad-inner {
+  background: rgba(10, 10, 10, 0.2);
+  border-radius: var(--radius-md, 14px);
+  backdrop-filter: blur(2px);
+  transition: background 0.2s;
+}
+
+.ad-inner:hover {
+  background: rgba(20, 20, 20, 0.4);
+}
+
+.ad-label-micro {
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted, #4A4030);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.ad-placeholder-text {
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.ad-placeholder-text-small {
+  color: var(--text-muted);
+  font-size: 9px;
+}
+
+/* Desktop Right Rail (fixed position) */
+.desktop-right-rail {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 160px;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.desktop-right-rail .ad-slot {
+  pointer-events: auto;
+}
+
+.ad-skyscraper-inner {
+  width: 160px;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(232, 184, 0, 0.03);
+  border-radius: 20px;
+}
+
+.ad-vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  color: var(--text-muted);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+/* Desktop Left Rail */
+.desktop-left-rail {
+  position: fixed;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 120px;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.desktop-left-rail .ad-slot {
+  pointer-events: auto;
+}
+
+.ad-leftrail-inner {
+  width: 120px;
+  min-height: 400px;
+  background: rgba(232, 184, 0, 0.025);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ad-rotated-label {
+  transform: rotate(-90deg);
+  white-space: nowrap;
+}
+
+/* Leaderboard wrapper */
+.leaderboard-wrap {
+  max-width: 780px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.ad-leaderboard-inner {
+  min-width: 728px;
+  max-width: 100%;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Mobile banner (max-width 320px) */
+.ad-mobile-banner-inner {
+  min-width: 320px;
+  max-width: 100%;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Medium rectangle (fully responsive, never exceeds container) */
+.soft-ad-break {
+  margin: 16px auto 8px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.ad-rectangle-inner {
+  width: 100%;
+  max-width: 300px;
+  min-height: 250px;
+  margin: 0 auto;
+  background: rgba(232, 184, 0, 0.02);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Native in-feed ad */
+.native-ad-inline {
+  background: var(--surface, #111111);
+  border: 1px solid var(--surface-3, #242424);
+  border-radius: var(--radius-md, 14px);
+  padding: 16px 20px;
+  margin: 20px 0;
+}
+
+.native-ad-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.native-ad-text {
+  flex: 2;
+  min-width: 120px;
+}
+
+.native-ad-preview {
+  background: rgba(232, 184, 0, 0.1);
+  width: 80px;
+  height: 60px;
+  border-radius: 8px;
+}
+
+/* Desktop-only banner (468x60) - hidden on mobile */
+.desktop-only-banner {
+  margin: 28px auto 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.ad-banner468-inner {
+  min-width: 468px;
+  max-width: 100%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Footer ad */
+.footer-ad {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(232, 184, 0, 0.15);
+}
+
+.smartlink-container {
+  text-align: center;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1200px) {
+  .desktop-right-rail { width: 140px; right: 12px; }
+  .desktop-left-rail { display: none; }
+}
+
+@media (max-width: 900px) {
+  .desktop-right-rail { display: none; }
+}
+
+@media (max-width: 768px) {
+  .mobile-compact-banner {
+    display: flex;
+    justify-content: center;
+    margin: 12px auto;
+  }
+  .desktop-leaderboard { display: none; }
+  .native-ad-inline { padding: 12px 16px; }
+  .desktop-only-banner { display: none; }
+  .ad-leaderboard-inner { min-width: auto; }
+}
+
+@media (min-width: 769px) {
+  .desktop-leaderboard { display: flex; }
+  .mobile-compact-banner { display: none; }
+}
+
+/* Ensure core elements stay above ad layers */
+.result-card, .search-section, .app-banner, .header {
+  position: relative;
+  z-index: 2;
+}
