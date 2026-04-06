@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
 Sitemap: https://anydown.silverfoxdynamics.com/sitemap.xml
+IndexNow: 9149f5da10c843fcac54b21c0f15cc1a
