@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://anydown.silverfoxdynamics.com/sitemap.xml
