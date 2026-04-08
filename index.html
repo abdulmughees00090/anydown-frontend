@@ -46,7 +46,6 @@
   
   <!-- Additional SEO Enhancements -->
   <meta name="theme-color" content="#E8B800" />
-  <!-- FIXED: Use non-deprecated meta tag for mobile web app -->
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="AnyDown" />
   
@@ -76,13 +75,47 @@
   
   <!-- ============================================ -->
   <!-- MONETAG MULTITAG - Zone ID: 227014           -->
-  <!-- Added defer to prevent render blocking       -->
   <!-- ============================================ -->
-  <script src="https://quge5.com/88/tag.min.js" data-zone="227014" async data-cfasync="false" defer></script>
+  <script src="https://quge5.com/88/tag.min.js" data-zone="227014" async data-cfasync="false"></script>
   
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  
+  <style>
+    /* CRITICAL FIX: Push content down to avoid Monetag notification ads */
+    /* This ensures your logo stays visible even when ads load above */
+    
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* Add top padding to the main wrapper to push content below notification ads */
+    .wrapper {
+      padding-top: 80px !important;
+    }
+    
+    /* For mobile, even more padding because notification ads are taller */
+    @media (max-width: 600px) {
+      .wrapper {
+        padding-top: 120px !important;
+      }
+    }
+    
+    /* For very short screens, reduce padding */
+    @media (max-height: 700px) and (max-width: 600px) {
+      .wrapper {
+        padding-top: 90px !important;
+      }
+    }
+    
+    /* Ensure header stays visible */
+    .header {
+      position: relative;
+      z-index: 10;
+    }
+  </style>
 </head>
 <body>
 
