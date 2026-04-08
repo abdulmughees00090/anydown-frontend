@@ -1,22 +1,4 @@
-# Search Engine Crawler Directives
-# Last updated: 2026-04-09
-
-# Allow all search engines
 User-agent: *
 Allow: /
-
-# Bing specific directives
-User-agent: bingbot
-Crawl-delay: 1
-Allow: /
-
-# Google specific directives  
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 1
-
-# Sitemap location
 Sitemap: https://anydown.silverfoxdynamics.com/sitemap.xml
-
-# Host directive (helps with canonicalization)
-Host: anydown.silverfoxdynamics.com
+IndexNow: 9149f5da10c843fcac54b21c0f15cc1a
