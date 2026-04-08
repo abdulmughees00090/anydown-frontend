@@ -1,4 +1,4 @@
-# Bing & Google Crawler Directives
+# Search Engine Crawler Directives
 # Last updated: 2026-04-09
 
 # Allow all search engines
@@ -7,31 +7,16 @@ Allow: /
 
 # Bing specific directives
 User-agent: bingbot
-Crawl-delay: 2
+Crawl-delay: 1
 Allow: /
-Disallow: /cdn-cgi/
-Disallow: /wp-admin/
 
-# Google specific directives
+# Google specific directives  
 User-agent: Googlebot
 Allow: /
 Crawl-delay: 1
 
-# Block known bad bots (conserves bandwidth)
-User-agent: AhrefsBot
-Disallow: /
-
-User-agent: SemrushBot
-Disallow: /
-
-User-agent: MJ12bot
-Disallow: /
-
 # Sitemap location
 Sitemap: https://anydown.silverfoxdynamics.com/sitemap.xml
-
-# IndexNow for instant indexing (Bing & Yandex)
-IndexNow: 9149f5da10c843fcac54b21c0f15cc1a
 
 # Host directive (helps with canonicalization)
 Host: anydown.silverfoxdynamics.com
