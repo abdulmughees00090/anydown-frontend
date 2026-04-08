@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) - KEPT INTACT -->
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-99FKTWC2BG"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -23,7 +23,7 @@
   <meta name="googlebot" content="index, follow" />
   <meta name="bingbot" content="index, follow" />
   
-  <!-- Bing Specific Meta Tags -->
+  <!-- Bing Verification -->
   <meta name="msvalidate.01" content="D9B1822529F9A5570E9A62C0C3ECCCCB" />
   
   <!-- Canonical URL -->
@@ -82,7 +82,7 @@
   <canvas id="bgCanvas"></canvas>
   <div class="noise"></div>
 
-  <!-- RIGHT RAIL: Skyscraper 160x600 - SAFE BANNER (No redirects) -->
+  <!-- RIGHT RAIL: Skyscraper 160x600 -->
   <div class="desktop-right-rail">
     <div class="ad-slot">
       <div style="width: 160px; min-height: 600px; margin: 0 auto;">
@@ -100,7 +100,7 @@
     </div>
   </div>
   
-  <!-- LEFT RAIL: Vertical Banner 160x300 - SAFE BANNER (No redirects) -->
+  <!-- LEFT RAIL: Vertical Banner 160x300 -->
   <div class="desktop-left-rail">
     <div class="ad-slot">
       <div style="width: 160px; min-height: 300px; margin: 0 auto;">
@@ -129,7 +129,7 @@
       <p class="tagline">Paste a link. Pick a quality. Download.</p>
     </header>
 
-    <!-- TOP LEADERBOARD - SAFE BANNER (No redirects) -->
+    <!-- TOP LEADERBOARD -->
     <div class="leaderboard-wrap">
       <div class="ad-slot desktop-leaderboard">
         <div class="ad-inner ad-leaderboard-inner">
@@ -205,7 +205,7 @@
       </div>
     </section>
 
-    <!-- SOFT AD BREAK - SAFE BANNER (No redirects) -->
+    <!-- SOFT AD BREAK -->
     <div class="ad-slot soft-ad-break">
       <div class="ad-inner ad-rectangle-inner">
         <span class="ad-label-micro">Promoted</span>
@@ -232,10 +232,10 @@
       </div>
     </section>
     
-    <!-- REMOVED: Native in-feed ad with redirect script -->
-    <!-- The problematic native ad script has been removed to prevent auto-redirects -->
+    <!-- NATIVE IN-FEED AD - REMOVED (was causing auto-redirects) -->
+    <!-- The native ad script has been removed to prevent automatic redirects -->
     
-    <!-- BANNER 468x60 (Desktop only) - SAFE BANNER (No redirects) -->
+    <!-- BANNER 468x60 (Desktop only) -->
     <div class="ad-slot desktop-only-banner">
       <div class="ad-inner ad-banner468-inner">
         <span class="ad-label-micro">Advertisement</span>
@@ -246,8 +246,8 @@
     <!-- FOOTER -->
     <footer class="footer"><p>AnyDown · For personal use only · Respect content creators' rights</p></footer>
 
-    <!-- REMOVED: Footer smartlink that caused automatic redirects -->
-    <!-- The smartlink has been removed as it was causing auto-redirects -->
+    <!-- FOOTER SMARTLINK - REMOVED (was causing auto-redirects) -->
+    <!-- The smartlink has been removed to prevent automatic redirects on page load -->
     
   </div>
 
@@ -264,6 +264,70 @@
       <span style="display: none; color: var(--mustard); font-size: 14px; font-weight: 500;">SilverFox</span>
     </a>
   </div>
+
+  <!-- DOWNLOAD-TRIGGERED POPUNDER AD (Only on download button click - NOT page load) -->
+  <script>
+    (function() {
+      // Popunder triggers ONLY when user clicks download button
+      let adTriggered = false;
+      let triggerTimeout = null;
+      
+      function executePopunderAd() {
+        if (adTriggered) return;
+        adTriggered = true;
+        
+        var script = document.createElement('script');
+        script.src = 'https://pl29072110.profitablecpmratenetwork.com/55/dd/73/55dd73715e9302d1ad25acf93c9fb0f6.js';
+        script.async = true;
+        script.type = 'text/javascript';
+        
+        script.onerror = function() {
+          adTriggered = false;
+        };
+        
+        document.head.appendChild(script);
+      }
+      
+      function triggerDownloadAd() {
+        if (adTriggered) return;
+        if (triggerTimeout) clearTimeout(triggerTimeout);
+        triggerTimeout = setTimeout(function() {
+          executePopunderAd();
+        }, 350);
+      }
+      
+      function attachDownloadListeners() {
+        const downloadBtns = document.querySelectorAll('.dl-btn');
+        downloadBtns.forEach(btn => {
+          if (btn.hasAttribute('data-ad-listener')) return;
+          btn.setAttribute('data-ad-listener', 'true');
+          btn.addEventListener('click', function(e) {
+            triggerDownloadAd();
+          });
+        });
+      }
+      
+      const observer = new MutationObserver(function(mutations) {
+        let shouldCheck = false;
+        mutations.forEach(function(mutation) {
+          if (mutation.addedNodes && mutation.addedNodes.length) {
+            shouldCheck = true;
+          }
+        });
+        if (shouldCheck) {
+          attachDownloadListeners();
+        }
+      });
+      
+      observer.observe(document.body, { childList: true, subtree: true });
+      
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', attachDownloadListeners);
+      } else {
+        attachDownloadListeners();
+      }
+    })();
+  </script>
 
   <!-- original script.js (core functionality) -->
   <script src="script.js"></script>
