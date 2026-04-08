@@ -615,30 +615,8 @@ body {
 [hidden] { display: none !important; }
 
 /* ════════════════════════════
-   RESPONSIVE
-════════════════════════════ */
-@media (max-width: 600px) {
-  .header { padding: 48px 0 36px; }
-  .card-body { padding: 20px 18px 24px; }
-  .fetch-btn { padding: 18px 18px; }
-  .btn-text { display: none; }
-  .formats-grid { grid-template-columns: 1fr 1fr; }
-
-  .app-banner-inner {
-    flex-direction: column;
-    padding: 28px 24px;
-    text-align: center;
-  }
-  .app-banner-text { align-items: center; }
-  .app-banner-desc { max-width: 100%; }
-  .app-banner-qr { display: none; }
-
-  .yt-busy-card { padding: 28px 20px 24px; }
-}
-
-/* ═══════════════════════════════════════════════
-   ADDITIONAL AD STYLES (responsive, non-intrusive)
-   ═══════════════════════════════════════════════ */
+   AD STYLES (responsive, non-intrusive)
+   ════════════════════════════ */
 
 /* Ad slot base styles */
 .ad-slot {
@@ -793,35 +771,6 @@ body {
   justify-content: center;
 }
 
-/* Native in-feed ad */
-.native-ad-inline {
-  background: var(--surface, #111111);
-  border: 1px solid var(--surface-3, #242424);
-  border-radius: var(--radius-md, 14px);
-  padding: 16px 20px;
-  margin: 20px 0;
-}
-
-.native-ad-content {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px;
-  justify-content: space-between;
-}
-
-.native-ad-text {
-  flex: 2;
-  min-width: 120px;
-}
-
-.native-ad-preview {
-  background: rgba(232, 184, 0, 0.1);
-  width: 80px;
-  height: 60px;
-  border-radius: 8px;
-}
-
 /* Desktop-only banner (468x60) - hidden on mobile */
 .desktop-only-banner {
   margin: 28px auto 16px;
@@ -867,7 +816,6 @@ body {
     margin: 12px auto;
   }
   .desktop-leaderboard { display: none; }
-  .native-ad-inline { padding: 12px 16px; }
   .desktop-only-banner { display: none; }
   .ad-leaderboard-inner { min-width: auto; }
 }
@@ -883,78 +831,93 @@ body {
   z-index: 2;
 }
 
-
-/*============================================================================================*/
-
 /* ═══════════════════════════════════════════════
-   MOBILE LAYOUT FIXES - AnyDown
-   (Header closer to search bar + dynamic app banner)
+   MOBILE LAYOUT FIXES - CENTERED WITH TIGHT GROUPING
    ═══════════════════════════════════════════════ */
 
 @media (max-width: 600px) {
-  /* === HEADER & SEARCH BAR POSITIONING === */
+  /* Make wrapper full height and center content vertically */
+  .wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 20px 40px;
+  }
+  
+  /* HEADER - compact and tight */
   .header {
-    padding: 18px 0 8px !important;
+    padding: 0 0 12px 0 !important;
     gap: 4px !important;
+    margin-top: 0;
   }
   
   .logo-mark {
-    width: 52px;
-    height: 52px;
+    width: 56px;
+    height: 56px;
     margin-bottom: 0;
   }
   
   .favicon-img {
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
   }
   
   .brand {
-    font-size: clamp(2.4rem, 8vw, 3.2rem);
-    margin-top: -4px;
+    font-size: clamp(2.2rem, 8vw, 3rem);
+    margin-top: 0;
+    letter-spacing: 0.06em;
   }
   
   .tagline {
-    font-size: 0.8rem;
-    margin-top: -6px;
+    font-size: 0.75rem;
+    margin-top: -2px;
   }
   
+  /* SEARCH SECTION - directly below header with minimal gap */
   .search-section {
     margin-top: 8px;
+    gap: 10px;
+  }
+  
+  .url-input {
+    padding: 14px 18px;
+    font-size: 0.9rem;
+  }
+  
+  .fetch-btn {
+    padding: 14px 20px;
+  }
+  
+  .supported-hint {
+    font-size: 0.7rem;
+  }
+  
+  /* RESULT SECTION - when visible */
+  .result-section {
+    margin-top: 24px;
     width: 100%;
   }
   
-  /* Push search bar down ~50px from top on mobile */
-  .wrapper {
-    padding-top: 0;
-    justify-content: flex-start;
-  }
-  
-  body > .wrapper:first-child {
-    margin-top: 48px;
-  }
-  
-  /* Alternative approach - add top margin to first element */
-  .header {
-    margin-top: 48px;
-  }
-  
-  /* === APP BANNER - DYNAMIC POSITIONING === */
-  /* Default position (before video loads) - right after search bar */
+  /* APP BANNER - positioned right after search bar or result */
   .app-banner {
-    margin-top: 32px;
+    margin-top: 28px;
     order: 3;
   }
   
-  /* When video result is visible, app banner moves down */
+  /* When video result is visible, app banner stays below it naturally */
+  .result-card:not([hidden]) {
+    margin-bottom: 0;
+  }
+  
   .result-card:not([hidden]) ~ .app-banner,
   .state-yt-busy:not([hidden]) ~ .app-banner,
   .state-error:not([hidden]) ~ .app-banner,
   .state-loading:not([hidden]) ~ .app-banner {
-    margin-top: 48px;
+    margin-top: 28px;
   }
   
-  /* Reorder elements on mobile */
+  /* Reorder elements for proper flow */
   .wrapper {
     display: flex;
     flex-direction: column;
@@ -970,46 +933,36 @@ body {
   
   .soft-ad-break {
     order: 3;
+    margin: 16px auto 8px;
   }
   
   .app-banner {
     order: 4;
   }
   
-  .desktop-only-banner {
-    order: 5;
-  }
-  
   .footer {
-    order: 6;
+    order: 5;
+    margin-top: 32px;
+    padding-top: 24px;
   }
   
-  /* Remove any extra gaps */
-  .result-section {
-    margin-top: 24px;
+  /* Hide desktop ads on mobile */
+  .desktop-only-banner {
+    display: none;
   }
   
-  /* Compact result card on mobile */
-  .result-card {
-    margin-top: 0;
-  }
-  
+  /* Compact result card */
   .card-body {
     padding: 16px 14px 20px;
   }
   
-  /* Reduce soft ad break gap */
-  .soft-ad-break {
-    margin: 8px auto 0;
-  }
-  
-  /* Formats grid - single column for better touch */
+  /* Single column formats for better touch */
   .formats-grid {
     grid-template-columns: 1fr;
     gap: 8px;
   }
   
-  /* Larger touch targets on mobile */
+  /* Larger touch targets */
   .format-item {
     padding: 12px 14px;
   }
@@ -1022,7 +975,7 @@ body {
   
   /* YouTube busy card compact */
   .yt-busy-card {
-    padding: 20px 16px;
+    padding: 24px 20px;
   }
   
   .yt-busy-title {
@@ -1032,27 +985,49 @@ body {
   .yt-busy-desc {
     font-size: 0.85rem;
   }
+  
+  /* App banner inner padding */
+  .app-banner-inner {
+    padding: 24px 20px;
+  }
+  
+  .app-banner-title {
+    font-size: 1.4rem;
+  }
+  
+  .app-banner-desc {
+    font-size: 0.8rem;
+  }
+  
+  /* Hide QR code on mobile for cleaner look */
+  .app-banner-qr {
+    display: none;
+  }
+  
+  .app-banner-text {
+    align-items: center;
+    text-align: center;
+  }
 }
 
 /* Extra small devices (below 380px) */
 @media (max-width: 380px) {
-  .header {
-    margin-top: 32px;
-    padding: 12px 0 4px !important;
+  .wrapper {
+    padding: 16px 16px 32px;
   }
   
   .logo-mark {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
   }
   
   .favicon-img {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
   }
   
   .brand {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
   
   .tagline {
@@ -1060,23 +1035,20 @@ body {
   }
   
   .url-input {
-    padding: 14px 16px;
+    padding: 12px 14px;
     font-size: 0.85rem;
   }
   
   .fetch-btn {
-    padding: 14px 14px;
+    padding: 12px 16px;
   }
-}
-
-/* When video is fetched - smooth transition for app banner */
-.result-card,
-.state-yt-busy,
-.state-error,
-.state-loading {
-  transition: all 0.3s ease;
-}
-
-.app-banner {
-  transition: margin-top 0.3s ease;
+  
+  .btn-text {
+    display: inline-block;
+    font-size: 0.8rem;
+  }
+  
+  .app-banner-title {
+    font-size: 1.2rem;
+  }
 }
