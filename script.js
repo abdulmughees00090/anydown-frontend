@@ -12,6 +12,7 @@ const searchBar    = document.getElementById("searchBar");
 const stateLoading = document.getElementById("stateLoading");
 const stateError   = document.getElementById("stateError");
 const stateYtBusy  = document.getElementById("stateYtBusy");
+const stateIgBusy  = document.getElementById("stateIgBusy");
 const errorMsg     = document.getElementById("errorMsg");
 const resultCard   = document.getElementById("resultCard");
 
@@ -76,6 +77,7 @@ function showState(state) {
   stateLoading.hidden = state !== "loading";
   stateError.hidden   = state !== "error";
   stateYtBusy.hidden  = state !== "ytbusy";
+  stateIgBusy.hidden  = state !== "igbusy";
   resultCard.hidden   = state !== "result";
 }
 
@@ -205,9 +207,15 @@ async function fetchVideo() {
     if (!res.ok || data.error) {
       const msg = data.error || `Server error (${res.status}). Try again.`;
 
-      // YouTube busy — show friendly card instead of red error
+      // YouTube busy detection
       if (msg.toLowerCase().includes("youtube download server is busy")) {
         showState("ytbusy");
+        return;
+      }
+      
+      // Instagram busy detection
+      if (msg.toLowerCase().includes("instagram download server is busy")) {
+        showState("igbusy");
         return;
       }
 
