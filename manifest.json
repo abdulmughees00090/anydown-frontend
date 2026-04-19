@@ -11,7 +11,7 @@
   "theme_color": "#E8B800",
   "icons": [
     {
-      "src": "https://anydown.silverfoxdynamics.com/favicon.ico",
+      "src": "https://anydown.silverfoxdynamics.com/favicon.png",
       "type": "image/x-icon",
       "sizes": "512x512",
       "isSquare": true,
@@ -37,7 +37,7 @@
       "is192x192": false
     },
     {
-      "src": "https://anydown.silverfoxdynamics.com/favicon.ico",
+      "src": "https://anydown.silverfoxdynamics.com/favicon.png",
       "type": "image/x-icon",
       "sizes": "512x512",
       "isSquare": true,
