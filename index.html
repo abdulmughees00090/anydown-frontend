@@ -116,12 +116,95 @@
       position: relative;
       z-index: 20;
     }
+    
+    /* ============================================ */
+    /* PWA INSTALL BUTTON STYLES - Auto Hide        */
+    /* ============================================ */
+    .pwa-install-btn {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #E8B800 0%, #D4A800 100%);
+      border: none;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(232, 184, 0, 0.4);
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      animation: float 2s ease-in-out infinite;
+    }
+    
+    .pwa-install-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px rgba(232, 184, 0, 0.6);
+      background: linear-gradient(135deg, #F0C800 0%, #E8B800 100%);
+    }
+    
+    .pwa-install-btn svg {
+      width: 28px;
+      height: 28px;
+      stroke: #0A0A0A;
+      stroke-width: 2;
+      fill: none;
+    }
+    
+    /* Floating animation */
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+    
+    /* Tablet adjustment */
+    @media (max-width: 768px) {
+      .pwa-install-btn {
+        bottom: 70px;
+        right: 16px;
+        width: 52px;
+        height: 52px;
+      }
+      .pwa-install-btn svg {
+        width: 26px;
+        height: 26px;
+      }
+    }
+    
+    /* Mobile adjustment - position above footer */
+    @media (max-width: 600px) {
+      .pwa-install-btn {
+        bottom: 60px;
+        right: 14px;
+        width: 48px;
+        height: 48px;
+      }
+      .pwa-install-btn svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
   </style>
 </head>
 <body>
 
   <canvas id="bgCanvas"></canvas>
   <div class="noise"></div>
+
+  <!-- ============================================ -->
+  <!-- PWA INSTALL BUTTON (Auto-hides until ready)  -->
+  <!-- ============================================ -->
+  <button id="installPWA-btn" class="pwa-install-btn" title="Install AnyDown App">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 5v14m-7-7h14"/>
+    </svg>
+  </button>
 
   <!-- ============================================ -->
   <!-- RIGHT RAIL: Skyscraper 160x600               -->
@@ -268,5 +351,66 @@
 
   <!-- original script.js (core functionality) -->
   <script src="script.js"></script>
+
+  <!-- Register Service Worker & PWA Install Prompt -->
+  <script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function(registration) {
+            console.log('AnyDown Service Worker registered:', registration.scope);
+          })
+          .catch(function(error) {
+            console.log('AnyDown Service Worker registration failed:', error);
+          });
+      });
+    }
+
+    // PWA Install Prompt - Plus Button (Auto Hide)
+    let deferredPrompt;
+    const installBtn = document.getElementById('installPWA-btn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent Chrome 67+ from auto-showing prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later
+      deferredPrompt = e;
+      // Show the install button
+      if (installBtn) {
+        installBtn.style.display = 'flex';
+      }
+      console.log('AnyDown: Install prompt event fired');
+    });
+
+    // Handle install button click
+    if (installBtn) {
+      installBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) {
+          console.log('AnyDown: No deferred prompt available');
+          return;
+        }
+        // Show the install prompt
+        deferredPrompt.prompt();
+        // Wait for user's choice
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`AnyDown: User response to install prompt: ${outcome}`);
+        // Reset the deferred prompt variable (can only be used once)
+        deferredPrompt = null;
+        // Hide the install button after user responds
+        installBtn.style.display = 'none';
+      });
+    }
+
+    // Listen for successful installation
+    window.addEventListener('appinstalled', () => {
+      console.log('AnyDown: PWA was installed successfully');
+      deferredPrompt = null;
+      if (installBtn) {
+        installBtn.style.display = 'none';
+      }
+    });
+  </script>
+
 </body>
 </html>
