@@ -1,0 +1,64 @@
+{
+  "background_color": "#000000",
+  "description": "Download videos from 1000+ sites. Free, fast, and no registration required. Paste any link and download in HD quality.",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "AnyDown - Video Downloader",
+  "orientation": "portrait",
+  "scope": "/",
+  "short_name": "AnyDown",
+  "start_url": "/anydown.silverfoxdynamics.com",
+  "theme_color": "#E8B800",
+  "icons": [
+    {
+      "src": "https://anydown.silverfoxdynamics.com/favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "512x512",
+      "isSquare": true,
+      "isPng": false,
+      "isWebp": false,
+      "isJpg": false,
+      "width": 512,
+      "is512x512": true,
+      "is256x256": false,
+      "is192x192": false
+    },
+    {
+      "src": "https://anydown.silverfoxdynamics.com/og-image.png",
+      "type": "image/png",
+      "sizes": "1200x630",
+      "isSquare": false,
+      "isPng": true,
+      "isWebp": false,
+      "isJpg": false,
+      "width": 1200,
+      "is512x512": false,
+      "is256x256": false,
+      "is192x192": false
+    },
+    {
+      "src": "https://anydown.silverfoxdynamics.com/favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "512x512",
+      "isSquare": true,
+      "isPng": false,
+      "isWebp": false,
+      "isJpg": false,
+      "width": 512,
+      "is512x512": true,
+      "is256x256": false,
+      "is192x192": false
+    }
+  ],
+  "id": "AnyDown Video Downloader",
+  "categories": [
+    "entertainment",
+    "music",
+    "social"
+  ],
+  "display_override": [
+    "standalone",
+    "fullscreen",
+    "window-controls-overlay"
+  ]
+}
