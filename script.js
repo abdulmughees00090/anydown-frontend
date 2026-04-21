@@ -280,7 +280,7 @@ urlInput.addEventListener("paste", () => {
 // ============================================
 
 // Configuration - REPLACE with your actual Adsterra Zone ID for download trigger
-const ADSTERRA_DOWNLOAD_ZONE_ID = 'YOUR_DOWNLOAD_TRIGGER_ZONE_ID';
+const ADSTERRA_DOWNLOAD_ZONE_ID = '28971613';
 
 // Function to show ad before download (opens in new tab, not popunder)
 function triggerAdBeforeDownload(downloadUrl) {
