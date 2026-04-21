@@ -7,7 +7,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-8N816RG4R1');
 </script>
 
@@ -75,30 +74,29 @@
   </script>
   
   <!-- ============================================ -->
-  <!-- ADSTERRA INTEGRATION - Core Script           -->
+  <!-- ADSTERRA INTEGRATION                         -->
   <!-- ============================================ -->
+  <!-- REPLACE THESE WITH YOUR ACTUAL ADSTERRA AD UNIT IDs -->
   <script>
-    // Adsterra Ad Unit IDs Configuration
-    // REPLACE THESE WITH YOUR ACTUAL ADSTERRA AD UNIT IDs
     window.ADSTERRA_CONFIG = {
-      // Banner Ads
-      banner_728x90: '28971618',      // Leaderboard
-      banner_320x50: '28971617',      // Mobile banner
-      banner_300x250: '28971620',    // Rectangle
-      banner_468x60: '28971615',      // Desktop banner
-      banner_160x600: '28971619',    // Skyscraper (right)
-      banner_160x300: '28971616',    // Vertical (left)
+      // Banner Ads - REPLACE THESE VALUES
+      banner_728x90: 'REPLACE_WITH_YOUR_728x90_ZONE_ID',
+      banner_320x50: 'REPLACE_WITH_YOUR_320x50_ZONE_ID',
+      banner_300x250: 'REPLACE_WITH_YOUR_300x250_ZONE_ID',
+      banner_468x60: 'REPLACE_WITH_YOUR_468x60_ZONE_ID',
+      banner_160x600: 'REPLACE_WITH_YOUR_160x600_ZONE_ID',
+      banner_160x300: 'REPLACE_WITH_YOUR_160x300_ZONE_ID',
       
-      // Click-triggered Ad (Direct Link / Interstitial)
-      click_ad_url: '28971612',    // Smartlink or Direct Link URL
+      // Click-triggered Ad (Smartlink / Direct Link) - REPLACE THIS URL
+      clickAdUrl: 'REPLACE_WITH_YOUR_ADSTERRA_SMARTLINK_URL',
       
-      // Social Bar (optional - for engagement)
-      social_bar_id: '28971613'   // Social Bar ad unit ID
+      // Social Bar Ad Unit ID - Optional, REPLACE IF USING
+      socialBarId: 'REPLACE_WITH_YOUR_SOCIAL_BAR_ID'
     };
   </script>
   
-  <!-- Adsterra Network Script (Loads ads asynchronously) -->
-  <script async="async" src="https://cdn.adsterra.net/static/js/loader.min.js"></script>
+  <!-- Adsterra Network Script -->
+  <script src="https://cdn.adsterra.net/static/js/loader.min.js" async></script>
   
   <link rel="icon" href="favicon.png" type="image/x-icon" />
   <link rel="stylesheet" href="style.css" />
@@ -106,30 +104,82 @@
   <link rel="manifest" href="/manifest.json">
   
   <style>
-    /* CRITICAL FIX: Push content down to avoid ad overlap */
+    /* Base styles */
     body {
       margin: 0;
       padding: 0;
     }
     
-    /* Header visibility */
     .header {
       position: relative;
       z-index: 20;
     }
     
     /* ============================================ */
-    /* ADSTERRA CUSTOM STYLES                       */
+    /* ADSTERRA VISIBLE AD SLOTS                    */
     /* ============================================ */
     
-    /* Ad container base styles */
-    .adsterra-container {
+    .ad-slot {
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: 0 auto;
+      margin: 10px auto;
       text-align: center;
+      background: rgba(20, 20, 20, 0.5);
+      border-radius: 8px;
+      min-height: 50px;
+    }
+    
+    /* Visible ad container styling - shows where ads will appear */
+    .ad-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(232, 184, 0, 0.05);
+      border: 1px dashed rgba(232, 184, 0, 0.3);
+      border-radius: 12px;
       overflow: hidden;
+    }
+    
+    .ad-label {
+      font-size: 0.6rem;
+      color: var(--text-muted, #4A4030);
+      text-align: center;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    
+    /* Right Rail Skyscraper */
+    .desktop-right-rail {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 170px;
+      z-index: 40;
+    }
+    
+    .desktop-right-rail .ad-container {
+      width: 160px;
+      min-height: 600px;
+      background: rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Left Rail Vertical Banner */
+    .desktop-left-rail {
+      position: fixed;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 170px;
+      z-index: 40;
+    }
+    
+    .desktop-left-rail .ad-container {
+      width: 160px;
+      min-height: 300px;
+      background: rgba(0, 0, 0, 0.3);
     }
     
     /* Leaderboard wrapper */
@@ -140,65 +190,32 @@
       width: 100%;
     }
     
-    /* Right Rail Skyscraper */
-    .desktop-right-rail {
-      position: fixed;
-      right: 24px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 170px;
-      z-index: 40;
-      pointer-events: none;
+    .leaderboard-wrap .ad-container {
+      min-width: 728px;
+      min-height: 90px;
     }
     
-    .desktop-right-rail .adsterra-container {
-      pointer-events: auto;
+    /* Mobile banner */
+    .mobile-banner-wrap .ad-container {
+      min-width: 320px;
+      min-height: 50px;
     }
     
-    /* Left Rail Vertical Banner */
-    .desktop-left-rail {
-      position: fixed;
-      left: 24px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 170px;
-      z-index: 40;
-      pointer-events: none;
+    /* Rectangle ad */
+    .soft-ad-break .ad-container {
+      width: 300px;
+      min-height: 250px;
     }
     
-    .desktop-left-rail .adsterra-container {
-      pointer-events: auto;
-    }
-    
-    /* Mobile banner wrapper */
-    .mobile-banner-wrap {
-      display: flex;
-      justify-content: center;
-      margin: 12px auto;
-    }
-    
-    /* Desktop-only elements */
-    .desktop-only {
-      display: flex;
-    }
-    
-    /* Soft ad break (rectangle) */
-    .soft-ad-break {
-      margin: 16px auto 8px;
-      width: 100%;
-      max-width: 300px;
-    }
-    
-    /* Footer ad */
-    .footer-ad {
-      margin-top: 32px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(232, 184, 0, 0.15);
+    /* Desktop banner 468x60 */
+    .desktop-banner-wrap .ad-container {
+      width: 468px;
+      min-height: 60px;
     }
     
     /* Responsive breakpoints */
     @media (max-width: 1200px) {
-      .desktop-right-rail { width: 140px; right: 12px; }
+      .desktop-right-rail { width: 140px; right: 10px; }
       .desktop-left-rail { display: none; }
     }
     
@@ -208,14 +225,14 @@
     
     @media (max-width: 768px) {
       .desktop-leaderboard { display: none !important; }
-      .desktop-only { display: none !important; }
-      .mobile-banner-wrap { display: flex; }
-      .ad-leaderboard-inner { min-width: auto; }
+      .desktop-banner-wrap { display: none !important; }
+      .mobile-banner-wrap { display: flex !important; }
     }
     
     @media (min-width: 769px) {
       .desktop-leaderboard { display: flex !important; }
       .mobile-banner-wrap { display: none !important; }
+      .desktop-banner-wrap { display: flex !important; }
     }
     
     /* Ensure core elements stay above ad layers */
@@ -225,7 +242,7 @@
     }
     
     /* ============================================ */
-    /* PWA INSTALL BUTTON STYLES - Auto Hide        */
+    /* PWA INSTALL BUTTON STYLES                    */
     /* ============================================ */
     .pwa-install-btn {
       position: fixed;
@@ -249,7 +266,6 @@
     .pwa-install-btn:hover {
       transform: scale(1.08);
       box-shadow: 0 6px 20px rgba(232, 184, 0, 0.6);
-      background: linear-gradient(135deg, #F0C800 0%, #E8B800 100%);
     }
     
     .pwa-install-btn svg {
@@ -266,36 +282,14 @@
     }
     
     @media (max-width: 768px) {
-      .pwa-install-btn {
-        bottom: 70px;
-        left: 16px;
-        width: 52px;
-        height: 52px;
-      }
-      .pwa-install-btn svg {
-        width: 26px;
-        height: 26px;
-      }
+      .pwa-install-btn { bottom: 70px; left: 16px; width: 52px; height: 52px; }
+      .pwa-install-btn svg { width: 26px; height: 26px; }
     }
     
     @media (max-width: 600px) {
-      .pwa-install-btn {
-        bottom: 60px;
-        left: 14px;
-        width: 48px;
-        height: 48px;
-      }
-      .pwa-install-btn svg {
-        width: 24px;
-        height: 24px;
-      }
-    }
-    
-    /* MOBILE LAYOUT FIXES */
-    @media (max-width: 600px) {
-      .wrapper {
-        padding-top: 20px !important;
-      }
+      .pwa-install-btn { bottom: 60px; left: 14px; width: 48px; height: 48px; }
+      .pwa-install-btn svg { width: 24px; height: 24px; }
+      .wrapper { padding-top: 20px !important; }
     }
   </style>
 </head>
@@ -304,9 +298,7 @@
   <canvas id="bgCanvas"></canvas>
   <div class="noise"></div>
 
-  <!-- ============================================ -->
-  <!-- PWA INSTALL BUTTON (Auto-hides until ready)  -->
-  <!-- ============================================ -->
+  <!-- PWA INSTALL BUTTON -->
   <button id="installPWA-btn" class="pwa-install-btn" title="Install AnyDown App">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M12 5v14m-7-7h14"/>
@@ -317,8 +309,11 @@
   <!-- ADSTERRA: RIGHT RAIL - Skyscraper 160x600    -->
   <!-- ============================================ -->
   <div class="desktop-right-rail">
-    <div class="adsterra-container" data-adsterra-zone="28971619" data-adsterra-format="skyscraper">
-      <!-- Adsterra will fill this space -->
+    <div class="ad-label">Advertisement</div>
+    <div class="ad-container" id="ad-right-rail">
+      <div data-zone="REPLACE_WITH_YOUR_160x600_ZONE_ID" style="width: 160px; min-height: 600px;">
+        <!-- Adsterra will fill this space -->
+      </div>
     </div>
   </div>
   
@@ -326,8 +321,11 @@
   <!-- ADSTERRA: LEFT RAIL - Vertical Banner 160x300-->
   <!-- ============================================ -->
   <div class="desktop-left-rail">
-    <div class="adsterra-container" data-adsterra-zone="28971616" data-adsterra-format="vertical">
-      <!-- Adsterra will fill this space -->
+    <div class="ad-label">Advertisement</div>
+    <div class="ad-container" id="ad-left-rail">
+      <div data-zone="REPLACE_WITH_YOUR_160x300_ZONE_ID" style="width: 160px; min-height: 300px;">
+        <!-- Adsterra will fill this space -->
+      </div>
     </div>
   </div>
   
@@ -347,13 +345,23 @@
     <!-- ============================================ -->
     <div class="leaderboard-wrap">
       <!-- Desktop 728x90 -->
-      <div class="adsterra-container desktop-leaderboard" data-adsterra-zone="28971618" data-adsterra-format="leaderboard" style="min-width: 728px; min-height: 90px;">
-        <!-- Adsterra will fill this space -->
+      <div class="ad-slot desktop-leaderboard">
+        <div class="ad-label">Advertisement</div>
+        <div class="ad-container" id="ad-leaderboard">
+          <div data-zone="REPLACE_WITH_YOUR_728x90_ZONE_ID" style="width: 728px; height: 90px;">
+            <!-- Adsterra will fill this space -->
+          </div>
+        </div>
       </div>
       
       <!-- Mobile 320x50 -->
-      <div class="adsterra-container mobile-banner-wrap" data-adsterra-zone="28971617" data-adsterra-format="mobile" style="min-width: 320px; min-height: 50px;">
-        <!-- Adsterra will fill this space -->
+      <div class="ad-slot mobile-banner-wrap">
+        <div class="ad-label">Advertisement</div>
+        <div class="ad-container" id="ad-mobile-banner">
+          <div data-zone="REPLACE_WITH_YOUR_320x50_ZONE_ID" style="width: 320px; height: 50px;">
+            <!-- Adsterra will fill this space -->
+          </div>
+        </div>
       </div>
     </div>
 
@@ -406,8 +414,13 @@
     <!-- ============================================ -->
     <!-- ADSTERRA: SOFT AD BREAK 300x250              -->
     <!-- ============================================ -->
-    <div class="adsterra-container soft-ad-break" data-adsterra-zone="28971620" data-adsterra-format="rectangle" style="min-width: 300px; min-height: 250px;">
-      <!-- Adsterra will fill this space -->
+    <div class="ad-slot soft-ad-break">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-container" id="ad-rectangle">
+        <div data-zone="REPLACE_WITH_YOUR_300x250_ZONE_ID" style="width: 300px; height: 250px;">
+          <!-- Adsterra will fill this space -->
+        </div>
+      </div>
     </div>
     
     <!-- APP BANNER -->
@@ -421,8 +434,13 @@
     <!-- ============================================ -->
     <!-- ADSTERRA: BANNER 468x60 (Desktop only)       -->
     <!-- ============================================ -->
-    <div class="adsterra-container desktop-only" data-adsterra-zone="28971615" data-adsterra-format="banner" style="min-width: 468px; min-height: 60px; margin: 20px auto;">
-      <!-- Adsterra will fill this space -->
+    <div class="ad-slot desktop-banner-wrap">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-container" id="ad-desktop-banner">
+        <div data-zone="REPLACE_WITH_YOUR_468x60_ZONE_ID" style="width: 468px; height: 60px;">
+          <!-- Adsterra will fill this space -->
+        </div>
+      </div>
     </div>
 
     <!-- FOOTER -->
@@ -462,7 +480,7 @@
       });
     }
 
-    // PWA Install Prompt - Plus Button (Auto Hide)
+    // PWA Install Prompt
     let deferredPrompt;
     const installBtn = document.getElementById('installPWA-btn');
 
@@ -472,7 +490,7 @@
       if (installBtn) {
         installBtn.style.display = 'flex';
       }
-      console.log('AnyDown: Install prompt event fired');
+      console.log('AnyDown: Install prompt available');
     });
 
     if (installBtn) {
@@ -483,14 +501,14 @@
         }
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
-        console.log(`AnyDown: User response to install prompt: ${outcome}`);
+        console.log(`AnyDown: User response: ${outcome}`);
         deferredPrompt = null;
         installBtn.style.display = 'none';
       });
     }
 
     window.addEventListener('appinstalled', () => {
-      console.log('AnyDown: PWA was installed successfully');
+      console.log('AnyDown: PWA installed successfully');
       deferredPrompt = null;
       if (installBtn) {
         installBtn.style.display = 'none';
