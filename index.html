@@ -1,8 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8N816RG4R1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8N816RG4R1');
+</script>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <!-- Primary Meta Tags -->
   <title>AnyDown - Free Video Downloader | Download from 1000+ Sites</title>
@@ -64,42 +74,260 @@
   }
   </script>
   
-  <!-- Adsterra Universal Code (No popunders - configured for banners only) -->
-  <script type="text/javascript" src="https://cdn.adsterra.net/static/js/loader.js" async></script>
+  <!-- ============================================ -->
+  <!-- ADSTERRA INTEGRATION - Core Script           -->
+  <!-- ============================================ -->
+  <script>
+    // Adsterra Ad Unit IDs Configuration
+    // REPLACE THESE WITH YOUR ACTUAL ADSTERRA AD UNIT IDs
+    window.ADSTERRA_CONFIG = {
+      // Banner Ads
+      banner_728x90: 'YOUR_ADSTERRA_728x90_ID',      // Leaderboard
+      banner_320x50: 'YOUR_ADSTERRA_320x50_ID',      // Mobile banner
+      banner_300x250: 'YOUR_ADSTERRA_300x250_ID',    // Rectangle
+      banner_468x60: 'YOUR_ADSTERRA_468x60_ID',      // Desktop banner
+      banner_160x600: 'YOUR_ADSTERRA_160x600_ID',    // Skyscraper (right)
+      banner_160x300: 'YOUR_ADSTERRA_160x300_ID',    // Vertical (left)
+      
+      // Click-triggered Ad (Direct Link / Interstitial)
+      click_ad_url: 'YOUR_ADSTERRA_CLICK_AD_URL',    // Smartlink or Direct Link URL
+      
+      // Social Bar (optional - for engagement)
+      social_bar_id: 'YOUR_ADSTERRA_SOCIAL_BAR_ID'   // Social Bar ad unit ID
+    };
+  </script>
   
-  <!-- Stylesheets -->
+  <!-- Adsterra Network Script (Loads ads asynchronously) -->
+  <script async="async" src="https://cdn.adsterra.net/static/js/loader.min.js"></script>
+  
+  <link rel="icon" href="favicon.png" type="image/x-icon" />
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  
-  <!-- Icons & Manifest -->
-  <link rel="icon" href="favicon.png" type="image/x-icon" />
   <link rel="manifest" href="/manifest.json">
+  
+  <style>
+    /* CRITICAL FIX: Push content down to avoid ad overlap */
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* Header visibility */
+    .header {
+      position: relative;
+      z-index: 20;
+    }
+    
+    /* ============================================ */
+    /* ADSTERRA CUSTOM STYLES                       */
+    /* ============================================ */
+    
+    /* Ad container base styles */
+    .adsterra-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+      text-align: center;
+      overflow: hidden;
+    }
+    
+    /* Leaderboard wrapper */
+    .leaderboard-wrap {
+      max-width: 780px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+    }
+    
+    /* Right Rail Skyscraper */
+    .desktop-right-rail {
+      position: fixed;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 170px;
+      z-index: 40;
+      pointer-events: none;
+    }
+    
+    .desktop-right-rail .adsterra-container {
+      pointer-events: auto;
+    }
+    
+    /* Left Rail Vertical Banner */
+    .desktop-left-rail {
+      position: fixed;
+      left: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 170px;
+      z-index: 40;
+      pointer-events: none;
+    }
+    
+    .desktop-left-rail .adsterra-container {
+      pointer-events: auto;
+    }
+    
+    /* Mobile banner wrapper */
+    .mobile-banner-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 12px auto;
+    }
+    
+    /* Desktop-only elements */
+    .desktop-only {
+      display: flex;
+    }
+    
+    /* Soft ad break (rectangle) */
+    .soft-ad-break {
+      margin: 16px auto 8px;
+      width: 100%;
+      max-width: 300px;
+    }
+    
+    /* Footer ad */
+    .footer-ad {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(232, 184, 0, 0.15);
+    }
+    
+    /* Responsive breakpoints */
+    @media (max-width: 1200px) {
+      .desktop-right-rail { width: 140px; right: 12px; }
+      .desktop-left-rail { display: none; }
+    }
+    
+    @media (max-width: 900px) {
+      .desktop-right-rail { display: none; }
+    }
+    
+    @media (max-width: 768px) {
+      .desktop-leaderboard { display: none !important; }
+      .desktop-only { display: none !important; }
+      .mobile-banner-wrap { display: flex; }
+      .ad-leaderboard-inner { min-width: auto; }
+    }
+    
+    @media (min-width: 769px) {
+      .desktop-leaderboard { display: flex !important; }
+      .mobile-banner-wrap { display: none !important; }
+    }
+    
+    /* Ensure core elements stay above ad layers */
+    .result-card, .search-section, .app-banner, .header {
+      position: relative;
+      z-index: 2;
+    }
+    
+    /* ============================================ */
+    /* PWA INSTALL BUTTON STYLES - Auto Hide        */
+    /* ============================================ */
+    .pwa-install-btn {
+      position: fixed;
+      bottom: 80px;
+      left: 20px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #E8B800 0%, #D4A800 100%);
+      border: none;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(232, 184, 0, 0.4);
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      animation: float 2s ease-in-out infinite;
+    }
+    
+    .pwa-install-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px rgba(232, 184, 0, 0.6);
+      background: linear-gradient(135deg, #F0C800 0%, #E8B800 100%);
+    }
+    
+    .pwa-install-btn svg {
+      width: 28px;
+      height: 28px;
+      stroke: #0A0A0A;
+      stroke-width: 2;
+      fill: none;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    
+    @media (max-width: 768px) {
+      .pwa-install-btn {
+        bottom: 70px;
+        left: 16px;
+        width: 52px;
+        height: 52px;
+      }
+      .pwa-install-btn svg {
+        width: 26px;
+        height: 26px;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .pwa-install-btn {
+        bottom: 60px;
+        left: 14px;
+        width: 48px;
+        height: 48px;
+      }
+      .pwa-install-btn svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
+    
+    /* MOBILE LAYOUT FIXES */
+    @media (max-width: 600px) {
+      .wrapper {
+        padding-top: 20px !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
   <canvas id="bgCanvas"></canvas>
   <div class="noise"></div>
 
-  <!-- PWA INSTALL BUTTON -->
+  <!-- ============================================ -->
+  <!-- PWA INSTALL BUTTON (Auto-hides until ready)  -->
+  <!-- ============================================ -->
   <button id="installPWA-btn" class="pwa-install-btn" title="Install AnyDown App">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M12 5v14m-7-7h14"/>
     </svg>
   </button>
 
-  <!-- RIGHT RAIL: Skyscraper (Adsterra) - Shows on screens 1200px+ -->
+  <!-- ============================================ -->
+  <!-- ADSTERRA: RIGHT RAIL - Skyscraper 160x600    -->
+  <!-- ============================================ -->
   <div class="desktop-right-rail">
-    <div class="ad-slot">
-      <div data-zone="28971619" data-type="skyscraper" style="min-width: 160px; min-height: 600px;"></div>
-      <div class="ad-label-micro" style="font-size: 10px; color: #4A4030; text-align: center; margin-top: 5px;">Advertisement</div>
+    <div class="adsterra-container" data-adsterra-zone="YOUR_ADSTERRA_160x600_ID" data-adsterra-format="skyscraper">
+      <!-- Adsterra will fill this space -->
     </div>
   </div>
   
-  <!-- LEFT RAIL: Vertical Banner (Adsterra) - Shows on screens 1200px+ -->
+  <!-- ============================================ -->
+  <!-- ADSTERRA: LEFT RAIL - Vertical Banner 160x300-->
+  <!-- ============================================ -->
   <div class="desktop-left-rail">
-    <div class="ad-slot">
-      <div data-zone="28971616" data-type="vertical" style="min-width: 160px; min-height: 300px;"></div>
-      <div class="ad-label-micro" style="font-size: 10px; color: #4A4030; text-align: center; margin-top: 5px;">Advertisement</div>
+    <div class="adsterra-container" data-adsterra-zone="YOUR_ADSTERRA_160x300_ID" data-adsterra-format="vertical">
+      <!-- Adsterra will fill this space -->
     </div>
   </div>
   
@@ -114,13 +342,18 @@
       <p class="tagline">Paste a link. Pick a quality. Download.</p>
     </header>
 
-    <!-- TOP BANNER: Desktop 728x90 / Mobile 320x50 -->
+    <!-- ============================================ -->
+    <!-- ADSTERRA: TOP LEADERBOARD 728x90 / 320x50    -->
+    <!-- ============================================ -->
     <div class="leaderboard-wrap">
-      <div class="ad-container desktop-leaderboard">
-        <div data-zone="28971618" data-type="leaderboard" style="width: 728px; height: 90px;"></div>
+      <!-- Desktop 728x90 -->
+      <div class="adsterra-container desktop-leaderboard" data-adsterra-zone="YOUR_ADSTERRA_728x90_ID" data-adsterra-format="leaderboard" style="min-width: 728px; min-height: 90px;">
+        <!-- Adsterra will fill this space -->
       </div>
-      <div class="ad-container mobile-banner">
-        <div data-zone="28971617" data-type="mobile" style="width: 320px; height: 50px;"></div>
+      
+      <!-- Mobile 320x50 -->
+      <div class="adsterra-container mobile-banner-wrap" data-adsterra-zone="YOUR_ADSTERRA_320x50_ID" data-adsterra-format="mobile" style="min-width: 320px; min-height: 50px;">
+        <!-- Adsterra will fill this space -->
       </div>
     </div>
 
@@ -170,32 +403,26 @@
       </div>
     </section>
 
-    <!-- SOFT AD BREAK: 300x250 Rectangle (Inline) -->
-    <div class="ad-container inline-rectangle soft-ad-break">
-      <div data-zone="28971620" data-type="rectangle" style="width: 300px; height: 250px;"></div>
+    <!-- ============================================ -->
+    <!-- ADSTERRA: SOFT AD BREAK 300x250              -->
+    <!-- ============================================ -->
+    <div class="adsterra-container soft-ad-break" data-adsterra-zone="YOUR_ADSTERRA_300x250_ID" data-adsterra-format="rectangle" style="min-width: 300px; min-height: 250px;">
+      <!-- Adsterra will fill this space -->
     </div>
     
     <!-- APP BANNER -->
     <section class="app-banner">
       <div class="app-banner-inner">
-        <div class="app-banner-text">
-          <p class="app-banner-eyebrow">▼ Android App</p>
-          <h2 class="app-banner-title">Download even faster with our app</h2>
-          <p class="app-banner-desc">YouTube, Instagram, TikTok and 1000+ sites — all working seamlessly. No browser limits, no bot detection. Just paste and download.</p>
-          <a href="https://play.google.com/store/apps/details?id=com.any.down.video.downloader.videodownloader" target="_blank" rel="noopener noreferrer" class="playstore-btn playstore-btn--dark"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M3.18 23.76c.3.17.64.24.98.2l12.49-11.9-3.47-3.47L3.18 23.76zM.48 1.6A1.5 1.5 0 0 0 0 2.7v18.6c0 .43.17.83.48 1.1l.08.08 10.43-10.43v-.25L.56 1.52.48 1.6zM22.3 10.5l-2.97-1.69-3.3 3.14 3.3 3.15 3-1.71c.85-.48.85-1.27-.03-1.89zM4.16.24L16.65 12.1l-3.47 3.47L3.18.44A1.2 1.2 0 0 1 4.16.24z"/></svg>Get it on Google Play</a>
-        </div>
-        <div class="app-banner-qr">
-          <div class="qr-frame">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.any.down.video.downloader.videodownloader&bgcolor=111111&color=E8B800&qzone=2" alt="Scan to download AnyDown on Android" class="qr-img" width="100" height="100" />
-            <p class="qr-label">Scan to download</p>
-          </div>
-        </div>
+        <div class="app-banner-text"><p class="app-banner-eyebrow">▼ Android App</p><h2 class="app-banner-title">Download even faster with our app</h2><p class="app-banner-desc">YouTube, Instagram, TikTok and 1000+ sites — all working seamlessly. No browser limits, no bot detection. Just paste and download.</p><a href="https://play.google.com/store/apps/details?id=com.any.down.video.downloader.videodownloader" target="_blank" rel="noopener noreferrer" class="playstore-btn playstore-btn--dark"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M3.18 23.76c.3.17.64.24.98.2l12.49-11.9-3.47-3.47L3.18 23.76zM.48 1.6A1.5 1.5 0 0 0 0 2.7v18.6c0 .43.17.83.48 1.1l.08.08 10.43-10.43v-.25L.56 1.52.48 1.6zM22.3 10.5l-2.97-1.69-3.3 3.14 3.3 3.15 3-1.71c.85-.48.85-1.27-.03-1.89zM4.16.24L16.65 12.1l-3.47 3.47L3.18.44A1.2 1.2 0 0 1 4.16.24z"/></svg>Get it on Google Play</a></div>
+        <div class="app-banner-qr"><div class="qr-frame"><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.any.down.video.downloader.videodownloader&bgcolor=111111&color=E8B800&qzone=2" alt="Scan to download AnyDown on Android" class="qr-img" width="130" height="130" /><p class="qr-label">Scan to download</p></div></div>
       </div>
     </section>
     
-    <!-- FOOTER BANNER: 468x60 (Desktop only) -->
-    <div class="ad-container desktop-footer-banner">
-      <div data-zone="28971615" data-type="banner" style="width: 468px; height: 60px;"></div>
+    <!-- ============================================ -->
+    <!-- ADSTERRA: BANNER 468x60 (Desktop only)       -->
+    <!-- ============================================ -->
+    <div class="adsterra-container desktop-only" data-adsterra-zone="YOUR_ADSTERRA_468x60_ID" data-adsterra-format="banner" style="min-width: 468px; min-height: 60px; margin: 20px auto;">
+      <!-- Adsterra will fill this space -->
     </div>
 
     <!-- FOOTER -->
@@ -203,16 +430,73 @@
     
   </div>
 
-  <!-- BRANDED FOOTER LINK -->
+  <!-- BRANDED FOOTER LINK - SilverFox Dynamics -->
   <div style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-    <a href="https://silverfoxdynamics.com" target="_blank" rel="noopener noreferrer" style="display: block; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); border-radius: 40px; padding: 8px 16px; border: 1px solid rgba(232,184,0,0.4); transition: all 0.3s ease; text-decoration: none;">
-      <img src="sfd.png" alt="SilverFox Dynamics" style="height: 32px; width: auto; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+    <a href="https://silverfoxdynamics.com" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       style="display: block; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); border-radius: 40px; padding: 8px 16px; border: 1px solid rgba(232,184,0,0.4); transition: all 0.3s ease; text-decoration: none;">
+      <img src="sfd.png" 
+           alt="SilverFox Dynamics" 
+           style="height: 32px; width: auto; display: block;"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
       <span style="display: none; color: var(--mustard); font-size: 14px; font-weight: 500;">SilverFox</span>
     </a>
   </div>
 
-  <!-- JavaScript -->
+  <!-- core script.js -->
   <script src="script.js"></script>
+
+  <!-- Register Service Worker & PWA Install Prompt -->
+  <script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function(registration) {
+            console.log('AnyDown Service Worker registered:', registration.scope);
+          })
+          .catch(function(error) {
+            console.log('AnyDown Service Worker registration failed:', error);
+          });
+      });
+    }
+
+    // PWA Install Prompt - Plus Button (Auto Hide)
+    let deferredPrompt;
+    const installBtn = document.getElementById('installPWA-btn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (installBtn) {
+        installBtn.style.display = 'flex';
+      }
+      console.log('AnyDown: Install prompt event fired');
+    });
+
+    if (installBtn) {
+      installBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) {
+          console.log('AnyDown: No deferred prompt available');
+          return;
+        }
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`AnyDown: User response to install prompt: ${outcome}`);
+        deferredPrompt = null;
+        installBtn.style.display = 'none';
+      });
+    }
+
+    window.addEventListener('appinstalled', () => {
+      console.log('AnyDown: PWA was installed successfully');
+      deferredPrompt = null;
+      if (installBtn) {
+        installBtn.style.display = 'none';
+      }
+    });
+  </script>
 
 </body>
 </html>
