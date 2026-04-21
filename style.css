@@ -52,10 +52,22 @@ body {
   background-size: 256px 256px;
 }
 
+/* Main container with side ad space */
+.main-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  position: relative;
+  z-index: 2;
+}
+
+/* Center wrapper - limited width to leave space for side ads */
 .wrapper {
   position: relative;
   z-index: 2;
-  max-width: 860px;
+  max-width: 780px;
+  width: 100%;
   margin: 0 auto;
   padding: 20px 24px 48px;
   display: flex;
@@ -69,13 +81,14 @@ body {
 ════════════════════════════ */
 .header {
   text-align: center;
-  padding: 72px 0 48px;
+  padding: 48px 0 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   position: relative;
   z-index: 2;
+  width: 100%;
 }
 
 .logo-mark {
@@ -118,7 +131,7 @@ body {
 
 .brand {
   font-family: 'Bebas Neue', 'Impact', sans-serif;
-  font-size: clamp(3.2rem, 10vw, 5.5rem);
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
   font-weight: 400;
   letter-spacing: 0.08em;
   line-height: 1;
@@ -136,7 +149,7 @@ body {
 }
 
 .tagline {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
   font-weight: 300;
   letter-spacing: 0.03em;
@@ -149,7 +162,7 @@ body {
 }
 
 /* ════════════════════════════
-   SEARCH BAR
+   SEARCH BAR - Fixed width
 ════════════════════════════ */
 .search-section {
   width: 100%;
@@ -164,6 +177,7 @@ body {
 
 .search-bar {
   width: 100%;
+  max-width: 100%;
   display: flex;
   background: var(--surface);
   border: 1.5px solid var(--surface-3);
@@ -183,9 +197,9 @@ body {
   background: transparent;
   border: none;
   outline: none;
-  padding: 18px 22px;
+  padding: 16px 20px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.97rem;
+  font-size: 0.95rem;
   color: var(--text-primary);
   letter-spacing: 0.01em;
 }
@@ -198,7 +212,7 @@ body {
   background: linear-gradient(135deg, var(--mustard-light), var(--mustard));
   color: var(--black);
   border: none;
-  padding: 18px 28px;
+  padding: 16px 28px;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
@@ -218,7 +232,7 @@ body {
 .fetch-btn:hover:not(:disabled) .btn-arrow { transform: translateX(3px); }
 
 .supported-hint {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   text-align: center;
   line-height: 1.5;
@@ -229,7 +243,7 @@ body {
 ════════════════════════════ */
 .result-section {
   width: 100%;
-  margin-top: 40px;
+  margin-top: 32px;
   position: relative;
   z-index: 2;
 }
@@ -357,9 +371,9 @@ body {
   color: var(--black);
   border: none;
   border-radius: var(--radius-md);
-  padding: 14px 24px;
+  padding: 12px 20px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
@@ -425,7 +439,7 @@ body {
   background: linear-gradient(to bottom, transparent 50%, rgba(10,10,10,0.75) 100%);
 }
 
-.card-body { padding: 28px 28px 32px; }
+.card-body { padding: 24px 24px 28px; }
 
 .video-title {
   font-family: 'DM Sans', sans-serif;
@@ -437,24 +451,24 @@ body {
 }
 
 .video-meta {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   letter-spacing: 0.02em;
 }
 
 .formats-label {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--mustard-dark);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .formats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 10px;
 }
 
@@ -480,7 +494,7 @@ body {
   background: var(--surface-2);
   border: 1px solid var(--surface-3);
   border-radius: var(--radius-md);
-  padding: 14px 16px;
+  padding: 12px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -494,9 +508,9 @@ body {
 }
 
 .format-info { flex: 1; min-width: 0; }
-.format-quality { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
-.format-ext { font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
-.format-size { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+.format-quality { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
+.format-ext { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+.format-size { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
 
 .dl-btn {
   background: transparent;
@@ -533,7 +547,7 @@ body {
 ════════════════════════════ */
 .app-banner {
   width: 100%;
-  margin-top: 64px;
+  margin-top: 48px;
   background: var(--surface);
   border: 1.5px solid rgba(232, 184, 0, 0.2);
   border-radius: var(--radius-lg);
@@ -547,19 +561,22 @@ body {
 .app-banner-inner {
   display: flex;
   align-items: center;
-  gap: 32px;
-  padding: 36px 36px;
+  gap: 24px;
+  padding: 28px 28px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .app-banner-text {
-  flex: 1;
+  flex: 2;
+  min-width: 240px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .app-banner-eyebrow {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -568,17 +585,17 @@ body {
 
 .app-banner-title {
   font-family: 'Bebas Neue', 'Impact', sans-serif;
-  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
   font-weight: 400;
   letter-spacing: 0.05em;
   color: var(--text-primary);
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 .app-banner-desc {
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   color: var(--text-secondary);
-  line-height: 1.7;
+  line-height: 1.6;
   max-width: 380px;
 }
 
@@ -595,20 +612,22 @@ body {
   background: #111111;
   border: 1.5px solid rgba(232,184,0,0.3);
   border-radius: var(--radius-md);
-  padding: 14px 14px 10px;
+  padding: 10px 10px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .qr-img {
   display: block;
   border-radius: 6px;
+  width: 100px;
+  height: 100px;
 }
 
 .qr-label {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   color: var(--text-muted);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -626,7 +645,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 15px auto;
+  margin: 10px auto;
+  background: rgba(0,0,0,0.3);
+  border-radius: 8px;
 }
 
 .ad-slot {
@@ -642,22 +663,35 @@ body {
 /* Desktop Right Rail (fixed position) */
 .desktop-right-rail {
   position: fixed;
-  right: 20px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  width: 160px;
-  z-index: 50;
+  width: 170px;
+  z-index: 100;
   display: none;
 }
 
+.desktop-right-rail .ad-slot {
+  background: rgba(0,0,0,0.2);
+  border-radius: 12px;
+  padding: 5px;
+}
+
+/* Desktop Left Rail */
 .desktop-left-rail {
   position: fixed;
-  left: 20px;
+  left: 10px;
   top: 50%;
   transform: translateY(-50%);
-  width: 160px;
-  z-index: 50;
+  width: 170px;
+  z-index: 100;
   display: none;
+}
+
+.desktop-left-rail .ad-slot {
+  background: rgba(0,0,0,0.2);
+  border-radius: 12px;
+  padding: 5px;
 }
 
 /* Leaderboard wrappers */
@@ -671,7 +705,7 @@ body {
 .desktop-leaderboard {
   display: none;
   justify-content: center;
-  margin: 15px auto;
+  margin: 10px auto;
 }
 
 .mobile-banner {
@@ -702,7 +736,7 @@ body {
   margin: 20px auto;
 }
 
-/* Desktop breakpoint */
+/* Desktop breakpoint - Show leaderboard and hide mobile */
 @media (min-width: 992px) {
   .desktop-leaderboard {
     display: flex;
@@ -713,10 +747,14 @@ body {
   .desktop-footer-banner {
     display: flex;
   }
+  .wrapper {
+    max-width: 720px;
+    padding: 20px 20px 48px;
+  }
 }
 
-/* Large desktop with side rails */
-@media (min-width: 1300px) {
+/* Large desktop with side rails - SHOW SIDE ADS */
+@media (min-width: 1200px) {
   .desktop-right-rail {
     display: block;
   }
@@ -724,8 +762,9 @@ body {
     display: block;
   }
   .wrapper {
-    max-width: calc(100% - 380px);
+    max-width: 680px;
     margin: 0 auto;
+    padding: 20px 16px 48px;
   }
 }
 
@@ -739,6 +778,10 @@ body {
   }
   .inline-rectangle {
     margin: 16px auto;
+  }
+  .wrapper {
+    max-width: 90%;
+    padding: 20px 16px 40px;
   }
 }
 
@@ -756,6 +799,23 @@ body {
   .desktop-footer-banner {
     display: none;
   }
+  .wrapper {
+    max-width: 100%;
+    padding: 16px 16px 40px;
+  }
+  .search-bar {
+    flex-direction: row;
+  }
+  .url-input {
+    padding: 14px 16px;
+    font-size: 0.9rem;
+  }
+  .fetch-btn {
+    padding: 14px 20px;
+  }
+  .btn-text {
+    display: inline-block;
+  }
 }
 
 /* ════════════════════════════
@@ -763,13 +823,13 @@ body {
 ════════════════════════════ */
 .footer {
   margin-top: auto;
-  padding-top: 48px;
+  padding-top: 40px;
   text-align: center;
   position: relative;
   z-index: 2;
 }
 .footer p {
-  font-size: 0.73rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
   letter-spacing: 0.04em;
 }
@@ -858,20 +918,18 @@ body {
 }
 
 /* ═══════════════════════════════════════════════
-   MOBILE LAYOUT FIXES - CENTERED WITH TIGHT GROUPING
+   MOBILE LAYOUT FIXES
    ═══════════════════════════════════════════════ */
 
 @media (max-width: 600px) {
-  /* Make wrapper full height and center content vertically */
   .wrapper {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 20px 20px 40px;
+    padding: 16px 16px 32px;
   }
   
-  /* HEADER - compact and tight */
   .header {
     padding: 0 0 12px 0 !important;
     gap: 4px !important;
@@ -879,155 +937,99 @@ body {
   }
   
   .logo-mark {
-    width: 56px;
-    height: 56px;
+    width: 52px;
+    height: 52px;
     margin-bottom: 0;
   }
   
   .favicon-img {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
   }
   
   .brand {
-    font-size: clamp(2.2rem, 8vw, 3rem);
+    font-size: clamp(1.8rem, 7vw, 2.5rem);
     margin-top: 0;
     letter-spacing: 0.06em;
   }
   
   .tagline {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     margin-top: -2px;
   }
   
-  /* SEARCH SECTION - directly below header with minimal gap */
   .search-section {
     margin-top: 8px;
     gap: 10px;
   }
   
   .url-input {
-    padding: 14px 18px;
-    font-size: 0.9rem;
+    padding: 12px 14px;
+    font-size: 0.85rem;
   }
   
   .fetch-btn {
-    padding: 14px 20px;
+    padding: 12px 18px;
   }
   
   .supported-hint {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
   
-  /* RESULT SECTION - when visible */
   .result-section {
-    margin-top: 24px;
+    margin-top: 20px;
     width: 100%;
   }
   
-  /* APP BANNER - positioned right after search bar or result */
   .app-banner {
-    margin-top: 28px;
-    order: 4;
+    margin-top: 24px;
   }
   
-  /* When video result is visible, app banner stays below it naturally */
-  .result-card:not([hidden]) {
-    margin-bottom: 0;
-  }
-  
-  .result-card:not([hidden]) ~ .app-banner,
-  .state-yt-busy:not([hidden]) ~ .app-banner,
-  .state-error:not([hidden]) ~ .app-banner,
-  .state-loading:not([hidden]) ~ .app-banner {
-    margin-top: 28px;
-  }
-  
-  /* Reorder elements for proper flow */
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .search-section {
-    order: 1;
-  }
-  
-  .result-section {
-    order: 2;
-  }
-  
-  .soft-ad-break {
-    order: 3;
-    margin: 16px auto 8px;
-  }
-  
-  .app-banner {
-    order: 4;
-  }
-  
-  .footer {
-    order: 5;
-    margin-top: 32px;
-    padding-top: 24px;
-  }
-  
-  /* Hide desktop ads on mobile */
-  .desktop-only-banner {
-    display: none;
-  }
-  
-  /* Compact result card */
   .card-body {
     padding: 16px 14px 20px;
   }
   
-  /* Single column formats for better touch */
   .formats-grid {
     grid-template-columns: 1fr;
     gap: 8px;
   }
   
-  /* Larger touch targets */
   .format-item {
-    padding: 12px 14px;
+    padding: 10px 12px;
   }
   
   .dl-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 1.1rem;
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
   }
   
-  /* YouTube busy card compact */
   .yt-busy-card {
-    padding: 24px 20px;
+    padding: 20px 16px;
   }
   
   .yt-busy-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
   
   .yt-busy-desc {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
   
-  /* App banner inner padding */
   .app-banner-inner {
-    padding: 24px 20px;
+    padding: 20px 16px;
     flex-direction: column;
     text-align: center;
   }
   
   .app-banner-title {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
   }
   
   .app-banner-desc {
     font-size: 0.8rem;
   }
   
-  /* Hide QR code on mobile for cleaner look */
   .app-banner-qr {
     display: none;
   }
@@ -1036,48 +1038,57 @@ body {
     align-items: center;
     text-align: center;
   }
+  
+  .playstore-btn {
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+  
+  .footer {
+    padding-top: 28px;
+  }
 }
 
 /* Extra small devices (below 380px) */
 @media (max-width: 380px) {
   .wrapper {
-    padding: 16px 16px 32px;
+    padding: 12px 12px 28px;
   }
   
   .logo-mark {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
   }
   
   .favicon-img {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
   }
   
   .brand {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
   
   .tagline {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
   
   .url-input {
-    padding: 12px 14px;
-    font-size: 0.85rem;
+    padding: 10px 12px;
+    font-size: 0.8rem;
   }
   
   .fetch-btn {
-    padding: 12px 16px;
+    padding: 10px 14px;
   }
   
   .btn-text {
     display: inline-block;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
   
   .app-banner-title {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 }
 
@@ -1088,6 +1099,9 @@ body {
 }
 
 /* Leaderboard and ad break min-height to prevent layout shift */
-.leaderboard-wrap, .soft-ad-break, .desktop-only-banner {
-  min-height: 70px;
+.leaderboard-wrap, .soft-ad-break {
+  min-height: 60px;
 }
+
+/* Debug helper - remove in production */
+/* .ad-container { border: 1px solid rgba(232,184,0,0.3); } */
