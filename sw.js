@@ -4,14 +4,14 @@
 // ============================================
 
 // ---------- AD NETWORK CONFIGURATION ----------
-self.options = {
-    "domain": "3nbf4.com",
-    "zoneId": 10839777
-}
-self.lary = ""
+//self.options = {
+//    "domain": "3nbf4.com",
+//    "zoneId": 10839777
+//}
+//self.lary = ""
 
 // Import ad network service worker FIRST
-importScripts('https://3nbf4.com/act/files/service-worker.min.js?r=sw');
+//importScripts('https://3nbf4.com/act/files/service-worker.min.js?r=sw');
 
 // ---------- PWA CACHE CONFIGURATION ----------
 const CACHE_NAME = 'anydown-v1';
