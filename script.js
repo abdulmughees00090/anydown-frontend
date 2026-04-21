@@ -24,7 +24,7 @@ const formatsGrid  = document.getElementById("formatsGrid");
 /* ── ADSTERRA INTEGRATION ── */
 // Adsterra configuration - REPLACE WITH YOUR ACTUAL IDs
 const ADSTERRA_CONFIG = {
-  //clickAdUrl: 'YOUR_ADSTERRA_CLICK_AD_URL',  // Replace with your Adsterra Smartlink or Direct Link URL
+  clickAdUrl: '28971612',  // Replace with your Adsterra Smartlink or Direct Link URL
   socialBarId: '28971613'  // Optional: Social Bar ad unit ID
 };
 
@@ -39,7 +39,7 @@ async function triggerAdBeforeDownload(downloadUrl) {
     pendingDownload = downloadUrl;
     
     // Method 1: Open Adsterra Smartlink/Direct Link in new tab
-    if (ADSTERRA_CONFIG.clickAdUrl && ADSTERRA_CONFIG.clickAdUrl !== 'YOUR_ADSTERRA_CLICK_AD_URL') {
+    if (ADSTERRA_CONFIG.clickAdUrl && ADSTERRA_CONFIG.clickAdUrl !== '28971612') {
       // Open the ad link in a new tab
       const adWindow = window.open(ADSTERRA_CONFIG.clickAdUrl, '_blank');
       
