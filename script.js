@@ -4,6 +4,7 @@
 
 const API_BASE = "https://api.silverfoxdynamics.com";
 //const API_BASE = "http://139.185.61.225:8080";
+
 /* ── DOM ── */
 const urlInput     = document.getElementById("urlInput");
 const fetchBtn     = document.getElementById("fetchBtn");
@@ -21,37 +22,52 @@ const videoTitle   = document.getElementById("videoTitle");
 const videoMeta    = document.getElementById("videoMeta");
 const formatsGrid  = document.getElementById("formatsGrid");
 
-/* ── ADSTERRA INTEGRATION ── */
-// Adsterra configuration - REPLACE WITH YOUR ACTUAL IDs
+/* ── ADSTERRA CONFIGURATION ── */
+// REPLACE THESE WITH YOUR ACTUAL VALUES
 const ADSTERRA_CONFIG = {
-  clickAdUrl: '28971612',  // Replace with your Adsterra Smartlink or Direct Link URL
-  socialBarId: '28971613'  // Optional: Social Bar ad unit ID
+  // Smartlink / Direct Link URL - opens in new tab when download button is clicked
+  clickAdUrl: '28971612',
+  
+  // Optional: Social Bar Ad Unit ID
+  socialBarId: '28971613'
 };
 
 // Track pending downloads to prevent duplicate triggers
-let pendingDownload = null;
 let adTriggerInProgress = false;
+let pendingDownloadUrl = null;
 
 // Function to trigger Adsterra ad before download
 async function triggerAdBeforeDownload(downloadUrl) {
   return new Promise((resolve) => {
     // Store the download URL
-    pendingDownload = downloadUrl;
+    pendingDownloadUrl = downloadUrl;
     
-    // Method 1: Open Adsterra Smartlink/Direct Link in new tab
-    if (ADSTERRA_CONFIG.clickAdUrl && ADSTERRA_CONFIG.clickAdUrl !== '28971612') {
+    // Check if click ad URL is configured
+    if (ADSTERRA_CONFIG.clickAdUrl && 
+        ADSTERRA_CONFIG.clickAdUrl !== '28971612') {
+      
+      console.log('[AnyDown] Opening ad link:', ADSTERRA_CONFIG.clickAdUrl);
+      
       // Open the ad link in a new tab
       const adWindow = window.open(ADSTERRA_CONFIG.clickAdUrl, '_blank');
       
+      // If popup was blocked, try a different approach
+      if (!adWindow || adWindow.closed || typeof adWindow.closed === 'undefined') {
+        console.log('[AnyDown] Popup may have been blocked, using direct navigation');
+        // Fallback: change window location (less ideal but works)
+        // window.location.href = ADSTERRA_CONFIG.clickAdUrl;
+      }
+      
       // After a short delay, allow the download to proceed
-      // This gives the ad time to load without blocking the download completely
+      // This gives the ad time to load
       setTimeout(() => {
+        console.log('[AnyDown] Ad delay complete, proceeding with download');
         resolve();
-      }, 500);
-    } 
-    // Method 2: If no click ad URL configured, proceed directly
-    else {
-      console.warn('Adsterra click ad URL not configured. Proceeding with download.');
+      }, 800);
+      
+    } else {
+      // No ad URL configured, proceed directly
+      console.log('[AnyDown] No ad URL configured, downloading directly');
       resolve();
     }
   });
@@ -59,7 +75,12 @@ async function triggerAdBeforeDownload(downloadUrl) {
 
 // Function to execute the actual download
 function executeDownload(downloadUrl) {
-  if (!downloadUrl) return;
+  if (!downloadUrl) {
+    console.error('[AnyDown] No download URL provided');
+    return;
+  }
+  
+  console.log('[AnyDown] Executing download for:', downloadUrl);
   
   // Create a temporary anchor element to trigger download
   const link = document.createElement('a');
@@ -68,27 +89,33 @@ function executeDownload(downloadUrl) {
   link.rel = 'noopener noreferrer';
   document.body.appendChild(link);
   link.click();
-  document.body.removeChild(link);
+  
+  // Clean up
+  setTimeout(() => {
+    document.body.removeChild(link);
+  }, 100);
   
   // Clear pending download
-  pendingDownload = null;
+  pendingDownloadUrl = null;
 }
 
-// Modified download handler that includes ad flow
+// Download handler that includes ad flow
 async function handleDownloadWithAd(event, downloadUrl) {
   // Prevent default behavior
   event.preventDefault();
   event.stopPropagation();
   
+  console.log('[AnyDown] Download button clicked for:', downloadUrl);
+  
   // Prevent multiple simultaneous ad triggers
   if (adTriggerInProgress) {
-    console.log('Ad trigger already in progress, please wait...');
+    console.log('[AnyDown] Ad trigger already in progress, please wait...');
     return;
   }
   
   // Validate download URL
   if (!downloadUrl) {
-    console.error('No download URL provided');
+    console.error('[AnyDown] No download URL provided');
     return;
   }
   
@@ -102,7 +129,7 @@ async function handleDownloadWithAd(event, downloadUrl) {
     executeDownload(downloadUrl);
     
   } catch (error) {
-    console.error('Error in ad flow:', error);
+    console.error('[AnyDown] Error in ad flow:', error);
     // Still attempt to download even if ad fails
     executeDownload(downloadUrl);
   } finally {
@@ -207,9 +234,11 @@ function fmtNumber(n) {
 /* ── Render formats with Adsterra ad-trigger on download ── */
 function renderFormats(formats, videoUrl) {
   formatsGrid.innerHTML = "";
+  
   const combined  = formats.filter(f => f.vcodec !== "none" && f.acodec !== "none");
   const videoOnly = formats.filter(f => f.vcodec !== "none" && f.acodec === "none");
   const audioOnly = formats.filter(f => f.vcodec === "none" && f.acodec !== "none");
+  
   combined.sort((a,b)  => (b.height||0) - (a.height||0));
   videoOnly.sort((a,b) => (b.height||0) - (a.height||0));
   audioOnly.sort((a,b) => (b.abr||0)    - (a.abr||0));
@@ -248,11 +277,10 @@ function renderFormats(formats, videoUrl) {
 
       const downloadUrl = `${API_BASE}/dl?url=${encodeURIComponent(videoUrl)}&format_id=${encodeURIComponent(fmt.format_id)}`;
       
-      const dl = document.createElement("a");
+      const dl = document.createElement("div");
       dl.className = "dl-btn";
       dl.title = "Download";
       dl.innerHTML = "↓";
-      dl.href = "#";
       dl.style.cursor = "pointer";
       
       // Attach the ad-triggered download handler
@@ -284,8 +312,9 @@ async function fetchVideo() {
     return;
   }
 
-  try { new URL(rawUrl); }
-  catch {
+  try { 
+    new URL(rawUrl); 
+  } catch {
     setError("That doesn't look like a valid URL. Please paste a full video link.");
     return;
   }
@@ -300,13 +329,11 @@ async function fetchVideo() {
     if (!res.ok || data.error) {
       const msg = data.error || `Server error (${res.status}). Try again.`;
 
-      // YouTube busy detection
       if (msg.toLowerCase().includes("youtube download server is busy")) {
         showState("ytbusy");
         return;
       }
       
-      // Instagram busy detection
       if (msg.toLowerCase().includes("instagram download server is busy")) {
         showState("igbusy");
         return;
@@ -357,12 +384,4 @@ fetchBtn.addEventListener("click", fetchVideo);
 urlInput.addEventListener("keydown", e => { if (e.key === "Enter") fetchVideo(); });
 urlInput.addEventListener("paste", () => {
   setTimeout(() => { if (urlInput.value.trim()) fetchVideo(); }, 100);
-});
-
-// Optional: Initialize Adsterra ads if using social bar or other dynamic ad units
-document.addEventListener('DOMContentLoaded', function() {
-  // Check if Adsterra loader is available
-  if (typeof Adsterra !== 'undefined' && Adsterra.init) {
-    Adsterra.init();
-  }
 });
