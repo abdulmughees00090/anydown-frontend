@@ -1,18 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8N816RG4R1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-8N816RG4R1');
-</script>
-
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   
   <!-- Primary Meta Tags -->
   <title>AnyDown - Free Video Downloader | Download from 1000+ Sites</title>
@@ -74,158 +64,40 @@
   }
   </script>
   
-  <!-- ============================================ -->
-  <!-- MONETAG MULTITAG - Zone ID: 227014           -->
-  <!-- ============================================ -->
-  <script src="https://quge5.com/88/tag.min.js" data-zone="227014" async data-cfasync="false"></script>
+  <!-- Adsterra Universal Code (No popunders - configured for banners only) -->
+  <script type="text/javascript" src="https://cdn.adsterra.net/static/js/loader.js" async></script>
   
-  <link rel="icon" href="favicon.png" type="image/x-icon" />
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="manifest" href="/manifest.json">
   
-  <style>
-    /* CRITICAL FIX: Push content down to avoid Monetag notification ads */
-    /* This ensures your logo stays visible even when ads load above */
-    
-    body {
-      margin: 0;
-      padding: 0;
-    }
-    
-    /* Add top padding to the main wrapper to push content below notification ads */
-    .wrapper {
-      padding-top: 100px !important;
-    }
-    
-    /* For mobile, even more padding because notification ads are taller */
-    @media (max-width: 600px) {
-      .wrapper {
-        padding-top: 175px !important;
-      }
-    }
-    
-    /* For very short screens, reduce padding */
-    @media (max-height: 700px) and (max-width: 600px) {
-      .wrapper {
-        padding-top: 90px !important;
-      }
-    }
-    
-    /* Ensure header stays visible */
-    .header {
-      position: relative;
-      z-index: 20;
-    }
-    
-    /* ============================================ */
-    /* PWA INSTALL BUTTON STYLES - Auto Hide        */
-    /* ============================================ */
-    .pwa-install-btn {
-      position: fixed;
-      bottom: 80px;
-      left: 20px;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #E8B800 0%, #D4A800 100%);
-      border: none;
-      cursor: pointer;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      box-shadow: 0 4px 15px rgba(232, 184, 0, 0.4);
-      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-      animation: float 2s ease-in-out infinite;
-    }
-    
-    .pwa-install-btn:hover {
-      transform: scale(1.08);
-      box-shadow: 0 6px 20px rgba(232, 184, 0, 0.6);
-      background: linear-gradient(135deg, #F0C800 0%, #E8B800 100%);
-    }
-    
-    .pwa-install-btn svg {
-      width: 28px;
-      height: 28px;
-      stroke: #0A0A0A;
-      stroke-width: 2;
-      fill: none;
-    }
-    
-    /* Floating animation */
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-8px);
-      }
-    }
-    
-    /* Tablet adjustment */
-    @media (max-width: 768px) {
-      .pwa-install-btn {
-        bottom: 70px;
-        left: 16px;
-        width: 52px;
-        height: 52px;
-      }
-      .pwa-install-btn svg {
-        width: 26px;
-        height: 26px;
-      }
-    }
-    
-    /* Mobile adjustment - position above footer */
-    @media (max-width: 600px) {
-      .pwa-install-btn {
-        bottom: 60px;
-        left: 14px;
-        width: 48px;
-        height: 48px;
-      }
-      .pwa-install-btn svg {
-        width: 24px;
-        height: 24px;
-      }
-    }
-  </style>
+  <!-- Icons & Manifest -->
+  <link rel="icon" href="favicon.png" type="image/x-icon" />
+  <link rel="manifest" href="/manifest.json">
 </head>
 <body>
 
   <canvas id="bgCanvas"></canvas>
   <div class="noise"></div>
 
-  <!-- ============================================ -->
-  <!-- PWA INSTALL BUTTON (Auto-hides until ready)  -->
-  <!-- ============================================ -->
+  <!-- PWA INSTALL BUTTON -->
   <button id="installPWA-btn" class="pwa-install-btn" title="Install AnyDown App">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M12 5v14m-7-7h14"/>
     </svg>
   </button>
 
-  <!-- ============================================ -->
-  <!-- RIGHT RAIL: Skyscraper 160x600               -->
-  <!-- ============================================ -->
+  <!-- RIGHT RAIL: Skyscraper (Adsterra) -->
   <div class="desktop-right-rail">
     <div class="ad-slot">
-      <div data-zone="227014" data-format="skyscraper" style="width: 160px; min-height: 600px;">
-        <!-- Monetag will fill this space -->
-      </div>
+      <div data-zone="YOUR_SIDERAIL_ZONE_ID" data-type="skyscraper" style="min-width: 160px; min-height: 600px;"></div>
     </div>
   </div>
   
-  <!-- ============================================ -->
-  <!-- LEFT RAIL: Vertical Banner 160x300           -->
-  <!-- ============================================ -->
+  <!-- LEFT RAIL: Vertical Banner (Adsterra) -->
   <div class="desktop-left-rail">
     <div class="ad-slot">
-      <div data-zone="227014" data-format="vertical" style="width: 160px; min-height: 300px;">
-        <!-- Monetag will fill this space -->
-      </div>
+      <div data-zone="YOUR_SIDERAIL_ZONE_ID" data-type="vertical" style="min-width: 160px; min-height: 300px;"></div>
     </div>
   </div>
   
@@ -240,22 +112,13 @@
       <p class="tagline">Paste a link. Pick a quality. Download.</p>
     </header>
 
-    <!-- ============================================ -->
-    <!-- TOP LEADERBOARD 728x90 / 320x50              -->
-    <!-- ============================================ -->
+    <!-- TOP BANNER: Desktop 728x90 / Mobile 320x50 -->
     <div class="leaderboard-wrap">
-      <!-- Desktop 728x90 -->
-      <div class="ad-slot desktop-leaderboard">
-        <div data-zone="227014" data-format="leaderboard" style="width: 728px; height: 90px; margin: 0 auto;">
-          <!-- Monetag will fill this space -->
-        </div>
+      <div class="ad-container desktop-leaderboard">
+        <div data-zone="YOUR_DESKTOP_LEADERBOARD_ZONE_ID" data-type="leaderboard" style="width: 728px; height: 90px;"></div>
       </div>
-      
-      <!-- Mobile 320x50 -->
-      <div class="ad-slot mobile-compact-banner">
-        <div data-zone="227014" data-format="mobile" style="width: 320px; height: 50px; margin: 0 auto;">
-          <!-- Monetag will fill this space -->
-        </div>
+      <div class="ad-container mobile-banner">
+        <div data-zone="YOUR_MOBILE_BANNER_ZONE_ID" data-type="mobile" style="width: 320px; height: 50px;"></div>
       </div>
     </div>
 
@@ -305,13 +168,9 @@
       </div>
     </section>
 
-    <!-- ============================================ -->
-    <!-- SOFT AD BREAK 300x250                        -->
-    <!-- ============================================ -->
-    <div class="ad-slot soft-ad-break">
-      <div data-zone="227014" data-format="rectangle" style="width: 300px; height: 250px; margin: 0 auto;">
-        <!-- Monetag will fill this space -->
-      </div>
+    <!-- SOFT AD BREAK: 300x250 Rectangle -->
+    <div class="ad-container inline-rectangle soft-ad-break">
+      <div data-zone="YOUR_RECTANGLE_ZONE_ID" data-type="rectangle" style="width: 300px; height: 250px;"></div>
     </div>
     
     <!-- APP BANNER -->
@@ -322,13 +181,9 @@
       </div>
     </section>
     
-    <!-- ============================================ -->
-    <!-- BANNER 468x60 (Desktop only)                 -->
-    <!-- ============================================ -->
-    <div class="ad-slot desktop-only-banner">
-      <div data-zone="227014" data-format="banner" style="width: 468px; height: 60px; margin: 0 auto;">
-        <!-- Monetag will fill this space -->
-      </div>
+    <!-- FOOTER BANNER: 468x60 -->
+    <div class="ad-container desktop-footer-banner">
+      <div data-zone="YOUR_BANNER_468_ZONE_ID" data-type="banner" style="width: 468px; height: 60px;"></div>
     </div>
 
     <!-- FOOTER -->
@@ -336,82 +191,16 @@
     
   </div>
 
-  <!-- BRANDED FOOTER LINK - SilverFox Dynamics -->
+  <!-- BRANDED FOOTER LINK -->
   <div style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-    <a href="https://silverfoxdynamics.com" 
-       target="_blank" 
-       rel="noopener noreferrer"
-       style="display: block; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); border-radius: 40px; padding: 8px 16px; border: 1px solid rgba(232,184,0,0.4); transition: all 0.3s ease; text-decoration: none;">
-      <img src="sfd.png" 
-           alt="SilverFox Dynamics" 
-           style="height: 32px; width: auto; display: block;"
-           onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+    <a href="https://silverfoxdynamics.com" target="_blank" rel="noopener noreferrer" style="display: block; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); border-radius: 40px; padding: 8px 16px; border: 1px solid rgba(232,184,0,0.4); transition: all 0.3s ease; text-decoration: none;">
+      <img src="sfd.png" alt="SilverFox Dynamics" style="height: 32px; width: auto; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
       <span style="display: none; color: var(--mustard); font-size: 14px; font-weight: 500;">SilverFox</span>
     </a>
   </div>
 
-  <!-- original script.js (core functionality) -->
+  <!-- JavaScript -->
   <script src="script.js"></script>
-
-  <!-- Register Service Worker & PWA Install Prompt -->
-  <script>
-    // Register Service Worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js')
-          .then(function(registration) {
-            console.log('AnyDown Service Worker registered:', registration.scope);
-          })
-          .catch(function(error) {
-            console.log('AnyDown Service Worker registration failed:', error);
-          });
-      });
-    }
-
-    // PWA Install Prompt - Plus Button (Auto Hide)
-    let deferredPrompt;
-    const installBtn = document.getElementById('installPWA-btn');
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-      // Prevent Chrome 67+ from auto-showing prompt
-      e.preventDefault();
-      // Stash the event so it can be triggered later
-      deferredPrompt = e;
-      // Show the install button
-      if (installBtn) {
-        installBtn.style.display = 'flex';
-      }
-      console.log('AnyDown: Install prompt event fired');
-    });
-
-    // Handle install button click
-    if (installBtn) {
-      installBtn.addEventListener('click', async () => {
-        if (!deferredPrompt) {
-          console.log('AnyDown: No deferred prompt available');
-          return;
-        }
-        // Show the install prompt
-        deferredPrompt.prompt();
-        // Wait for user's choice
-        const { outcome } = await deferredPrompt.userChoice;
-        console.log(`AnyDown: User response to install prompt: ${outcome}`);
-        // Reset the deferred prompt variable (can only be used once)
-        deferredPrompt = null;
-        // Hide the install button after user responds
-        installBtn.style.display = 'none';
-      });
-    }
-
-    // Listen for successful installation
-    window.addEventListener('appinstalled', () => {
-      console.log('AnyDown: PWA was installed successfully');
-      deferredPrompt = null;
-      if (installBtn) {
-        installBtn.style.display = 'none';
-      }
-    });
-  </script>
 
 </body>
 </html>
