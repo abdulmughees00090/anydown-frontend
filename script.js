@@ -1,9 +1,9 @@
 /* ═══════════════════════════════════════════════
-   AnyDown — script.js
+   AnyDown — script.js (Complete with Adsterra integration)
    ═══════════════════════════════════════════════ */
 
 const API_BASE = "https://api.silverfoxdynamics.com";
-//const API_BASE = "http://139.185.61.225:8080";
+
 /* ── DOM ── */
 const urlInput     = document.getElementById("urlInput");
 const fetchBtn     = document.getElementById("fetchBtn");
@@ -207,13 +207,11 @@ async function fetchVideo() {
     if (!res.ok || data.error) {
       const msg = data.error || `Server error (${res.status}). Try again.`;
 
-      // YouTube busy detection
       if (msg.toLowerCase().includes("youtube download server is busy")) {
         showState("ytbusy");
         return;
       }
       
-      // Instagram busy detection
       if (msg.toLowerCase().includes("instagram download server is busy")) {
         showState("igbusy");
         return;
@@ -245,23 +243,218 @@ async function fetchVideo() {
   }
 }
 
-/* ── Shake animation ── */
-const shakeStyle = document.createElement("style");
-shakeStyle.textContent = `
-@keyframes shake {
-  0%,100% { transform: translateX(0); }
-  20%      { transform: translateX(-8px); }
-  40%      { transform: translateX(8px); }
-  60%      { transform: translateX(-5px); }
-  80%      { transform: translateX(5px); }
-}
-.shake { animation: shake 0.45s ease both; }
-`;
-document.head.appendChild(shakeStyle);
-
 /* ── Events ── */
 fetchBtn.addEventListener("click", fetchVideo);
 urlInput.addEventListener("keydown", e => { if (e.key === "Enter") fetchVideo(); });
 urlInput.addEventListener("paste", () => {
   setTimeout(() => { if (urlInput.value.trim()) fetchVideo(); }, 100);
+});
+
+/* ═══════════════════════════════════════════════
+   ADSTERRA INTEGRATION - DOWNLOAD TRIGGER LOGIC
+   ═══════════════════════════════════════════════ */
+   
+// ============================================
+// IMPLEMENTATION GUIDE FOR ADSTERRA:
+// ============================================
+// 
+// 1. SIGN UP at https://adsterra.com
+// 2. CREATE THESE AD UNITS (NO POPUNDERS - use only banner formats):
+//    
+//    BANNER UNITS (safe for SEO):
+//    - "Desktop Leaderboard" (728x90) - Zone ID for desktop top banner
+//    - "Mobile Banner" (320x50 or 320x100) - Zone ID for mobile
+//    - "Skyscraper" (160x600) - Zone ID for side rails
+//    - "Medium Rectangle" (300x250) - Zone ID for inline ads
+//    - "Full Banner" (468x60) - Zone ID for footer
+//    
+//    CLICK-TRIGGERED AD (opens in new tab, NOT popunder):
+//    - Create "Social Bar" OR "Interstitial" OR "New Tab Banner"
+//    - These formats open in a NEW TAB when user clicks download
+//    - They DO NOT interfere with search engine crawling
+//    - Zone ID for this goes in DOWNLOAD_TRIGGER_ZONE_ID
+//
+// 3. REPLACE all 'YOUR_..._ZONE_ID' placeholders in index.html with actual IDs
+// 4. IMPORTANT: Disable "Popunder" and "Popup" in Adsterra campaign settings
+//    to avoid SEO penalties from Google/Bing
+// ============================================
+
+// Configuration - REPLACE with your actual Adsterra Zone ID for download trigger
+const ADSTERRA_DOWNLOAD_ZONE_ID = 'YOUR_DOWNLOAD_TRIGGER_ZONE_ID';
+
+// Function to show ad before download (opens in new tab, not popunder)
+function triggerAdBeforeDownload(downloadUrl) {
+  return new Promise((resolve) => {
+    // Create a modal overlay that shows the ad
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Sans', sans-serif;
+    `;
+    
+    const card = document.createElement('div');
+    card.style.cssText = `
+      background: #111;
+      border-radius: 24px;
+      padding: 32px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      border: 1px solid #E8B800;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    `;
+    
+    card.innerHTML = `
+      <div style="color: #E8B800; font-size: 48px; margin-bottom: 16px;">📺</div>
+      <h3 style="color: white; margin-bottom: 12px;">Advertisement</h3>
+      <p style="color: #A0A0A0; margin-bottom: 24px;">Please support us by viewing this short ad. Your download will start automatically after.</p>
+      <div id="adsterra-ad-container" style="margin: 20px 0; min-height: 250px;"></div>
+      <button id="close-ad-btn" style="background: #E8B800; border: none; padding: 12px 24px; border-radius: 40px; color: #0A0A0A; font-weight: bold; cursor: pointer; width: 100%;">✓ Continue to Download</button>
+      <p style="color: #666; font-size: 12px; margin-top: 16px;">Ad will open in new tab. Close this window to return.</p>
+    `;
+    
+    modal.appendChild(card);
+    document.body.appendChild(modal);
+    
+    // Create Adsterra ad unit in the container
+    const adContainer = document.getElementById('adsterra-ad-container');
+    if (adContainer && ADSTERRA_DOWNLOAD_ZONE_ID !== 'YOUR_DOWNLOAD_TRIGGER_ZONE_ID') {
+      const adDiv = document.createElement('div');
+      adDiv.setAttribute('data-zone', ADSTERRA_DOWNLOAD_ZONE_ID);
+      adDiv.setAttribute('data-type', 'socialbar'); // Social Bar opens in new tab, SEO-friendly
+      adContainer.appendChild(adDiv);
+      
+      // Reload Adsterra ads
+      if (window.Adsterra && window.Adsterra.reload) {
+        window.Adsterra.reload();
+      }
+    } else {
+      // Fallback message if zone not configured
+      adContainer.innerHTML = '<p style="color: #E8B800;">Loading sponsor message...</p>';
+    }
+    
+    // Handle continue button
+    const closeBtn = document.getElementById('close-ad-btn');
+    closeBtn.onclick = () => {
+      document.body.removeChild(modal);
+      resolve();
+    };
+    
+    // Auto-resolve after 8 seconds (user doesn't have to click)
+    setTimeout(() => {
+      if (document.body.contains(modal)) {
+        document.body.removeChild(modal);
+        resolve();
+      }
+    }, 8000);
+  });
+}
+
+// Intercept all download buttons
+function attachDownloadInterceptor(btn) {
+  if (btn.getAttribute('data-ad-attached') === 'true') return;
+  btn.setAttribute('data-ad-attached', 'true');
+  
+  const originalHref = btn.getAttribute('href');
+  if (!originalHref) return;
+  
+  btn.removeAttribute('href');
+  btn.style.cursor = 'pointer';
+  
+  btn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    btn.classList.add('ad-loading');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '⏳';
+    
+    try {
+      await triggerAdBeforeDownload(originalHref);
+      // After ad completes, trigger download
+      const downloadLink = document.createElement('a');
+      downloadLink.href = originalHref;
+      downloadLink.target = '_blank';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    } catch (err) {
+      console.error('Ad trigger error:', err);
+      // Fallback
+      const downloadLink = document.createElement('a');
+      downloadLink.href = originalHref;
+      downloadLink.target = '_blank';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    } finally {
+      btn.classList.remove('ad-loading');
+      btn.innerHTML = originalText;
+    }
+  });
+}
+
+// Watch for dynamically added download buttons
+const observer = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    mutation.addedNodes.forEach((node) => {
+      if (node.nodeType === 1 && node.classList && node.classList.contains('dl-btn')) {
+        attachDownloadInterceptor(node);
+      } else if (node.nodeType === 1 && node.querySelectorAll) {
+        node.querySelectorAll('.dl-btn:not([data-ad-attached])').forEach(attachDownloadInterceptor);
+      }
+    });
+  });
+});
+
+observer.observe(document.body, { childList: true, subtree: true });
+document.querySelectorAll('.dl-btn:not([data-ad-attached])').forEach(attachDownloadInterceptor);
+
+/* ── PWA Service Worker Registration ── */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js')
+      .then(function(registration) {
+        console.log('AnyDown Service Worker registered:', registration.scope);
+      })
+      .catch(function(error) {
+        console.log('AnyDown Service Worker registration failed:', error);
+      });
+  });
+}
+
+/* ── PWA Install Prompt ── */
+let deferredPrompt;
+const installBtn = document.getElementById('installPWA-btn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (installBtn) {
+    installBtn.style.display = 'flex';
+  }
+});
+
+if (installBtn) {
+  installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    installBtn.style.display = 'none';
+  });
+}
+
+window.addEventListener('appinstalled', () => {
+  deferredPrompt = null;
+  if (installBtn) installBtn.style.display = 'none';
 });
