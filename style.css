@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════
-   AnyDown — style.css (Complete)
+   AnyDown — style.css
    Palette: Mustard (#E8B800) + Black/Near-Black
    ═══════════════════════════════════════════════ */
 
@@ -52,24 +52,12 @@ body {
   background-size: 256px 256px;
 }
 
-/* Main container with side ad space */
-.main-layout {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  position: relative;
-  z-index: 2;
-}
-
-/* Center wrapper - limited width to leave space for side ads */
 .wrapper {
   position: relative;
   z-index: 2;
   max-width: 780px;
-  width: 100%;
   margin: 0 auto;
-  padding: 20px 24px 48px;
+  padding: 0 24px 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -81,14 +69,11 @@ body {
 ════════════════════════════ */
 .header {
   text-align: center;
-  padding: 48px 0 32px;
+  padding: 72px 0 48px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  position: relative;
-  z-index: 2;
-  width: 100%;
 }
 
 .logo-mark {
@@ -131,7 +116,7 @@ body {
 
 .brand {
   font-family: 'Bebas Neue', 'Impact', sans-serif;
-  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-size: clamp(3.2rem, 10vw, 5.5rem);
   font-weight: 400;
   letter-spacing: 0.08em;
   line-height: 1;
@@ -149,7 +134,7 @@ body {
 }
 
 .tagline {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--text-secondary);
   font-weight: 300;
   letter-spacing: 0.03em;
@@ -162,7 +147,7 @@ body {
 }
 
 /* ════════════════════════════
-   SEARCH BAR - Fixed width
+   SEARCH BAR
 ════════════════════════════ */
 .search-section {
   width: 100%;
@@ -171,13 +156,10 @@ body {
   align-items: center;
   gap: 14px;
   animation: fadeUp 0.7s 0.45s both;
-  position: relative;
-  z-index: 2;
 }
 
 .search-bar {
   width: 100%;
-  max-width: 100%;
   display: flex;
   background: var(--surface);
   border: 1.5px solid var(--surface-3);
@@ -197,9 +179,9 @@ body {
   background: transparent;
   border: none;
   outline: none;
-  padding: 16px 20px;
+  padding: 18px 22px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.97rem;
   color: var(--text-primary);
   letter-spacing: 0.01em;
 }
@@ -212,7 +194,7 @@ body {
   background: linear-gradient(135deg, var(--mustard-light), var(--mustard));
   color: var(--black);
   border: none;
-  padding: 16px 28px;
+  padding: 18px 28px;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
@@ -232,7 +214,7 @@ body {
 .fetch-btn:hover:not(:disabled) .btn-arrow { transform: translateX(3px); }
 
 .supported-hint {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
   text-align: center;
   line-height: 1.5;
@@ -243,9 +225,7 @@ body {
 ════════════════════════════ */
 .result-section {
   width: 100%;
-  margin-top: 32px;
-  position: relative;
-  z-index: 2;
+  margin-top: 40px;
 }
 
 /* ── Loading ── */
@@ -371,9 +351,9 @@ body {
   color: var(--black);
   border: none;
   border-radius: var(--radius-md);
-  padding: 12px 20px;
+  padding: 14px 24px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
@@ -439,7 +419,7 @@ body {
   background: linear-gradient(to bottom, transparent 50%, rgba(10,10,10,0.75) 100%);
 }
 
-.card-body { padding: 24px 24px 28px; }
+.card-body { padding: 28px 28px 32px; }
 
 .video-title {
   font-family: 'DM Sans', sans-serif;
@@ -451,50 +431,32 @@ body {
 }
 
 .video-meta {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
-  margin-bottom: 24px;
+  margin-bottom: 28px;
   letter-spacing: 0.02em;
 }
 
 .formats-label {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--mustard-dark);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .formats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 10px;
-}
-
-.format-group-label {
-  grid-column: 1 / -1;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  padding: 8px 0 4px;
-  border-top: 1px solid var(--surface-3);
-  margin-top: 6px;
-}
-
-.format-group-label:first-of-type {
-  border-top: none;
-  margin-top: 0;
-  padding-top: 0;
 }
 
 .format-item {
   background: var(--surface-2);
   border: 1px solid var(--surface-3);
   border-radius: var(--radius-md);
-  padding: 12px 14px;
+  padding: 14px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -508,9 +470,9 @@ body {
 }
 
 .format-info { flex: 1; min-width: 0; }
-.format-quality { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
-.format-ext { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
-.format-size { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+.format-quality { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
+.format-ext { font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+.format-size { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
 
 .dl-btn {
   background: transparent;
@@ -536,10 +498,16 @@ body {
 }
 .dl-btn:active { transform: scale(0.95); }
 
-/* Download button ad loading state */
-.dl-btn.ad-loading {
-  opacity: 0.6;
-  pointer-events: none;
+.format-group-label {
+  grid-column: 1 / -1;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 8px 0 4px;
+  border-top: 1px solid var(--surface-3);
+  margin-top: 6px;
 }
 
 /* ════════════════════════════
@@ -547,36 +515,31 @@ body {
 ════════════════════════════ */
 .app-banner {
   width: 100%;
-  margin-top: 48px;
+  margin-top: 64px;
   background: var(--surface);
   border: 1.5px solid rgba(232, 184, 0, 0.2);
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 4px 32px rgba(0,0,0,0.4);
   animation: fadeUp 0.7s 0.6s both;
-  position: relative;
-  z-index: 2;
 }
 
 .app-banner-inner {
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding: 28px 28px;
-  flex-wrap: wrap;
-  justify-content: center;
+  gap: 32px;
+  padding: 36px 36px;
 }
 
 .app-banner-text {
-  flex: 2;
-  min-width: 240px;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .app-banner-eyebrow {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -585,17 +548,17 @@ body {
 
 .app-banner-title {
   font-family: 'Bebas Neue', 'Impact', sans-serif;
-  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
   font-weight: 400;
   letter-spacing: 0.05em;
   color: var(--text-primary);
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 .app-banner-desc {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.7;
   max-width: 380px;
 }
 
@@ -612,22 +575,20 @@ body {
   background: #111111;
   border: 1.5px solid rgba(232,184,0,0.3);
   border-radius: var(--radius-md);
-  padding: 10px 10px 8px;
+  padding: 14px 14px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .qr-img {
   display: block;
   border-radius: 6px;
-  width: 100px;
-  height: 100px;
 }
 
 .qr-label {
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   color: var(--text-muted);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -635,201 +596,15 @@ body {
 }
 
 /* ════════════════════════════
-   ADSTERRA AD STYLES (Responsive, No Popunders)
-   ════════════════════════════ */
-
-/* Ad container base */
-.ad-container {
-  text-align: center;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px auto;
-  background: rgba(0,0,0,0.3);
-  border-radius: 8px;
-}
-
-.ad-slot {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  text-align: center;
-  background: transparent;
-  min-height: 60px;
-}
-
-/* Desktop Right Rail (fixed position) */
-.desktop-right-rail {
-  position: fixed;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 170px;
-  z-index: 100;
-  display: none;
-}
-
-.desktop-right-rail .ad-slot {
-  background: rgba(0,0,0,0.2);
-  border-radius: 12px;
-  padding: 5px;
-}
-
-/* Desktop Left Rail */
-.desktop-left-rail {
-  position: fixed;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 170px;
-  z-index: 100;
-  display: none;
-}
-
-.desktop-left-rail .ad-slot {
-  background: rgba(0,0,0,0.2);
-  border-radius: 12px;
-  padding: 5px;
-}
-
-/* Leaderboard wrappers */
-.leaderboard-wrap {
-  width: 100%;
-  max-width: 780px;
-  margin: 0 auto;
-  min-height: 70px;
-}
-
-.desktop-leaderboard {
-  display: none;
-  justify-content: center;
-  margin: 10px auto;
-}
-
-.mobile-banner {
-  display: none;
-  justify-content: center;
-  margin: 10px auto;
-}
-
-/* Inline rectangle */
-.inline-rectangle {
-  margin: 20px auto;
-  width: 100%;
-  max-width: 300px;
-  position: relative;
-  z-index: 2;
-}
-
-.soft-ad-break {
-  margin: 16px auto 8px;
-  width: 100%;
-  max-width: 300px;
-}
-
-/* Desktop footer banner */
-.desktop-footer-banner {
-  display: none;
-  justify-content: center;
-  margin: 20px auto;
-}
-
-/* Desktop breakpoint - Show leaderboard and hide mobile */
-@media (min-width: 992px) {
-  .desktop-leaderboard {
-    display: flex;
-  }
-  .mobile-banner {
-    display: none;
-  }
-  .desktop-footer-banner {
-    display: flex;
-  }
-  .wrapper {
-    max-width: 720px;
-    padding: 20px 20px 48px;
-  }
-}
-
-/* Large desktop with side rails - SHOW SIDE ADS */
-@media (min-width: 1200px) {
-  .desktop-right-rail {
-    display: block;
-  }
-  .desktop-left-rail {
-    display: block;
-  }
-  .wrapper {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 20px 16px 48px;
-  }
-}
-
-/* Tablet breakpoint */
-@media (max-width: 991px) and (min-width: 768px) {
-  .desktop-leaderboard {
-    display: none;
-  }
-  .mobile-banner {
-    display: flex;
-  }
-  .inline-rectangle {
-    margin: 16px auto;
-  }
-  .wrapper {
-    max-width: 90%;
-    padding: 20px 16px 40px;
-  }
-}
-
-/* Mobile breakpoint */
-@media (max-width: 767px) {
-  .desktop-leaderboard {
-    display: none;
-  }
-  .mobile-banner {
-    display: flex;
-  }
-  .desktop-right-rail, .desktop-left-rail {
-    display: none;
-  }
-  .desktop-footer-banner {
-    display: none;
-  }
-  .wrapper {
-    max-width: 100%;
-    padding: 16px 16px 40px;
-  }
-  .search-bar {
-    flex-direction: row;
-  }
-  .url-input {
-    padding: 14px 16px;
-    font-size: 0.9rem;
-  }
-  .fetch-btn {
-    padding: 14px 20px;
-  }
-  .btn-text {
-    display: inline-block;
-  }
-}
-
-/* ════════════════════════════
    FOOTER
 ════════════════════════════ */
 .footer {
   margin-top: auto;
-  padding-top: 40px;
+  padding-top: 48px;
   text-align: center;
-  position: relative;
-  z-index: 2;
 }
 .footer p {
-  font-size: 0.7rem;
+  font-size: 0.73rem;
   color: var(--text-muted);
   letter-spacing: 0.04em;
 }
@@ -839,257 +614,19 @@ body {
 ════════════════════════════ */
 [hidden] { display: none !important; }
 
-/* Shake Animation */
-@keyframes shake {
-  0%,100% { transform: translateX(0); }
-  20% { transform: translateX(-8px); }
-  40% { transform: translateX(8px); }
-  60% { transform: translateX(-5px); }
-  80% { transform: translateX(5px); }
-}
-.shake {
-  animation: shake 0.45s ease both;
-}
-
 /* ════════════════════════════
-   PWA INSTALL BUTTON
-════════════════════════════ */
-.pwa-install-btn {
-  position: fixed;
-  bottom: 80px;
-  left: 20px;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #E8B800 0%, #D4A800 100%);
-  border: none;
-  cursor: pointer;
-  display: none;
-  align-items: center;
+   ADSTERRA STYLES - Responsive, non-intrusive
+   ════════════════════════════ */
+
+/* Ad container base styles */
+.adsterra-container {
+  display: flex;
   justify-content: center;
-  z-index: 1000;
-  box-shadow: 0 4px 15px rgba(232, 184, 0, 0.4);
-  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-  animation: float 2s ease-in-out infinite;
-}
-
-.pwa-install-btn:hover {
-  transform: scale(1.08);
-  box-shadow: 0 6px 20px rgba(232, 184, 0, 0.6);
-}
-
-.pwa-install-btn svg {
-  width: 28px;
-  height: 28px;
-  stroke: #0A0A0A;
-  stroke-width: 2;
-  fill: none;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-@media (max-width: 768px) {
-  .pwa-install-btn {
-    bottom: 70px;
-    left: 16px;
-    width: 52px;
-    height: 52px;
-  }
-  .pwa-install-btn svg {
-    width: 26px;
-    height: 26px;
-  }
-}
-
-@media (max-width: 600px) {
-  .pwa-install-btn {
-    bottom: 60px;
-    left: 14px;
-    width: 48px;
-    height: 48px;
-  }
-  .pwa-install-btn svg {
-    width: 24px;
-    height: 24px;
-  }
-}
-
-/* ═══════════════════════════════════════════════
-   MOBILE LAYOUT FIXES
-   ═══════════════════════════════════════════════ */
-
-@media (max-width: 600px) {
-  .wrapper {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 16px 16px 32px;
-  }
-  
-  .header {
-    padding: 0 0 12px 0 !important;
-    gap: 4px !important;
-    margin-top: 0;
-  }
-  
-  .logo-mark {
-    width: 52px;
-    height: 52px;
-    margin-bottom: 0;
-  }
-  
-  .favicon-img {
-    width: 38px;
-    height: 38px;
-  }
-  
-  .brand {
-    font-size: clamp(1.8rem, 7vw, 2.5rem);
-    margin-top: 0;
-    letter-spacing: 0.06em;
-  }
-  
-  .tagline {
-    font-size: 0.7rem;
-    margin-top: -2px;
-  }
-  
-  .search-section {
-    margin-top: 8px;
-    gap: 10px;
-  }
-  
-  .url-input {
-    padding: 12px 14px;
-    font-size: 0.85rem;
-  }
-  
-  .fetch-btn {
-    padding: 12px 18px;
-  }
-  
-  .supported-hint {
-    font-size: 0.65rem;
-  }
-  
-  .result-section {
-    margin-top: 20px;
-    width: 100%;
-  }
-  
-  .app-banner {
-    margin-top: 24px;
-  }
-  
-  .card-body {
-    padding: 16px 14px 20px;
-  }
-  
-  .formats-grid {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-  
-  .format-item {
-    padding: 10px 12px;
-  }
-  
-  .dl-btn {
-    width: 36px;
-    height: 36px;
-    font-size: 1rem;
-  }
-  
-  .yt-busy-card {
-    padding: 20px 16px;
-  }
-  
-  .yt-busy-title {
-    font-size: 1rem;
-  }
-  
-  .yt-busy-desc {
-    font-size: 0.8rem;
-  }
-  
-  .app-banner-inner {
-    padding: 20px 16px;
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .app-banner-title {
-    font-size: 1.3rem;
-  }
-  
-  .app-banner-desc {
-    font-size: 0.8rem;
-  }
-  
-  .app-banner-qr {
-    display: none;
-  }
-  
-  .app-banner-text {
-    align-items: center;
-    text-align: center;
-  }
-  
-  .playstore-btn {
-    padding: 10px 16px;
-    font-size: 0.85rem;
-  }
-  
-  .footer {
-    padding-top: 28px;
-  }
-}
-
-/* Extra small devices (below 380px) */
-@media (max-width: 380px) {
-  .wrapper {
-    padding: 12px 12px 28px;
-  }
-  
-  .logo-mark {
-    width: 44px;
-    height: 44px;
-  }
-  
-  .favicon-img {
-    width: 32px;
-    height: 32px;
-  }
-  
-  .brand {
-    font-size: 1.6rem;
-  }
-  
-  .tagline {
-    font-size: 0.65rem;
-  }
-  
-  .url-input {
-    padding: 10px 12px;
-    font-size: 0.8rem;
-  }
-  
-  .fetch-btn {
-    padding: 10px 14px;
-  }
-  
-  .btn-text {
-    display: inline-block;
-    font-size: 0.75rem;
-  }
-  
-  .app-banner-title {
-    font-size: 1.1rem;
-  }
+  align-items: center;
+  margin: 0 auto;
+  text-align: center;
+  background: transparent;
+  transition: opacity 0.2s ease;
 }
 
 /* Ensure core elements stay above ad layers */
@@ -1098,10 +635,224 @@ body {
   z-index: 2;
 }
 
-/* Leaderboard and ad break min-height to prevent layout shift */
-.leaderboard-wrap, .soft-ad-break {
-  min-height: 60px;
+/* ═══════════════════════════════════════════════
+   MOBILE LAYOUT FIXES - CENTERED WITH TIGHT GROUPING
+   ═══════════════════════════════════════════════ */
+
+@media (max-width: 600px) {
+  /* Make wrapper full height and center content vertically */
+  .wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 20px 40px;
+  }
+  
+  /* HEADER - compact and tight */
+  .header {
+    padding: 0 0 12px 0 !important;
+    gap: 4px !important;
+    margin-top: 0;
+  }
+  
+  .logo-mark {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 0;
+  }
+  
+  .favicon-img {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .brand {
+    font-size: clamp(2.2rem, 8vw, 3rem);
+    margin-top: 0;
+    letter-spacing: 0.06em;
+  }
+  
+  .tagline {
+    font-size: 0.75rem;
+    margin-top: -2px;
+  }
+  
+  /* SEARCH SECTION - directly below header with minimal gap */
+  .search-section {
+    margin-top: 8px;
+    gap: 10px;
+  }
+  
+  .url-input {
+    padding: 14px 18px;
+    font-size: 0.9rem;
+  }
+  
+  .fetch-btn {
+    padding: 14px 20px;
+  }
+  
+  .supported-hint {
+    font-size: 0.7rem;
+  }
+  
+  /* RESULT SECTION - when visible */
+  .result-section {
+    margin-top: 24px;
+    width: 100%;
+  }
+  
+  /* APP BANNER - positioned right after search bar or result */
+  .app-banner {
+    margin-top: 28px;
+    order: 3;
+  }
+  
+  /* When video result is visible, app banner stays below it naturally */
+  .result-card:not([hidden]) {
+    margin-bottom: 0;
+  }
+  
+  .result-card:not([hidden]) ~ .app-banner,
+  .state-yt-busy:not([hidden]) ~ .app-banner,
+  .state-error:not([hidden]) ~ .app-banner,
+  .state-loading:not([hidden]) ~ .app-banner {
+    margin-top: 28px;
+  }
+  
+  /* Reorder elements for proper flow */
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .search-section {
+    order: 1;
+  }
+  
+  .result-section {
+    order: 2;
+  }
+  
+  .soft-ad-break {
+    order: 3;
+    margin: 16px auto 8px;
+  }
+  
+  .app-banner {
+    order: 4;
+  }
+  
+  .footer {
+    order: 5;
+    margin-top: 32px;
+    padding-top: 24px;
+  }
+  
+  /* Hide desktop ads on mobile */
+  .desktop-only {
+    display: none !important;
+  }
+  
+  /* Compact result card */
+  .card-body {
+    padding: 16px 14px 20px;
+  }
+  
+  /* Single column formats for better touch */
+  .formats-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  /* Larger touch targets */
+  .format-item {
+    padding: 12px 14px;
+  }
+  
+  .dl-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+  
+  /* YouTube busy card compact */
+  .yt-busy-card {
+    padding: 24px 20px;
+  }
+  
+  .yt-busy-title {
+    font-size: 1.1rem;
+  }
+  
+  .yt-busy-desc {
+    font-size: 0.85rem;
+  }
+  
+  /* App banner inner padding */
+  .app-banner-inner {
+    padding: 24px 20px;
+  }
+  
+  .app-banner-title {
+    font-size: 1.4rem;
+  }
+  
+  .app-banner-desc {
+    font-size: 0.8rem;
+  }
+  
+  /* Hide QR code on mobile for cleaner look */
+  .app-banner-qr {
+    display: none;
+  }
+  
+  .app-banner-text {
+    align-items: center;
+    text-align: center;
+  }
 }
 
-/* Debug helper - remove in production */
-/* .ad-container { border: 1px solid rgba(232,184,0,0.3); } */
+/* Extra small devices (below 380px) */
+@media (max-width: 380px) {
+  .wrapper {
+    padding: 16px 16px 32px;
+  }
+  
+  .logo-mark {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .favicon-img {
+    width: 34px;
+    height: 34px;
+  }
+  
+  .brand {
+    font-size: 1.8rem;
+  }
+  
+  .tagline {
+    font-size: 0.7rem;
+  }
+  
+  .url-input {
+    padding: 12px 14px;
+    font-size: 0.85rem;
+  }
+  
+  .fetch-btn {
+    padding: 12px 16px;
+  }
+  
+  .btn-text {
+    display: inline-block;
+    font-size: 0.8rem;
+  }
+  
+  .app-banner-title {
+    font-size: 1.2rem;
+  }
+}
