@@ -22,52 +22,39 @@ const videoTitle   = document.getElementById("videoTitle");
 const videoMeta    = document.getElementById("videoMeta");
 const formatsGrid  = document.getElementById("formatsGrid");
 
-/* ── ADSTERRA CONFIGURATION ── */
-// REPLACE THESE WITH YOUR ACTUAL VALUES
-const ADSTERRA_CONFIG = {
-  // Smartlink / Direct Link URL - opens in new tab when download button is clicked
-  clickAdUrl: '28971612',
-  
-  // Optional: Social Bar Ad Unit ID
-  socialBarId: '28971613'
-};
+/* ── ADSTERRA SMARTLINK CONFIGURATION ── */
+const SMARTLINK_URL = 'https://walkingdrunkard.com/hmsgefqpcn?key=4d6e7561a3b59bff0fdc75b8e69f21e9';
 
 // Track pending downloads to prevent duplicate triggers
 let adTriggerInProgress = false;
 let pendingDownloadUrl = null;
 
-// Function to trigger Adsterra ad before download
-async function triggerAdBeforeDownload(downloadUrl) {
+// Function to trigger Smartlink ad before download
+async function triggerSmartlinkBeforeDownload(downloadUrl) {
   return new Promise((resolve) => {
     // Store the download URL
     pendingDownloadUrl = downloadUrl;
     
-    // Check if click ad URL is configured
-    if (ADSTERRA_CONFIG.clickAdUrl && 
-        ADSTERRA_CONFIG.clickAdUrl !== '28971612') {
+    if (SMARTLINK_URL) {
+      console.log('[AnyDown] Opening Smartlink in new tab:', SMARTLINK_URL);
       
-      console.log('[AnyDown] Opening ad link:', ADSTERRA_CONFIG.clickAdUrl);
+      // Open the Smartlink in a new tab
+      const adWindow = window.open(SMARTLINK_URL, '_blank');
       
-      // Open the ad link in a new tab
-      const adWindow = window.open(ADSTERRA_CONFIG.clickAdUrl, '_blank');
-      
-      // If popup was blocked, try a different approach
+      // If popup was blocked, log it but still proceed
       if (!adWindow || adWindow.closed || typeof adWindow.closed === 'undefined') {
-        console.log('[AnyDown] Popup may have been blocked, using direct navigation');
-        // Fallback: change window location (less ideal but works)
-        // window.location.href = ADSTERRA_CONFIG.clickAdUrl;
+        console.log('[AnyDown] Popup may have been blocked by browser');
       }
       
-      // After a short delay, allow the download to proceed
-      // This gives the ad time to load
+      // 500ms delay before proceeding with download
       setTimeout(() => {
-        console.log('[AnyDown] Ad delay complete, proceeding with download');
+        console.log('[AnyDown] Smartlink delay complete (500ms), proceeding with download');
         resolve();
-      }, 800);
+      }, 500);
       
     } else {
-      // No ad URL configured, proceed directly
-      console.log('[AnyDown] No ad URL configured, downloading directly');
+      // No Smartlink configured, proceed directly
+      console.log('[AnyDown] No Smartlink URL configured, downloading directly');
       resolve();
     }
   });
@@ -99,7 +86,7 @@ function executeDownload(downloadUrl) {
   pendingDownloadUrl = null;
 }
 
-// Download handler that includes ad flow
+// Download handler that includes Smartlink ad flow
 async function handleDownloadWithAd(event, downloadUrl) {
   // Prevent default behavior
   event.preventDefault();
@@ -122,8 +109,8 @@ async function handleDownloadWithAd(event, downloadUrl) {
   try {
     adTriggerInProgress = true;
     
-    // Trigger the ad flow
-    await triggerAdBeforeDownload(downloadUrl);
+    // Trigger the Smartlink ad flow
+    await triggerSmartlinkBeforeDownload(downloadUrl);
     
     // Execute the download after ad flow completes
     executeDownload(downloadUrl);
@@ -231,7 +218,7 @@ function fmtNumber(n) {
   return String(n);
 }
 
-/* ── Render formats with Adsterra ad-trigger on download ── */
+/* ── Render formats with Smartlink ad-trigger on download ── */
 function renderFormats(formats, videoUrl) {
   formatsGrid.innerHTML = "";
   
@@ -283,7 +270,7 @@ function renderFormats(formats, videoUrl) {
       dl.innerHTML = "↓";
       dl.style.cursor = "pointer";
       
-      // Attach the ad-triggered download handler
+      // Attach the Smartlink-triggered download handler
       dl.addEventListener("click", (e) => handleDownloadWithAd(e, downloadUrl));
 
       item.appendChild(info);
