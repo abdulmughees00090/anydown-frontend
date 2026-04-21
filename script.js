@@ -24,8 +24,8 @@ const formatsGrid  = document.getElementById("formatsGrid");
 /* ── ADSTERRA INTEGRATION ── */
 // Adsterra configuration - REPLACE WITH YOUR ACTUAL IDs
 const ADSTERRA_CONFIG = {
-  clickAdUrl: 'YOUR_ADSTERRA_CLICK_AD_URL',  // Replace with your Adsterra Smartlink or Direct Link URL
-  socialBarId: 'YOUR_ADSTERRA_SOCIAL_BAR_ID'  // Optional: Social Bar ad unit ID
+  //clickAdUrl: 'YOUR_ADSTERRA_CLICK_AD_URL',  // Replace with your Adsterra Smartlink or Direct Link URL
+  socialBarId: '28971613'  // Optional: Social Bar ad unit ID
 };
 
 // Track pending downloads to prevent duplicate triggers
