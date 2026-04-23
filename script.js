@@ -3,7 +3,6 @@
    ═══════════════════════════════════════════════ */
 
 const API_BASE = "https://api.silverfoxdynamics.com";
-//const API_BASE = "http://139.185.61.225:8080";
 
 /* ── DOM ── */
 const urlInput     = document.getElementById("urlInput");
@@ -22,102 +21,42 @@ const videoTitle   = document.getElementById("videoTitle");
 const videoMeta    = document.getElementById("videoMeta");
 const formatsGrid  = document.getElementById("formatsGrid");
 
-/* ── ADSTERRA SMARTLINK CONFIGURATION ── */
+/* ── ADSTERRA SMARTLINK ── */
 const SMARTLINK_URL = 'https://walkingdrunkard.com/hmsgefqpcn?key=4d6e7561a3b59bff0fdc75b8e69f21e9';
-
-// Track pending downloads to prevent duplicate triggers
 let adTriggerInProgress = false;
-let pendingDownloadUrl = null;
 
-// Function to trigger Smartlink ad before download
 async function triggerSmartlinkBeforeDownload(downloadUrl) {
   return new Promise((resolve) => {
-    // Store the download URL
-    pendingDownloadUrl = downloadUrl;
-    
     if (SMARTLINK_URL) {
-      console.log('[AnyDown] Opening Smartlink in new tab:', SMARTLINK_URL);
-      
-      // Open the Smartlink in a new tab
-      const adWindow = window.open(SMARTLINK_URL, '_blank');
-      
-      // If popup was blocked, log it but still proceed
-      if (!adWindow || adWindow.closed || typeof adWindow.closed === 'undefined') {
-        console.log('[AnyDown] Popup may have been blocked by browser');
-      }
-      
-      // 500ms delay before proceeding with download
-      setTimeout(() => {
-        console.log('[AnyDown] Smartlink delay complete (500ms), proceeding with download');
-        resolve();
-      }, 500);
-      
+      window.open(SMARTLINK_URL, '_blank');
+      setTimeout(resolve, 500);
     } else {
-      // No Smartlink configured, proceed directly
-      console.log('[AnyDown] No Smartlink URL configured, downloading directly');
       resolve();
     }
   });
 }
 
-// Function to execute the actual download
 function executeDownload(downloadUrl) {
-  if (!downloadUrl) {
-    console.error('[AnyDown] No download URL provided');
-    return;
-  }
-  
-  console.log('[AnyDown] Executing download for:', downloadUrl);
-  
-  // Create a temporary anchor element to trigger download
+  if (!downloadUrl) return;
   const link = document.createElement('a');
   link.href = downloadUrl;
   link.target = '_blank';
   link.rel = 'noopener noreferrer';
   document.body.appendChild(link);
   link.click();
-  
-  // Clean up
-  setTimeout(() => {
-    document.body.removeChild(link);
-  }, 100);
-  
-  // Clear pending download
-  pendingDownloadUrl = null;
+  setTimeout(() => document.body.removeChild(link), 100);
 }
 
-// Download handler that includes Smartlink ad flow
 async function handleDownloadWithAd(event, downloadUrl) {
-  // Prevent default behavior
   event.preventDefault();
   event.stopPropagation();
-  
-  console.log('[AnyDown] Download button clicked for:', downloadUrl);
-  
-  // Prevent multiple simultaneous ad triggers
-  if (adTriggerInProgress) {
-    console.log('[AnyDown] Ad trigger already in progress, please wait...');
-    return;
-  }
-  
-  // Validate download URL
-  if (!downloadUrl) {
-    console.error('[AnyDown] No download URL provided');
-    return;
-  }
-  
+  if (adTriggerInProgress) return;
+  if (!downloadUrl) return;
   try {
     adTriggerInProgress = true;
-    
-    // Trigger the Smartlink ad flow
     await triggerSmartlinkBeforeDownload(downloadUrl);
-    
-    // Execute the download after ad flow completes
     executeDownload(downloadUrl);
-    
   } catch (error) {
-    console.error('[AnyDown] Error in ad flow:', error);
-    // Still attempt to download even if ad fails
     executeDownload(downloadUrl);
   } finally {
     adTriggerInProgress = false;
@@ -156,7 +95,6 @@ async function handleDownloadWithAd(event, downloadUrl) {
     bg.addColorStop(0, "#0A0A0A"); bg.addColorStop(0.5, "#0D0B08"); bg.addColorStop(1, "#0A0A0A");
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, W, H);
-
     for (const orb of orbs) {
       orb.x += orb.vx; orb.y += orb.vy;
       if (orb.x < -0.1) orb.vx =  Math.abs(orb.vx);
@@ -196,13 +134,6 @@ function formatBytes(bytes) {
   return mb < 1024 ? mb.toFixed(1) + " MB" : (mb / 1024).toFixed(2) + " GB";
 }
 
-function qualityLabel(fmt) {
-  if (fmt.quality_label) return fmt.quality_label;
-  if (fmt.height)        return fmt.height + "p";
-  if (fmt.abr)           return fmt.abr + " kbps";
-  return fmt.format_note || "Unknown";
-}
-
 function fmtDuration(secs) {
   if (!secs) return "";
   const h = Math.floor(secs / 3600), m = Math.floor((secs % 3600) / 60), s = secs % 60;
@@ -218,74 +149,148 @@ function fmtNumber(n) {
   return String(n);
 }
 
-/* ── Render formats with Smartlink ad-trigger on download ── */
-function renderFormats(formats, videoUrl) {
-  formatsGrid.innerHTML = "";
-  
+/* ══════════════════════════════════════════════════════
+   SMART FORMAT BUILDER
+   Combines video-only + audio-only into clean quality
+   options. Users just see "1080p", "720p", etc.
+   Each option sends the correct merged format_id.
+══════════════════════════════════════════════════════ */
+function buildSmartFormats(formats) {
   const combined  = formats.filter(f => f.vcodec !== "none" && f.acodec !== "none");
   const videoOnly = formats.filter(f => f.vcodec !== "none" && f.acodec === "none");
   const audioOnly = formats.filter(f => f.vcodec === "none" && f.acodec !== "none");
-  
-  combined.sort((a,b)  => (b.height||0) - (a.height||0));
-  videoOnly.sort((a,b) => (b.height||0) - (a.height||0));
-  audioOnly.sort((a,b) => (b.abr||0)    - (a.abr||0));
 
-  function appendGroup(label, list) {
-    if (!list.length) return;
-    const lbl = document.createElement("div");
-    lbl.className = "format-group-label";
-    lbl.textContent = label;
-    formatsGrid.appendChild(lbl);
+  // Sort audio-only by bitrate descending — pick the best one for merging
+  audioOnly.sort((a, b) => (b.tbr || 0) - (a.tbr || 0));
+  const bestAudio = audioOnly[0]; // e.g. format_id "140"
 
-    list.forEach(fmt => {
-      const item = document.createElement("div");
-      item.className = "format-item";
+  const results = [];
 
-      const info = document.createElement("div");
-      info.className = "format-info";
-
-      const ql = document.createElement("div");
-      ql.className = "format-quality";
-      ql.textContent = qualityLabel(fmt);
-
-      const ext = document.createElement("div");
-      ext.className = "format-ext";
-      ext.textContent = (fmt.ext || "?").toUpperCase();
-
-      info.appendChild(ql);
-      info.appendChild(ext);
-
-      if (fmt.filesize || fmt.filesize_approx) {
-        const sz = document.createElement("div");
-        sz.className = "format-size";
-        sz.textContent = formatBytes(fmt.filesize || fmt.filesize_approx);
-        info.appendChild(sz);
+  // ── Build merged quality options from video-only + best audio ──
+  // Group video-only by height, pick best (smallest filesize / lowest tbr = av1 preferred)
+  const videoByHeight = {};
+  for (const f of videoOnly) {
+    const h = f.height;
+    if (!h) continue;
+    if (!videoByHeight[h]) {
+      videoByHeight[h] = f;
+    } else {
+      // Prefer smaller file (more efficient codec like av1)
+      const existing = videoByHeight[h];
+      if ((f.filesize || 0) < (existing.filesize || Infinity) && (f.filesize || 0) > 0) {
+        videoByHeight[h] = f;
       }
+    }
+  }
 
-      const downloadUrl = `${API_BASE}/dl?url=${encodeURIComponent(videoUrl)}&format_id=${encodeURIComponent(fmt.format_id)}`;
-      
-      const dl = document.createElement("div");
-      dl.className = "dl-btn";
-      dl.title = "Download";
-      dl.innerHTML = "↓";
-      dl.style.cursor = "pointer";
-      
-      // Attach the Smartlink-triggered download handler
-      dl.addEventListener("click", (e) => handleDownloadWithAd(e, downloadUrl));
+  for (const height of Object.keys(videoByHeight).map(Number).sort((a,b) => b - a)) {
+    const vf = videoByHeight[height];
+    // Only offer merged option if we have audio to merge with
+    const formatId = bestAudio
+      ? `${vf.format_id}+${bestAudio.format_id}`
+      : vf.format_id;
 
-      item.appendChild(info);
-      item.appendChild(dl);
-      formatsGrid.appendChild(item);
+    // Estimate combined filesize
+    const combinedSize = (vf.filesize || 0) + (bestAudio?.filesize || 0);
+
+    results.push({
+      format_id: formatId,
+      label: `${height}p`,
+      ext: "mp4",
+      filesize: combinedSize || null,
+      badge: height >= 2160 ? "4K" : height >= 1440 ? "2K" : height >= 1080 ? "HD" : height >= 720 ? "HD" : null,
+      isAudio: false,
     });
   }
 
-  if (combined.length)  appendGroup("Video + Audio", combined);
-  if (videoOnly.length) appendGroup("Video Only", videoOnly);
-  if (audioOnly.length) appendGroup("Audio Only", audioOnly);
+  // ── Also add combined (video+audio already) formats that aren't duplicates ──
+  combined.sort((a, b) => (b.height || 0) - (a.height || 0));
+  const addedHeights = new Set(results.map(r => parseInt(r.label)));
 
-  if (!combined.length && !videoOnly.length && !audioOnly.length) {
-    formatsGrid.innerHTML = `<p style="color:var(--text-secondary);font-size:.9rem;grid-column:1/-1">No downloadable formats found.</p>`;
+  for (const f of combined) {
+    if (f.height && addedHeights.has(f.height)) continue; // already covered by merged version
+    results.push({
+      format_id: f.format_id,
+      label: f.height ? `${f.height}p` : "Auto",
+      ext: f.ext || "mp4",
+      filesize: f.filesize || null,
+      badge: null,
+      isAudio: false,
+    });
   }
+
+  // ── Audio-only options ──
+  for (const f of audioOnly.slice(0, 2)) {
+    results.push({
+      format_id: f.format_id,
+      label: `Audio ${(f.ext || "m4a").toUpperCase()}`,
+      ext: f.ext || "m4a",
+      filesize: f.filesize || null,
+      badge: "MP3",
+      isAudio: true,
+    });
+  }
+
+  return results;
+}
+
+/* ── Render formats ── */
+function renderFormats(formats, videoUrl) {
+  formatsGrid.innerHTML = "";
+
+  const smart = buildSmartFormats(formats);
+
+  if (!smart.length) {
+    formatsGrid.innerHTML = `<p style="color:var(--text-secondary);font-size:.9rem;grid-column:1/-1">No downloadable formats found.</p>`;
+    return;
+  }
+
+  smart.forEach(fmt => {
+    const item = document.createElement("div");
+    item.className = "format-item";
+
+    const info = document.createElement("div");
+    info.className = "format-info";
+
+    const ql = document.createElement("div");
+    ql.className = "format-quality";
+    ql.textContent = fmt.label;
+
+    const extEl = document.createElement("div");
+    extEl.className = "format-ext";
+    extEl.textContent = fmt.ext.toUpperCase();
+
+    info.appendChild(ql);
+    info.appendChild(extEl);
+
+    if (fmt.filesize) {
+      const sz = document.createElement("div");
+      sz.className = "format-size";
+      sz.textContent = formatBytes(fmt.filesize);
+      info.appendChild(sz);
+    }
+
+    if (fmt.badge) {
+      const badge = document.createElement("span");
+      badge.className = "format-badge";
+      badge.textContent = fmt.badge;
+      badge.style.cssText = "font-size:0.6rem;padding:2px 5px;border-radius:4px;background:rgba(232,184,0,0.2);color:#E8B800;margin-left:4px;font-weight:600;";
+      ql.appendChild(badge);
+    }
+
+    const downloadUrl = `${API_BASE}/dl?url=${encodeURIComponent(videoUrl)}&format_id=${encodeURIComponent(fmt.format_id)}`;
+
+    const dl = document.createElement("div");
+    dl.className = "dl-btn";
+    dl.title = "Download";
+    dl.innerHTML = "↓";
+    dl.style.cursor = "pointer";
+    dl.addEventListener("click", (e) => handleDownloadWithAd(e, downloadUrl));
+
+    item.appendChild(info);
+    item.appendChild(dl);
+    formatsGrid.appendChild(item);
+  });
 }
 
 /* ── Fetch video ── */
@@ -299,8 +304,8 @@ async function fetchVideo() {
     return;
   }
 
-  try { 
-    new URL(rawUrl); 
+  try {
+    new URL(rawUrl);
   } catch {
     setError("That doesn't look like a valid URL. Please paste a full video link.");
     return;
@@ -315,24 +320,15 @@ async function fetchVideo() {
 
     if (!res.ok || data.error) {
       const msg = data.error || `Server error (${res.status}). Try again.`;
-
-      if (msg.toLowerCase().includes("youtube download server is busy")) {
-        showState("ytbusy");
-        return;
-      }
-      
-      if (msg.toLowerCase().includes("instagram download server is busy")) {
-        showState("igbusy");
-        return;
-      }
-
+      if (msg.toLowerCase().includes("youtube download server is busy")) { showState("ytbusy"); return; }
+      if (msg.toLowerCase().includes("instagram download server is busy")) { showState("igbusy"); return; }
       setError(msg);
       return;
     }
 
-    thumbImg.src         = data.thumbnail || "";
-    thumbImg.alt         = data.title     || "Video thumbnail";
-    videoTitle.textContent = data.title   || "Untitled video";
+    thumbImg.src           = data.thumbnail || "";
+    thumbImg.alt           = data.title     || "Video thumbnail";
+    videoTitle.textContent = data.title     || "Untitled video";
 
     const metaParts = [];
     if (data.uploader)   metaParts.push(data.uploader);
