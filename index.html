@@ -197,30 +197,6 @@
       max-width: 100%;
     }
     
-    /* Fallback indicator banner */
-    .fallback-banner {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(232, 184, 0, 0.95);
-      color: #0A0A0A;
-      padding: 8px 16px;
-      border-radius: 40px;
-      font-size: 0.75rem;
-      font-weight: 500;
-      z-index: 1001;
-      backdrop-filter: blur(4px);
-      pointer-events: none;
-      animation: fadeOut 3s ease forwards;
-      white-space: nowrap;
-    }
-    
-    @keyframes fadeOut {
-      0%, 70% { opacity: 1; transform: translateX(-50%) translateY(0); }
-      100% { opacity: 0; transform: translateX(-50%) translateY(20px); visibility: hidden; }
-    }
-    
     /* Desktop breakpoints */
     @media (min-width: 1200px) {
       .desktop-right-rail { display: block; }
@@ -568,7 +544,5 @@
     });
   </script>
 
-  <!-- Debug helper to show fallback status -->
-  <div id="fallbackNotification" style="display: none;"></div>
 </body>
 </html>
