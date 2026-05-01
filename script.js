@@ -3,8 +3,8 @@
    ═══════════════════════════════════════════════ */
 
 const OCI_API_BASE = "https://api.silverfoxdynamics.com";
-const ALLMEDIA_API_BASE = "https://all-media-downloader.p.rapidapi.com";
-const ALLMEDIA_API_KEY = "YOUR_RAPIDAPI_KEY_HERE"; // Get from rapidapi.com
+const ALLMEDIA_API_BASE = "https://allmedia-downloader.p.rapidapi.com";
+const ALLMEDIA_API_KEY = "36213cad09msh0c1023447a4055ap170ba0jsnc5b1a490cc3";
 
 /* ── DOM ── */
 const urlInput     = document.getElementById("urlInput");
@@ -24,8 +24,9 @@ const videoMeta    = document.getElementById("videoMeta");
 const formatsGrid  = document.getElementById("formatsGrid");
 
 /* ── Fallback tracking ── */
-let lastUsedAPI = "primary"; // "primary" = AllMedia, "fallback" = OCI
+let lastUsedAPI = "primary";
 let apiFailCount = 0;
+let currentDirectUrl = null;
 
 /* ── Show fallback notification banner ── */
 function showFallbackNotification(message) {
@@ -168,77 +169,146 @@ function fmtNumber(n) {
   return String(n);
 }
 
-/* ══════════════════════════════════════════════════════
-   FORMAT CONVERTERS - AllMedia API → Our format structure
-   ══════════════════════════════════════════════════════ */
+function fetchWithTimeout(url, options, timeout = 15000) {
+  return Promise.race([
+    fetch(url, options),
+    new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Request timeout')), timeout)
+    )
+  ]);
+}
 
-// Convert AllMedia API response to our format structure
-function convertAllMediaToOurFormat(allmediaData, videoUrl) {
-  const formats = [];
-  
-  // AllMedia returns different structure based on platform
-  // YouTube structure
-  if (allmediaData.formats && Array.isArray(allmediaData.formats)) {
-    // Direct format array
-    for (const f of allmediaData.formats) {
+/* ══════════════════════════════════════════════════════
+   PRIMARY API: AllMedia Downloader
+   ══════════════════════════════════════════════════════ */
+async function fetchFromAllMedia(rawUrl) {
+  try {
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-key': ALLMEDIA_API_KEY,
+        'x-rapidapi-host': 'allmedia-downloader.p.rapidapi.com',
+        'Content-Type': 'application/json'
+      }
+    };
+    
+    const apiUrl = `https://allmedia-downloader.p.rapidapi.com/?url=${encodeURIComponent(rawUrl)}`;
+    const response = await fetchWithTimeout(apiUrl, options, 15000);
+    
+    if (!response.ok) {
+      throw new Error(`AllMedia API returned ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (data.error) {
+      throw new Error(data.error);
+    }
+    
+    // Extract video information from response
+    let title = "Untitled video";
+    let thumbnail = "";
+    let uploader = "";
+    let duration = 0;
+    let viewCount = 0;
+    let formats = [];
+    let directUrl = null;
+    
+    // Handle different response structures
+    if (data.title) title = data.title;
+    else if (data.video_title) title = data.video_title;
+    else if (data.media && data.media.title) title = data.media.title;
+    
+    if (data.thumbnail) thumbnail = data.thumbnail;
+    else if (data.thumb) thumbnail = data.thumb;
+    else if (data.media && data.media.thumbnail) thumbnail = data.media.thumbnail;
+    
+    if (data.uploader) uploader = data.uploader;
+    else if (data.author) uploader = data.author;
+    else if (data.channel) uploader = data.channel;
+    else if (data.media && data.media.uploader) uploader = data.media.uploader;
+    
+    if (data.duration) duration = data.duration;
+    else if (data.media && data.media.duration) duration = data.media.duration;
+    
+    if (data.view_count) viewCount = data.view_count;
+    else if (data.views) viewCount = data.views;
+    else if (data.media && data.media.views) viewCount = data.media.views;
+    
+    // Extract download URL
+    if (data.video_url) directUrl = data.video_url;
+    else if (data.download_url) directUrl = data.download_url;
+    else if (data.url) directUrl = data.url;
+    
+    // Build formats array
+    if (data.formats && Array.isArray(data.formats)) {
+      formats = data.formats;
+    } else if (directUrl) {
+      // Create a format from the direct URL
       formats.push({
-        format_id: f.format_id || f.itag,
-        height: f.height,
-        ext: f.ext,
-        filesize: f.filesize,
-        vcodec: f.vcodec,
-        acodec: f.acodec,
-        tbr: f.tbr
+        format_id: "direct",
+        height: 1080,
+        ext: "mp4",
+        filesize: null,
+        vcodec: "avc1",
+        acodec: "mp4a"
       });
     }
-  } else if (allmediaData.video_url) {
-    // Simple response with direct URLs
-    formats.push({
-      format_id: "direct",
-      height: 1080,
-      ext: "mp4",
-      filesize: null,
-      vcodec: "avc1",
-      acodec: "mp4a"
-    });
-  } else if (allmediaData.download_url) {
-    formats.push({
-      format_id: "direct",
-      height: 1080,
-      ext: "mp4",
-      filesize: null,
-      vcodec: "avc1",
-      acodec: "mp4a"
-    });
-  }
-  
-  // If still no formats, try to extract from any URLs in response
-  if (formats.length === 0) {
-    for (const key in allmediaData) {
-      if (typeof allmediaData[key] === 'string' && 
-          (allmediaData[key].startsWith('http') && 
-           (allmediaData[key].includes('.mp4') || allmediaData[key].includes('video')))) {
-        formats.push({
-          format_id: key,
-          height: 720,
-          ext: "mp4",
-          filesize: null,
-          vcodec: "avc1",
-          acodec: "mp4a"
-        });
-      }
+    
+    // Try to extract quality info if available
+    if (data.quality) {
+      formats[0].height = data.quality === "HD" ? 1080 : 720;
     }
+    
+    return {
+      success: true,
+      title: title,
+      thumbnail: thumbnail,
+      uploader: uploader,
+      duration: duration,
+      view_count: viewCount,
+      formats: formats,
+      directUrl: directUrl,
+      rawData: data
+    };
+    
+  } catch (error) {
+    console.error("AllMedia API error:", error);
+    return { success: false, error: error.message };
   }
-  
-  return formats;
 }
 
-// Convert OCI API response (keeping original structure)
-function convertOCIToOurFormat(ociData) {
-  return ociData.formats || [];
+/* ══════════════════════════════════════════════════════
+   FALLBACK API: OCI Backend
+   ══════════════════════════════════════════════════════ */
+async function fetchFromOCI(rawUrl) {
+  try {
+    const response = await fetchWithTimeout(`${OCI_API_BASE}/info?url=${encodeURIComponent(rawUrl)}`, {}, 20000);
+    const data = await response.json();
+    
+    if (!response.ok || data.error) {
+      throw new Error(data.error || `Server error (${response.status})`);
+    }
+    
+    return {
+      success: true,
+      title: data.title,
+      thumbnail: data.thumbnail,
+      uploader: data.uploader,
+      duration: data.duration,
+      view_count: data.view_count,
+      formats: data.formats || [],
+      directUrl: null,
+      rawData: data
+    };
+    
+  } catch (error) {
+    console.error("OCI API error:", error);
+    return { success: false, error: error.message };
+  }
 }
 
-/* ── Smart format builder (SAME AS ORIGINAL) ── */
+/* ── Smart format builder ── */
 function buildSmartFormats(formats) {
   const combined  = formats.filter(f => f.vcodec !== "none" && f.acodec !== "none");
   const videoOnly = formats.filter(f => f.vcodec !== "none" && f.acodec === "none");
@@ -310,15 +380,27 @@ function buildSmartFormats(formats) {
   return results;
 }
 
-/* ── Render formats (SAME AS ORIGINAL) ── */
-function renderFormats(formats, videoUrl) {
+/* ── Render formats ── */
+function renderFormats(formats, videoUrl, directUrl = null) {
   formatsGrid.innerHTML = "";
 
   const smart = buildSmartFormats(formats);
 
-  if (!smart.length) {
+  if (!smart.length && !directUrl) {
     formatsGrid.innerHTML = `<p style="color:var(--text-secondary);font-size:.9rem;grid-column:1/-1">No downloadable formats found.</p>`;
     return;
+  }
+
+  // If we have a direct URL but no formats, create a simple format
+  if (directUrl && smart.length === 0) {
+    smart.push({
+      format_id: "direct",
+      label: "Download Video",
+      ext: "mp4",
+      filesize: null,
+      badge: "HD",
+      isAudio: false
+    });
   }
 
   smart.forEach(fmt => {
@@ -354,11 +436,11 @@ function renderFormats(formats, videoUrl) {
       ql.appendChild(badge);
     }
 
-    // Build download URL based on which API we used
     let downloadUrl;
-    if (lastUsedAPI === "primary") {
-      // For AllMedia, we need to construct download URL
-      downloadUrl = `${ALLMEDIA_API_BASE}/download?url=${encodeURIComponent(videoUrl)}&format_id=${encodeURIComponent(fmt.format_id)}`;
+    if (lastUsedAPI === "primary" && directUrl) {
+      downloadUrl = directUrl;
+    } else if (lastUsedAPI === "primary") {
+      downloadUrl = `https://allmedia-downloader.p.rapidapi.com/?url=${encodeURIComponent(videoUrl)}`;
     } else {
       downloadUrl = `${OCI_API_BASE}/dl?url=${encodeURIComponent(videoUrl)}&format_id=${encodeURIComponent(fmt.format_id)}`;
     }
@@ -374,110 +456,6 @@ function renderFormats(formats, videoUrl) {
     item.appendChild(dl);
     formatsGrid.appendChild(item);
   });
-}
-
-/* ── Fetch with timeout ── */
-function fetchWithTimeout(url, options, timeout = 10000) {
-  return Promise.race([
-    fetch(url, options),
-    new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('Request timeout')), timeout)
-    )
-  ]);
-}
-
-/* ══════════════════════════════════════════════════════
-   PRIMARY API: AllMedia Downloader
-   ══════════════════════════════════════════════════════ */
-async function fetchFromAllMedia(rawUrl) {
-  try {
-    const options = {
-      method: 'GET',
-      headers: {
-        'x-rapidapi-key': ALLMEDIA_API_KEY,
-        'x-rapidapi-host': 'all-media-downloader.p.rapidapi.com'
-      }
-    };
-    
-    // First, get video info
-    const infoUrl = `${ALLMEDIA_API_BASE}/info?url=${encodeURIComponent(rawUrl)}`;
-    const response = await fetchWithTimeout(infoUrl, options, 15000);
-    
-    if (!response.ok) {
-      throw new Error(`AllMedia API returned ${response.status}`);
-    }
-    
-    const data = await response.json();
-    
-    if (data.error) {
-      throw new Error(data.error);
-    }
-    
-    // Extract title and metadata
-    const title = data.title || data.video_title || "Untitled video";
-    const thumbnail = data.thumbnail || data.thumb || "";
-    
-    // Get uploader info
-    let uploader = data.uploader || data.channel || data.author || "";
-    
-    // Get duration
-    let duration = data.duration || 0;
-    if (typeof duration === 'string') {
-      // Parse duration string like "PT1H2M3S" if needed
-      const match = duration.match(/(\d+)/g);
-      if (match) duration = parseInt(match.slice(-3).reduce((a,b,i) => a + (i === 0 ? b*3600 : i === 1 ? b*60 : b), 0));
-    }
-    
-    // Get view count
-    let viewCount = data.view_count || data.views || 0;
-    
-    // Convert formats to our structure
-    const formats = convertAllMediaToOurFormat(data, rawUrl);
-    
-    return {
-      success: true,
-      title: title,
-      thumbnail: thumbnail,
-      uploader: uploader,
-      duration: duration,
-      view_count: viewCount,
-      formats: formats,
-      rawData: data
-    };
-    
-  } catch (error) {
-    console.error("AllMedia API error:", error);
-    return { success: false, error: error.message };
-  }
-}
-
-/* ══════════════════════════════════════════════════════
-   FALLBACK API: OCI Backend (original)
-   ══════════════════════════════════════════════════════ */
-async function fetchFromOCI(rawUrl) {
-  try {
-    const response = await fetchWithTimeout(`${OCI_API_BASE}/info?url=${encodeURIComponent(rawUrl)}`, {}, 20000);
-    const data = await response.json();
-    
-    if (!response.ok || data.error) {
-      throw new Error(data.error || `Server error (${response.status})`);
-    }
-    
-    return {
-      success: true,
-      title: data.title,
-      thumbnail: data.thumbnail,
-      uploader: data.uploader,
-      duration: data.duration,
-      view_count: data.view_count,
-      formats: data.formats || [],
-      rawData: data
-    };
-    
-  } catch (error) {
-    console.error("OCI API error:", error);
-    return { success: false, error: error.message };
-  }
 }
 
 /* ── Main fetch with fallback logic ── */
@@ -504,15 +482,14 @@ async function fetchVideo() {
   try {
     let result;
     
-    // Try AllMedia API first (primary)
+    // Try AllMedia API first
     result = await fetchFromAllMedia(rawUrl);
     
-    if (result.success && result.formats && result.formats.length > 0) {
-      // Success with AllMedia
+    if (result.success && (result.formats.length > 0 || result.directUrl)) {
       lastUsedAPI = "primary";
       apiFailCount = 0;
+      currentDirectUrl = result.directUrl;
       
-      // Populate UI
       thumbImg.src = result.thumbnail || "";
       thumbImg.alt = result.title || "Video thumbnail";
       videoTitle.textContent = result.title || "Untitled video";
@@ -523,27 +500,24 @@ async function fetchVideo() {
       if (result.view_count) metaParts.push(fmtNumber(result.view_count) + " views");
       videoMeta.textContent = metaParts.join("  ·  ");
       
-      renderFormats(result.formats, rawUrl);
+      renderFormats(result.formats, rawUrl, result.directUrl);
       showState("result");
       resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
-      
-      // Optional: show success notification (no notification for primary)
       return;
     }
     
-    // If AllMedia failed or returned no formats, try fallback
-    if (!result.success || !result.formats || result.formats.length === 0) {
+    // Fallback to OCI
+    if (!result.success || (result.formats.length === 0 && !result.directUrl)) {
       apiFailCount++;
-      console.log(`AllMedia API returned no formats, trying OCI fallback (fail count: ${apiFailCount})`);
+      console.log(`AllMedia failed, trying OCI fallback`);
       
-      // Show notification that we're falling back
       showFallbackNotification("⚠️ Using fallback server - downloads may be slower");
       
-      // Try OCI fallback
       result = await fetchFromOCI(rawUrl);
       
-      if (result.success && result.formats && result.formats.length > 0) {
+      if (result.success && result.formats.length > 0) {
         lastUsedAPI = "fallback";
+        currentDirectUrl = null;
         
         thumbImg.src = result.thumbnail || "";
         thumbImg.alt = result.title || "Video thumbnail";
@@ -555,19 +529,19 @@ async function fetchVideo() {
         if (result.view_count) metaParts.push(fmtNumber(result.view_count) + " views");
         videoMeta.textContent = metaParts.join("  ·  ");
         
-        renderFormats(result.formats, rawUrl);
+        renderFormats(result.formats, rawUrl, null);
         showState("result");
         resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
         return;
       }
     }
     
-    // Both APIs failed
-    const errorMessage = result.error || "No video formats found. The platform might be temporarily unavailable.";
+    // Both failed
+    const errorMessage = result.error || "No video formats found.";
     
-    if (errorMessage.toLowerCase().includes("youtube") || errorMessage.toLowerCase().includes("yt")) {
+    if (errorMessage.toLowerCase().includes("youtube")) {
       showState("ytbusy");
-    } else if (errorMessage.toLowerCase().includes("instagram") || errorMessage.toLowerCase().includes("ig")) {
+    } else if (errorMessage.toLowerCase().includes("instagram")) {
       showState("igbusy");
     } else {
       setError(errorMessage);
@@ -576,13 +550,14 @@ async function fetchVideo() {
   } catch (err) {
     console.error("Fetch error:", err);
     
-    // Last resort: try OCI directly if AllMedia crashed
+    // Last resort OCI attempt
     try {
-      showFallbackNotification("⚠️ Primary server failed, using backup...");
+      showFallbackNotification("⚠️ Primary failed, trying backup...");
       const fallbackResult = await fetchFromOCI(rawUrl);
       
-      if (fallbackResult.success && fallbackResult.formats && fallbackResult.formats.length > 0) {
+      if (fallbackResult.success && fallbackResult.formats.length > 0) {
         lastUsedAPI = "fallback";
+        currentDirectUrl = null;
         
         thumbImg.src = fallbackResult.thumbnail || "";
         thumbImg.alt = fallbackResult.title || "Video thumbnail";
@@ -594,7 +569,7 @@ async function fetchVideo() {
         if (fallbackResult.view_count) metaParts.push(fmtNumber(fallbackResult.view_count) + " views");
         videoMeta.textContent = metaParts.join("  ·  ");
         
-        renderFormats(fallbackResult.formats, rawUrl);
+        renderFormats(fallbackResult.formats, rawUrl, null);
         showState("result");
         resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
         return;
