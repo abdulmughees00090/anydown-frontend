@@ -26,11 +26,7 @@ const SMARTLINK_URL = 'https://walkingdrunkard.com/hmsgefqpcn?key=4d6e7561a3b59b
 
 /* ══════════════════════════════════════════════════════
    WAITING MODAL
-   Shown over the page while download is being prepared.
-   User sees a spinner — ad opens in new tab silently.
 ══════════════════════════════════════════════════════ */
-
-// Inject modal HTML + styles once
 (function injectModal() {
   const style = document.createElement("style");
   style.textContent = `
@@ -79,20 +75,19 @@ const SMARTLINK_URL = 'https://walkingdrunkard.com/hmsgefqpcn?key=4d6e7561a3b59b
     }
     #adWaitSpinner::before {
       border-top-color: #E8B800;
-      animation: spin 0.9s linear infinite;
+      animation: adSpin 0.9s linear infinite;
     }
     #adWaitSpinner::after {
       border-bottom-color: rgba(232,184,0,0.25);
-      animation: spin 0.9s linear infinite reverse;
+      animation: adSpin 0.9s linear infinite reverse;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes adSpin { to { transform: rotate(360deg); } }
     #adWaitTitle {
       font-family: 'DM Sans', sans-serif;
       font-size: 1.05rem;
       font-weight: 600;
       color: #f0e8cc;
       margin: 0 0 8px;
-      letter-spacing: -0.01em;
     }
     #adWaitSub {
       font-family: 'DM Sans', sans-serif;
@@ -102,12 +97,12 @@ const SMARTLINK_URL = 'https://walkingdrunkard.com/hmsgefqpcn?key=4d6e7561a3b59b
       line-height: 1.5;
     }
     #adWaitDots span {
-      animation: blink 1.2s infinite;
+      animation: adBlink 1.2s infinite;
       opacity: 0;
     }
     #adWaitDots span:nth-child(2) { animation-delay: 0.2s; }
     #adWaitDots span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes blink {
+    @keyframes adBlink {
       0%, 80%, 100% { opacity: 0; }
       40% { opacity: 1; }
     }
@@ -129,45 +124,62 @@ const SMARTLINK_URL = 'https://walkingdrunkard.com/hmsgefqpcn?key=4d6e7561a3b59b
 function showWaitModal() {
   document.getElementById("adWaitOverlay").classList.add("visible");
 }
-
 function hideWaitModal() {
   document.getElementById("adWaitOverlay").classList.remove("visible");
 }
 
-/* ── Download logic ── */
+/* ── Download logic ──
+   Uses window.location.href so the download happens IN the same tab.
+   The browser detects Content-Disposition: attachment and saves the file
+   without navigating away from the page.
+── */
 function executeDownload(downloadUrl) {
   if (!downloadUrl) return;
+  // Create a hidden <a> with NO target="_blank" — fires as same-page download
   const link = document.createElement("a");
   link.href = downloadUrl;
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
+  link.setAttribute("download", "");   // hints browser to download, not navigate
+  link.style.display = "none";
   document.body.appendChild(link);
   link.click();
-  setTimeout(() => document.body.removeChild(link), 100);
+  setTimeout(() => document.body.removeChild(link), 200);
 }
+
+let adInProgress = false;
 
 async function handleDownloadWithAd(event, downloadUrl) {
   event.preventDefault();
   event.stopPropagation();
-  if (!downloadUrl) return;
+  if (adInProgress || !downloadUrl) return;
 
-  // 1. Open ad in new tab
-  if (SMARTLINK_URL) {
-    window.open(SMARTLINK_URL, "_blank");
+  try {
+    adInProgress = true;
+
+    // 1. Open ad in a new tab
+    if (SMARTLINK_URL) {
+      window.open(SMARTLINK_URL, "_blank", "noopener,noreferrer");
+    }
+
+    // 2. Show waiting modal on THIS page
+    showWaitModal();
+
+    // 3. Wait 3 seconds while ad loads in background tab
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
+    // 4. Trigger download in the same tab (no new tab opens)
+    executeDownload(downloadUrl);
+
+    // 5. Brief pause then hide modal
+    await new Promise(resolve => setTimeout(resolve, 800));
+    hideWaitModal();
+
+  } catch (err) {
+    // Fallback: attempt download anyway
+    executeDownload(downloadUrl);
+    hideWaitModal();
+  } finally {
+    adInProgress = false;
   }
-
-  // 2. Show waiting modal on this page
-  showWaitModal();
-
-  // 3. Wait 3 seconds (user sees modal, ad loads in background tab)
-  await new Promise(resolve => setTimeout(resolve, 3000));
-
-  // 4. Trigger the actual download silently
-  executeDownload(downloadUrl);
-
-  // 5. Hide modal after a short delay
-  await new Promise(resolve => setTimeout(resolve, 600));
-  hideWaitModal();
 }
 
 /* ── Animated background ── */
@@ -256,9 +268,7 @@ function fmtNumber(n) {
   return String(n);
 }
 
-/* ══════════════════════════════════════════════════════
-   SMART FORMAT BUILDER
-══════════════════════════════════════════════════════ */
+/* ── Smart format builder ── */
 function buildSmartFormats(formats) {
   const combined  = formats.filter(f => f.vcodec !== "none" && f.acodec !== "none");
   const videoOnly = formats.filter(f => f.vcodec !== "none" && f.acodec === "none");
@@ -266,7 +276,6 @@ function buildSmartFormats(formats) {
 
   audioOnly.sort((a, b) => (b.tbr || 0) - (a.tbr || 0));
   const bestAudio = audioOnly[0];
-
   const results = [];
 
   const videoByHeight = {};
@@ -285,11 +294,8 @@ function buildSmartFormats(formats) {
 
   for (const height of Object.keys(videoByHeight).map(Number).sort((a,b) => b - a)) {
     const vf = videoByHeight[height];
-    const formatId = bestAudio
-      ? `${vf.format_id}+${bestAudio.format_id}`
-      : vf.format_id;
+    const formatId = bestAudio ? `${vf.format_id}+${bestAudio.format_id}` : vf.format_id;
     const combinedSize = (vf.filesize || 0) + (bestAudio?.filesize || 0);
-
     results.push({
       format_id: formatId,
       label: `${height}p`,
@@ -302,7 +308,6 @@ function buildSmartFormats(formats) {
 
   combined.sort((a, b) => (b.height || 0) - (a.height || 0));
   const addedHeights = new Set(results.map(r => parseInt(r.label)));
-
   for (const f of combined) {
     if (f.height && addedHeights.has(f.height)) continue;
     results.push({
@@ -332,7 +337,6 @@ function buildSmartFormats(formats) {
 /* ── Render formats ── */
 function renderFormats(formats, videoUrl) {
   formatsGrid.innerHTML = "";
-
   const smart = buildSmartFormats(formats);
 
   if (!smart.length) {
@@ -351,6 +355,14 @@ function renderFormats(formats, videoUrl) {
     ql.className = "format-quality";
     ql.textContent = fmt.label;
 
+    if (fmt.badge) {
+      const badge = document.createElement("span");
+      badge.className = "format-badge";
+      badge.textContent = fmt.badge;
+      badge.style.cssText = "font-size:0.6rem;padding:2px 5px;border-radius:4px;background:rgba(232,184,0,0.2);color:#E8B800;margin-left:4px;font-weight:600;";
+      ql.appendChild(badge);
+    }
+
     const extEl = document.createElement("div");
     extEl.className = "format-ext";
     extEl.textContent = fmt.ext.toUpperCase();
@@ -363,14 +375,6 @@ function renderFormats(formats, videoUrl) {
       sz.className = "format-size";
       sz.textContent = formatBytes(fmt.filesize);
       info.appendChild(sz);
-    }
-
-    if (fmt.badge) {
-      const badge = document.createElement("span");
-      badge.className = "format-badge";
-      badge.textContent = fmt.badge;
-      badge.style.cssText = "font-size:0.6rem;padding:2px 5px;border-radius:4px;background:rgba(232,184,0,0.2);color:#E8B800;margin-left:4px;font-weight:600;";
-      ql.appendChild(badge);
     }
 
     const downloadUrl = `${API_BASE}/dl?url=${encodeURIComponent(videoUrl)}&format_id=${encodeURIComponent(fmt.format_id)}`;
@@ -399,9 +403,7 @@ async function fetchVideo() {
     return;
   }
 
-  try {
-    new URL(rawUrl);
-  } catch {
+  try { new URL(rawUrl); } catch {
     setError("That doesn't look like a valid URL. Please paste a full video link.");
     return;
   }
