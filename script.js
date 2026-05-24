@@ -23,43 +23,162 @@ const formatsGrid  = document.getElementById("formatsGrid");
 
 /* ── ADSTERRA SMARTLINK ── */
 const SMARTLINK_URL = 'https://walkingdrunkard.com/hmsgefqpcn?key=4d6e7561a3b59bff0fdc75b8e69f21e9';
-let adTriggerInProgress = false;
 
-async function triggerSmartlinkBeforeDownload(downloadUrl) {
-  return new Promise((resolve) => {
-    if (SMARTLINK_URL) {
-      window.open(SMARTLINK_URL, '_blank');
-      setTimeout(resolve, 500);
-    } else {
-      resolve();
+/* ══════════════════════════════════════════════════════
+   WAITING MODAL
+══════════════════════════════════════════════════════ */
+(function injectModal() {
+  const style = document.createElement("style");
+  style.textContent = `
+    #adWaitOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(10, 10, 10, 0.82);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
     }
-  });
+    #adWaitOverlay.visible {
+      display: flex;
+    }
+    #adWaitBox {
+      background: linear-gradient(145deg, #161410, #1a1710);
+      border: 1px solid rgba(232, 184, 0, 0.25);
+      border-radius: 20px;
+      padding: 40px 36px 32px;
+      text-align: center;
+      max-width: 340px;
+      width: 90%;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+      animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.88) translateY(16px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    #adWaitSpinner {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 20px;
+      position: relative;
+    }
+    #adWaitSpinner::before,
+    #adWaitSpinner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 3px solid transparent;
+    }
+    #adWaitSpinner::before {
+      border-top-color: #E8B800;
+      animation: adSpin 0.9s linear infinite;
+    }
+    #adWaitSpinner::after {
+      border-bottom-color: rgba(232,184,0,0.25);
+      animation: adSpin 0.9s linear infinite reverse;
+    }
+    @keyframes adSpin { to { transform: rotate(360deg); } }
+    #adWaitTitle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #f0e8cc;
+      margin: 0 0 8px;
+    }
+    #adWaitSub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      color: rgba(240,232,204,0.45);
+      margin: 0;
+      line-height: 1.5;
+    }
+    #adWaitDots span {
+      animation: adBlink 1.2s infinite;
+      opacity: 0;
+    }
+    #adWaitDots span:nth-child(2) { animation-delay: 0.2s; }
+    #adWaitDots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes adBlink {
+      0%, 80%, 100% { opacity: 0; }
+      40% { opacity: 1; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  const overlay = document.createElement("div");
+  overlay.id = "adWaitOverlay";
+  overlay.innerHTML = `
+    <div id="adWaitBox">
+      <div id="adWaitSpinner"></div>
+      <p id="adWaitTitle">The Magic is happening<span id="adWaitDots"><span>.</span><span>.</span><span>.</span></span></p>
+      <p id="adWaitSub">Abracadabra...</p>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+})();
+
+function showWaitModal() {
+  document.getElementById("adWaitOverlay").classList.add("visible");
+}
+function hideWaitModal() {
+  document.getElementById("adWaitOverlay").classList.remove("visible");
 }
 
+/* ── Download logic ──
+   Uses window.location.href so the download happens IN the same tab.
+   The browser detects Content-Disposition: attachment and saves the file
+   without navigating away from the page.
+── */
 function executeDownload(downloadUrl) {
   if (!downloadUrl) return;
-  const link = document.createElement('a');
+  // Create a hidden <a> with NO target="_blank" — fires as same-page download
+  const link = document.createElement("a");
   link.href = downloadUrl;
-  link.target = '_blank';
-  link.rel = 'noopener noreferrer';
+  link.setAttribute("download", "");   // hints browser to download, not navigate
+  link.style.display = "none";
   document.body.appendChild(link);
   link.click();
-  setTimeout(() => document.body.removeChild(link), 100);
+  setTimeout(() => document.body.removeChild(link), 200);
 }
+
+let adInProgress = false;
 
 async function handleDownloadWithAd(event, downloadUrl) {
   event.preventDefault();
   event.stopPropagation();
-  if (adTriggerInProgress) return;
-  if (!downloadUrl) return;
+  if (adInProgress || !downloadUrl) return;
+
   try {
-    adTriggerInProgress = true;
-    await triggerSmartlinkBeforeDownload(downloadUrl);
+    adInProgress = true;
+
+    // 1. Open ad in a new tab
+    if (SMARTLINK_URL) {
+      window.open(SMARTLINK_URL, "_blank", "noopener,noreferrer");
+    }
+
+    // 2. Show waiting modal on THIS page
+    showWaitModal();
+
+    // 3. Wait 3 seconds while ad loads in background tab
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
+    // 4. Trigger download in the same tab (no new tab opens)
     executeDownload(downloadUrl);
-  } catch (error) {
+
+    // 5. Brief pause then hide modal
+    await new Promise(resolve => setTimeout(resolve, 8000));
+    hideWaitModal();
+
+  } catch (err) {
+    // Fallback: attempt download anyway
     executeDownload(downloadUrl);
+    hideWaitModal();
   } finally {
-    adTriggerInProgress = false;
+    adInProgress = false;
   }
 }
 
@@ -149,25 +268,16 @@ function fmtNumber(n) {
   return String(n);
 }
 
-/* ══════════════════════════════════════════════════════
-   SMART FORMAT BUILDER
-   Combines video-only + audio-only into clean quality
-   options. Users just see "1080p", "720p", etc.
-   Each option sends the correct merged format_id.
-══════════════════════════════════════════════════════ */
+/* ── Smart format builder ── */
 function buildSmartFormats(formats) {
   const combined  = formats.filter(f => f.vcodec !== "none" && f.acodec !== "none");
   const videoOnly = formats.filter(f => f.vcodec !== "none" && f.acodec === "none");
   const audioOnly = formats.filter(f => f.vcodec === "none" && f.acodec !== "none");
 
-  // Sort audio-only by bitrate descending — pick the best one for merging
   audioOnly.sort((a, b) => (b.tbr || 0) - (a.tbr || 0));
-  const bestAudio = audioOnly[0]; // e.g. format_id "140"
-
+  const bestAudio = audioOnly[0];
   const results = [];
 
-  // ── Build merged quality options from video-only + best audio ──
-  // Group video-only by height, pick best (smallest filesize / lowest tbr = av1 preferred)
   const videoByHeight = {};
   for (const f of videoOnly) {
     const h = f.height;
@@ -175,7 +285,6 @@ function buildSmartFormats(formats) {
     if (!videoByHeight[h]) {
       videoByHeight[h] = f;
     } else {
-      // Prefer smaller file (more efficient codec like av1)
       const existing = videoByHeight[h];
       if ((f.filesize || 0) < (existing.filesize || Infinity) && (f.filesize || 0) > 0) {
         videoByHeight[h] = f;
@@ -185,14 +294,8 @@ function buildSmartFormats(formats) {
 
   for (const height of Object.keys(videoByHeight).map(Number).sort((a,b) => b - a)) {
     const vf = videoByHeight[height];
-    // Only offer merged option if we have audio to merge with
-    const formatId = bestAudio
-      ? `${vf.format_id}+${bestAudio.format_id}`
-      : vf.format_id;
-
-    // Estimate combined filesize
+    const formatId = bestAudio ? `${vf.format_id}+${bestAudio.format_id}` : vf.format_id;
     const combinedSize = (vf.filesize || 0) + (bestAudio?.filesize || 0);
-
     results.push({
       format_id: formatId,
       label: `${height}p`,
@@ -203,12 +306,10 @@ function buildSmartFormats(formats) {
     });
   }
 
-  // ── Also add combined (video+audio already) formats that aren't duplicates ──
   combined.sort((a, b) => (b.height || 0) - (a.height || 0));
   const addedHeights = new Set(results.map(r => parseInt(r.label)));
-
   for (const f of combined) {
-    if (f.height && addedHeights.has(f.height)) continue; // already covered by merged version
+    if (f.height && addedHeights.has(f.height)) continue;
     results.push({
       format_id: f.format_id,
       label: f.height ? `${f.height}p` : "Auto",
@@ -219,7 +320,6 @@ function buildSmartFormats(formats) {
     });
   }
 
-  // ── Audio-only options ──
   for (const f of audioOnly.slice(0, 2)) {
     results.push({
       format_id: f.format_id,
@@ -237,7 +337,6 @@ function buildSmartFormats(formats) {
 /* ── Render formats ── */
 function renderFormats(formats, videoUrl) {
   formatsGrid.innerHTML = "";
-
   const smart = buildSmartFormats(formats);
 
   if (!smart.length) {
@@ -256,6 +355,14 @@ function renderFormats(formats, videoUrl) {
     ql.className = "format-quality";
     ql.textContent = fmt.label;
 
+    if (fmt.badge) {
+      const badge = document.createElement("span");
+      badge.className = "format-badge";
+      badge.textContent = fmt.badge;
+      badge.style.cssText = "font-size:0.6rem;padding:2px 5px;border-radius:4px;background:rgba(232,184,0,0.2);color:#E8B800;margin-left:4px;font-weight:600;";
+      ql.appendChild(badge);
+    }
+
     const extEl = document.createElement("div");
     extEl.className = "format-ext";
     extEl.textContent = fmt.ext.toUpperCase();
@@ -268,14 +375,6 @@ function renderFormats(formats, videoUrl) {
       sz.className = "format-size";
       sz.textContent = formatBytes(fmt.filesize);
       info.appendChild(sz);
-    }
-
-    if (fmt.badge) {
-      const badge = document.createElement("span");
-      badge.className = "format-badge";
-      badge.textContent = fmt.badge;
-      badge.style.cssText = "font-size:0.6rem;padding:2px 5px;border-radius:4px;background:rgba(232,184,0,0.2);color:#E8B800;margin-left:4px;font-weight:600;";
-      ql.appendChild(badge);
     }
 
     const downloadUrl = `${API_BASE}/dl?url=${encodeURIComponent(videoUrl)}&format_id=${encodeURIComponent(fmt.format_id)}`;
@@ -304,9 +403,7 @@ async function fetchVideo() {
     return;
   }
 
-  try {
-    new URL(rawUrl);
-  } catch {
+  try { new URL(rawUrl); } catch {
     setError("That doesn't look like a valid URL. Please paste a full video link.");
     return;
   }
