@@ -114,8 +114,8 @@ const SMARTLINK_URL = 'https://walkingdrunkard.com/hmsgefqpcn?key=4d6e7561a3b59b
   overlay.innerHTML = `
     <div id="adWaitBox">
       <div id="adWaitSpinner"></div>
-      <p id="adWaitTitle">The Magic is happening<span id="adWaitDots"><span>.</span><span>.</span><span>.</span></span></p>
-      <p id="adWaitSub">Abracadabra...</p>
+      <p id="adWaitTitle">Abracadabra<span id="adWaitDots"><span>.</span><span>.</span><span>.</span></span></p>
+      <p id="adWaitSub">The Magic is happening, Just Wait...</p>
     </div>
   `;
   document.body.appendChild(overlay);
@@ -129,16 +129,14 @@ function hideWaitModal() {
 }
 
 /* ── Download logic ──
-   Uses window.location.href so the download happens IN the same tab.
-   The browser detects Content-Disposition: attachment and saves the file
-   without navigating away from the page.
+   Hidden <a> with no target="_blank" — browser saves file in same tab
+   because the API sends Content-Disposition: attachment.
 ── */
 function executeDownload(downloadUrl) {
   if (!downloadUrl) return;
-  // Create a hidden <a> with NO target="_blank" — fires as same-page download
   const link = document.createElement("a");
   link.href = downloadUrl;
-  link.setAttribute("download", "");   // hints browser to download, not navigate
+  link.setAttribute("download", "");
   link.style.display = "none";
   document.body.appendChild(link);
   link.click();
@@ -155,29 +153,33 @@ async function handleDownloadWithAd(event, downloadUrl) {
   try {
     adInProgress = true;
 
-    // 1. Open ad in a new tab
+    // 1. Open ad in new tab
     if (SMARTLINK_URL) {
       window.open(SMARTLINK_URL, "_blank", "noopener,noreferrer");
     }
 
-    // 2. Show waiting modal on THIS page
+    // 2. Show modal immediately
     showWaitModal();
 
-    // 3. Wait 3 seconds while ad loads in background tab
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    // 3. HEAD request to the download URL — resolves when backend is ready
+    //    We use HEAD so no actual file bytes are transferred here;
+    //    we just wait for the server to confirm the file is ready.
+    //    On success OR error we proceed either way.
+    try {
+      await fetch(downloadUrl, { method: "HEAD", signal: AbortSignal.timeout(600_000) });
+    } catch (_) {
+      // Server may not support HEAD — that's fine, proceed anyway
+    }
 
-    // 4. Trigger download in the same tab (no new tab opens)
+    // 4. Trigger actual download (GET) — file streams to browser
     executeDownload(downloadUrl);
-
-    // 5. Brief pause then hide modal
-    await new Promise(resolve => setTimeout(resolve, 8000));
-    hideWaitModal();
 
   } catch (err) {
-    // Fallback: attempt download anyway
+    // Something unexpected — still attempt the download
     executeDownload(downloadUrl);
-    hideWaitModal();
   } finally {
+    // Hide modal as soon as download is triggered (success or error)
+    hideWaitModal();
     adInProgress = false;
   }
 }
