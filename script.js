@@ -170,7 +170,7 @@ async function handleDownloadWithAd(event, downloadUrl) {
     executeDownload(downloadUrl);
 
     // 5. Brief pause then hide modal
-    await new Promise(resolve => setTimeout(resolve, 800));
+    await new Promise(resolve => setTimeout(resolve, 8000));
     hideWaitModal();
 
   } catch (err) {
