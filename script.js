@@ -23,25 +23,124 @@ const formatsGrid  = document.getElementById("formatsGrid");
 
 /* ── ADSTERRA SMARTLINK ── */
 const SMARTLINK_URL = 'https://walkingdrunkard.com/hmsgefqpcn?key=4d6e7561a3b59bff0fdc75b8e69f21e9';
-let adTriggerInProgress = false;
 
-async function triggerSmartlinkBeforeDownload(downloadUrl) {
-  return new Promise((resolve) => {
-    if (SMARTLINK_URL) {
-      window.open(SMARTLINK_URL, '_blank');
-      setTimeout(resolve, 500);
-    } else {
-      resolve();
+/* ══════════════════════════════════════════════════════
+   WAITING MODAL
+   Shown over the page while download is being prepared.
+   User sees a spinner — ad opens in new tab silently.
+══════════════════════════════════════════════════════ */
+
+// Inject modal HTML + styles once
+(function injectModal() {
+  const style = document.createElement("style");
+  style.textContent = `
+    #adWaitOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(10, 10, 10, 0.82);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
     }
-  });
+    #adWaitOverlay.visible {
+      display: flex;
+    }
+    #adWaitBox {
+      background: linear-gradient(145deg, #161410, #1a1710);
+      border: 1px solid rgba(232, 184, 0, 0.25);
+      border-radius: 20px;
+      padding: 40px 36px 32px;
+      text-align: center;
+      max-width: 340px;
+      width: 90%;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+      animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.88) translateY(16px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    #adWaitSpinner {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 20px;
+      position: relative;
+    }
+    #adWaitSpinner::before,
+    #adWaitSpinner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 3px solid transparent;
+    }
+    #adWaitSpinner::before {
+      border-top-color: #E8B800;
+      animation: spin 0.9s linear infinite;
+    }
+    #adWaitSpinner::after {
+      border-bottom-color: rgba(232,184,0,0.25);
+      animation: spin 0.9s linear infinite reverse;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #adWaitTitle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #f0e8cc;
+      margin: 0 0 8px;
+      letter-spacing: -0.01em;
+    }
+    #adWaitSub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      color: rgba(240,232,204,0.45);
+      margin: 0;
+      line-height: 1.5;
+    }
+    #adWaitDots span {
+      animation: blink 1.2s infinite;
+      opacity: 0;
+    }
+    #adWaitDots span:nth-child(2) { animation-delay: 0.2s; }
+    #adWaitDots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink {
+      0%, 80%, 100% { opacity: 0; }
+      40% { opacity: 1; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  const overlay = document.createElement("div");
+  overlay.id = "adWaitOverlay";
+  overlay.innerHTML = `
+    <div id="adWaitBox">
+      <div id="adWaitSpinner"></div>
+      <p id="adWaitTitle">Preparing your download<span id="adWaitDots"><span>.</span><span>.</span><span>.</span></span></p>
+      <p id="adWaitSub">This will only take a moment</p>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+})();
+
+function showWaitModal() {
+  document.getElementById("adWaitOverlay").classList.add("visible");
 }
 
+function hideWaitModal() {
+  document.getElementById("adWaitOverlay").classList.remove("visible");
+}
+
+/* ── Download logic ── */
 function executeDownload(downloadUrl) {
   if (!downloadUrl) return;
-  const link = document.createElement('a');
+  const link = document.createElement("a");
   link.href = downloadUrl;
-  link.target = '_blank';
-  link.rel = 'noopener noreferrer';
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
   document.body.appendChild(link);
   link.click();
   setTimeout(() => document.body.removeChild(link), 100);
@@ -50,17 +149,25 @@ function executeDownload(downloadUrl) {
 async function handleDownloadWithAd(event, downloadUrl) {
   event.preventDefault();
   event.stopPropagation();
-  if (adTriggerInProgress) return;
   if (!downloadUrl) return;
-  try {
-    adTriggerInProgress = true;
-    await triggerSmartlinkBeforeDownload(downloadUrl);
-    executeDownload(downloadUrl);
-  } catch (error) {
-    executeDownload(downloadUrl);
-  } finally {
-    adTriggerInProgress = false;
+
+  // 1. Open ad in new tab
+  if (SMARTLINK_URL) {
+    window.open(SMARTLINK_URL, "_blank");
   }
+
+  // 2. Show waiting modal on this page
+  showWaitModal();
+
+  // 3. Wait 3 seconds (user sees modal, ad loads in background tab)
+  await new Promise(resolve => setTimeout(resolve, 3000));
+
+  // 4. Trigger the actual download silently
+  executeDownload(downloadUrl);
+
+  // 5. Hide modal after a short delay
+  await new Promise(resolve => setTimeout(resolve, 600));
+  hideWaitModal();
 }
 
 /* ── Animated background ── */
@@ -151,23 +258,17 @@ function fmtNumber(n) {
 
 /* ══════════════════════════════════════════════════════
    SMART FORMAT BUILDER
-   Combines video-only + audio-only into clean quality
-   options. Users just see "1080p", "720p", etc.
-   Each option sends the correct merged format_id.
 ══════════════════════════════════════════════════════ */
 function buildSmartFormats(formats) {
   const combined  = formats.filter(f => f.vcodec !== "none" && f.acodec !== "none");
   const videoOnly = formats.filter(f => f.vcodec !== "none" && f.acodec === "none");
   const audioOnly = formats.filter(f => f.vcodec === "none" && f.acodec !== "none");
 
-  // Sort audio-only by bitrate descending — pick the best one for merging
   audioOnly.sort((a, b) => (b.tbr || 0) - (a.tbr || 0));
-  const bestAudio = audioOnly[0]; // e.g. format_id "140"
+  const bestAudio = audioOnly[0];
 
   const results = [];
 
-  // ── Build merged quality options from video-only + best audio ──
-  // Group video-only by height, pick best (smallest filesize / lowest tbr = av1 preferred)
   const videoByHeight = {};
   for (const f of videoOnly) {
     const h = f.height;
@@ -175,7 +276,6 @@ function buildSmartFormats(formats) {
     if (!videoByHeight[h]) {
       videoByHeight[h] = f;
     } else {
-      // Prefer smaller file (more efficient codec like av1)
       const existing = videoByHeight[h];
       if ((f.filesize || 0) < (existing.filesize || Infinity) && (f.filesize || 0) > 0) {
         videoByHeight[h] = f;
@@ -185,12 +285,9 @@ function buildSmartFormats(formats) {
 
   for (const height of Object.keys(videoByHeight).map(Number).sort((a,b) => b - a)) {
     const vf = videoByHeight[height];
-    // Only offer merged option if we have audio to merge with
     const formatId = bestAudio
       ? `${vf.format_id}+${bestAudio.format_id}`
       : vf.format_id;
-
-    // Estimate combined filesize
     const combinedSize = (vf.filesize || 0) + (bestAudio?.filesize || 0);
 
     results.push({
@@ -203,12 +300,11 @@ function buildSmartFormats(formats) {
     });
   }
 
-  // ── Also add combined (video+audio already) formats that aren't duplicates ──
   combined.sort((a, b) => (b.height || 0) - (a.height || 0));
   const addedHeights = new Set(results.map(r => parseInt(r.label)));
 
   for (const f of combined) {
-    if (f.height && addedHeights.has(f.height)) continue; // already covered by merged version
+    if (f.height && addedHeights.has(f.height)) continue;
     results.push({
       format_id: f.format_id,
       label: f.height ? `${f.height}p` : "Auto",
@@ -219,7 +315,6 @@ function buildSmartFormats(formats) {
     });
   }
 
-  // ── Audio-only options ──
   for (const f of audioOnly.slice(0, 2)) {
     results.push({
       format_id: f.format_id,
