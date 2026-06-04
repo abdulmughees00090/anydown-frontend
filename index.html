@@ -10,124 +10,257 @@
   gtag('config', 'G-8N816RG4R1');
 </script>
 
+  <!-- ============================================ -->
+  <!-- CACHE BUSTER — runs before anything loads    -->
+  <!-- Clears stale SW caches (old redirecting ads, -->
+  <!-- outdated HTML) silently on version mismatch. -->
+  <!-- Keep SITE_VER in sync with CACHE_NAME in     -->
+  <!-- sw.js — bump both together on each deploy.   -->
+  <!-- ============================================ -->
+  <script>
+  (function () {
+    var SITE_VER = 'anydown-v2'; // ← bump this + sw.js on every deploy
+    try {
+      if (localStorage.getItem('anydown_cache_ver') !== SITE_VER) {
+        // Nuke every cache entry this origin has ever written
+        if ('caches' in window) {
+          caches.keys().then(function (keys) {
+            return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+          });
+        }
+        localStorage.setItem('anydown_cache_ver', SITE_VER);
+      }
+    } catch (e) { /* private/incognito — localStorage unavailable, skip */ }
+  })();
+  </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  
+
   <!-- ============================================ -->
-  <!-- BASIC META TAGS (All Platforms)               -->
+  <!-- PRIMARY META TAGS                            -->
   <!-- ============================================ -->
-  <title>AnyDown - Free Video Downloader | Download from 1000+ Sites</title>
-  <meta name="title" content="AnyDown - Free Video Downloader | Download from YouTube, Instagram, TikTok & 1000+ Sites" />
-  <meta name="description" content="Download videos from 1000+ sites. Free, fast, and no registration required. Paste any link and download in HD quality." />
-  <meta name="keywords" content="video downloader, youtube downloader, instagram video downloader, tiktok downloader, twitter video downloader, facebook video downloader, free video download, online video downloader, download any video, 4k video downloader" />
-  <meta name="author" content="AnyDown" />
+  <title>AnyDown – Free YouTube Video Downloader | YouTube to MP3 &amp; MP4 Converter</title>
+  <meta name="title" content="AnyDown – Free YouTube Video Downloader | YouTube to MP3 &amp; MP4 Converter" />
+  <meta name="description" content="Download YouTube videos in HD, 1080p &amp; 4K. Convert YouTube to MP3 or MP4 instantly. Free, no registration required. Supports TikTok, Instagram, Twitter &amp; 1000+ platforms." />
+  <meta name="keywords" content="youtube downloader, youtube video downloader, youtube to mp3, youtube to mp4, download youtube videos, free youtube downloader, hd video downloader, online video downloader, youtube mp3 converter, mp4 downloader, best youtube downloader, 4k video downloader, instagram video downloader, tiktok downloader, twitter video downloader, mp3 downloader, free video downloader, download audio from youtube, video converter online, download youtube videos free" />
+  <meta name="author" content="AnyDown by SilverFox Dynamics" />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-  <meta name="googlebot" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
   <meta name="bingbot" content="index, follow" />
-  
-  <!-- Bing Verification -->
+
+  <!-- Search Engine Verification -->
   <meta name="msvalidate.01" content="D9B1822529F9A5570E9A62C0C3ECCCCB" />
   <meta name="google-site-verification" content="hX33F0u8wTboJWJRPlYc8gOONmR2DuDOp7kxgEkN5ds" />
-  
-  <!-- Canonical URL -->
+
+  <!-- Canonical URL & Hreflang -->
   <link rel="canonical" href="https://anydown.silverfoxdynamics.com/" />
-  
+  <link rel="alternate" hreflang="en" href="https://anydown.silverfoxdynamics.com/" />
+  <link rel="alternate" hreflang="x-default" href="https://anydown.silverfoxdynamics.com/" />
+
   <!-- ============================================ -->
-  <!-- OPEN GRAPH / FACEBOOK / WHATSAPP / LINKEDIN   -->
+  <!-- OPEN GRAPH / FACEBOOK / WHATSAPP / LINKEDIN  -->
   <!-- ============================================ -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://anydown.silverfoxdynamics.com/" />
-  <meta property="og:title" content="AnyDown - Free Video Downloader | 1000+ Sites" />
-  <meta property="og:description" content="Download videos from YouTube, Instagram, TikTok, Twitter, Facebook, Vimeo, Dailymotion and 1000+ sites. Free, fast, no registration." />
+  <meta property="og:title" content="AnyDown – Free YouTube Downloader | MP3 &amp; MP4 Converter" />
+  <meta property="og:description" content="Download YouTube videos in HD, 1080p &amp; 4K. Convert YouTube to MP3 or MP4 — free, instant, no registration. Supports TikTok, Instagram, Twitter &amp; 1000+ platforms." />
   <meta property="og:image" content="https://anydown.silverfoxdynamics.com/og-image.png" />
   <meta property="og:image:secure_url" content="https://anydown.silverfoxdynamics.com/og-image.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="AnyDown - Paste any link, download videos for free" />
+  <meta property="og:image:alt" content="AnyDown – Free YouTube video downloader. Paste a link, download in HD, 4K, MP3 or MP4." />
   <meta property="og:site_name" content="AnyDown" />
   <meta property="og:locale" content="en_US" />
-  
+
   <!-- ============================================ -->
-  <!-- TWITTER / X CARD                              -->
+  <!-- TWITTER / X CARD                             -->
   <!-- ============================================ -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@AnyDownApp" />
   <meta name="twitter:creator" content="@AnyDownApp" />
-  <meta name="twitter:title" content="AnyDown - Free Video Downloader" />
-  <meta name="twitter:description" content="Download videos from YouTube, Instagram, TikTok, Twitter, Facebook and 1000+ sites. Free & easy." />
+  <meta name="twitter:title" content="AnyDown – Free YouTube Downloader | MP3 &amp; MP4" />
+  <meta name="twitter:description" content="Download YouTube videos in HD, 1080p &amp; 4K. Convert to MP3 or MP4 instantly. Free, no sign-up. Also supports TikTok, Instagram, Twitter &amp; 1000+ sites." />
   <meta name="twitter:image" content="https://anydown.silverfoxdynamics.com/og-image.png" />
-  <meta name="twitter:image:alt" content="AnyDown video downloader preview" />
-  
+  <meta name="twitter:image:alt" content="AnyDown – Free YouTube video downloader and MP3 converter" />
+
   <!-- ============================================ -->
-  <!-- INSTAGRAM / SNAPCHAT / DISCORD / TELEGRAM     -->
-  <!-- These platforms use Open Graph + these extras -->
+  <!-- DISCORD / TELEGRAM / SOCIAL EXTRAS           -->
   <!-- ============================================ -->
   <meta property="og:video" content="https://anydown.silverfoxdynamics.com/preview-video.mp4" />
   <meta property="og:video:type" content="video/mp4" />
   <meta property="og:video:width" content="1280" />
   <meta property="og:video:height" content="720" />
-  
-  <!-- Telegram specific -->
   <meta property="telegram:channel" content="@AnyDownApp" />
-  
-  <!-- Discord rich embed -->
   <meta name="theme-color" content="#E8B800" />
-  
-  <!-- ============================================ -->
-  <!-- LINKEDIN SPECIFIC                             -->
-  <!-- ============================================ -->
-  <meta property="linkedin:title" content="AnyDown - Free Video Downloader" />
-  <meta property="linkedin:description" content="Download videos from 1000+ platforms. Free, fast, no registration." />
-  
-  <!-- ============================================ -->
-  <!-- PINTEREST SPECIFIC                            -->
-  <!-- ============================================ -->
-  <meta name="pinterest:richpins" content="enabled" />
-  
-  <!-- ============================================ -->
-  <!-- WHATSAPP / iMESSAGE / SMS (uses og:image)    -->
-  <!-- Adding extra color for better rendering       -->
-  <!-- ============================================ -->
+
+  <!-- Apple & Mobile Web App -->
   <meta name="apple-mobile-web-app-title" content="AnyDown" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="format-detection" content="telephone=no" />
-  
+
+  <!-- Pinterest Rich Pins -->
+  <meta name="pinterest:richpins" content="enabled" />
+
   <!-- ============================================ -->
-  <!-- DUBLIN CORE METADATA (for legacy platforms)   -->
+  <!-- SCHEMA.ORG STRUCTURED DATA                   -->
   <!-- ============================================ -->
-  <meta name="DC.title" content="AnyDown - Free Video Downloader" />
-  <meta name="DC.description" content="Download videos from 1000+ sites. Free and fast." />
-  <meta name="DC.identifier" content="https://anydown.silverfoxdynamics.com/" />
-  
-  <!-- Resource Hints -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="dns-prefetch" href="https://api.silverfoxdynamics.com" />
-  <link rel="dns-prefetch" href="https://walkingdrunkard.com" />
-  
-  <!-- Schema.org Structured Data -->
+
+  <!-- 1. WebApplication -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "AnyDown",
     "url": "https://anydown.silverfoxdynamics.com",
-    "description": "Free online video downloader supporting YouTube, Instagram, TikTok, Twitter, Facebook, Vimeo, Dailymotion and 1000+ platforms",
-    "applicationCategory": "Multimedia",
-    "operatingSystem": "All",
+    "description": "AnyDown is a free online YouTube video downloader and converter. Download YouTube videos in HD, 1080p and 4K, or convert YouTube to MP3 and MP4. Also supports TikTok, Instagram, Twitter, Facebook, Vimeo, Dailymotion and 1000+ platforms.",
+    "applicationCategory": "MultimediaApplication",
+    "applicationSubCategory": "Video Downloader",
+    "operatingSystem": "Any — works in all modern web browsers",
+    "browserRequirements": "Requires JavaScript. Compatible with Chrome, Firefox, Safari, and Edge on desktop and mobile.",
+    "softwareVersion": "1.0",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
     "offers": {
       "@type": "Offer",
       "price": "0",
-      "priceCurrency": "USD"
+      "priceCurrency": "USD",
+      "description": "Free to use — no account or registration required"
     },
-    "featureList": "Download videos from 1000+ sites, Multiple quality options, No registration required, Fast downloads",
+    "featureList": [
+      "Download YouTube videos in HD, 1080p, 1440p 2K and 2160p 4K",
+      "Convert YouTube to MP3 audio",
+      "Convert YouTube to MP4 video",
+      "Download from TikTok, Instagram, Twitter, Facebook, Vimeo and Dailymotion",
+      "Supports 1000+ video platforms",
+      "No registration or account required",
+      "Multiple quality options for every video",
+      "Audio-only downloads in MP3 and M4A format",
+      "Completely free with no download limits",
+      "Works on desktop and mobile browsers"
+    ],
+    "screenshot": "https://anydown.silverfoxdynamics.com/og-image.png",
     "image": "https://anydown.silverfoxdynamics.com/og-image.png",
     "thumbnailUrl": "https://anydown.silverfoxdynamics.com/og-image.png",
-    "screenshot": "https://anydown.silverfoxdynamics.com/og-image.png"
+    "creator": {
+      "@type": "Organization",
+      "name": "SilverFox Dynamics",
+      "url": "https://silverfoxdynamics.com"
+    }
   }
   </script>
-  
+
+  <!-- 2. Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "SilverFox Dynamics",
+    "url": "https://silverfoxdynamics.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://anydown.silverfoxdynamics.com/favicon.png"
+    },
+    "foundingDate": "2024",
+    "description": "SilverFox Dynamics builds free web tools and mobile apps for everyday users.",
+    "sameAs": [
+      "https://anydown.silverfoxdynamics.com",
+      "https://play.google.com/store/apps/details?id=com.any.down.video.downloader.videodownloader"
+    ]
+  }
+  </script>
+
+  <!-- 3. FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I download a YouTube video?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Copy the YouTube video URL, paste it into the AnyDown input bar, click Fetch, then choose your preferred quality — from 360p up to 4K — and click the download button. No account needed."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I convert YouTube videos to MP3?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. After pasting a YouTube link and clicking Fetch, select the Audio MP3 or M4A format option to download just the audio track with no video included."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is AnyDown free to use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. AnyDown is completely free. No registration, no account and no subscription required. Paste a video link, choose a quality, and download."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What video quality options are available?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AnyDown shows every available quality for each video, including 360p, 480p, 720p HD, 1080p Full HD, 1440p 2K and 2160p 4K. The options shown depend on what the source platform offers for that specific video."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which platforms does AnyDown support?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AnyDown supports over 1000 video sites including YouTube, Instagram, TikTok, Twitter/X, Facebook, Vimeo, Dailymotion, Reddit, Twitch and many more."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I download YouTube videos in HD or 4K?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "After fetching a YouTube link, select 1080p for Full HD, 1440p for 2K or 2160p for 4K from the quality list. Higher resolutions are labelled with an HD or 4K badge and are only shown when the original upload supports them."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to install software or a browser extension?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. AnyDown is fully browser-based — no software, extensions or plugins required. Open the website, paste your link and download. A free Android app is also available for YouTube downloads on mobile."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- 4. BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "AnyDown – Free YouTube Video Downloader",
+        "item": "https://anydown.silverfoxdynamics.com/"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Resource Hints -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://api.silverfoxdynamics.com" />
+  <link rel="dns-prefetch" href="https://walkingdrunkard.com" />
+
   <!-- ============================================ -->
   <!-- ADSTERRA SMARTLINK CONFIGURATION             -->
   <!-- ============================================ -->
@@ -136,12 +269,12 @@
       smartlinkUrl: 'https://walkingdrunkard.com/hmsgefqpcn?key=4d6e7561a3b59bff0fdc75b8e69f21e9'
     };
   </script>
-  
+
   <link rel="icon" href="favicon.png" type="image/x-icon" />
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="manifest" href="/manifest.json">
-  
+
   <style>
     /* Base styles */
     body {
@@ -149,12 +282,12 @@
       padding: 0;
       overflow-x: hidden;
     }
-    
+
     .header {
       position: relative;
       z-index: 20;
     }
-    
+
     .ad-slot {
       display: flex;
       justify-content: center;
@@ -164,7 +297,7 @@
       max-width: 100%;
       overflow: hidden;
     }
-    
+
     .ad-label {
       font-size: 0.6rem;
       color: var(--text-muted, #4A4030);
@@ -173,7 +306,7 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
-    
+
     .desktop-right-rail {
       position: fixed;
       right: 20px;
@@ -183,7 +316,7 @@
       z-index: 40;
       display: none;
     }
-    
+
     .desktop-left-rail {
       position: fixed;
       left: 20px;
@@ -193,7 +326,7 @@
       z-index: 40;
       display: none;
     }
-    
+
     .ad-container {
       display: flex;
       justify-content: center;
@@ -201,69 +334,69 @@
       max-width: 100%;
       overflow: hidden;
     }
-    
+
     .leaderboard-wrap {
       max-width: 780px;
       margin-left: auto;
       margin-right: auto;
       width: 100%;
     }
-    
+
     .mobile-banner-wrap {
       display: flex;
       justify-content: center;
       width: 100%;
     }
-    
+
     .desktop-banner-wrap {
       display: flex;
       justify-content: center;
       width: 100%;
     }
-    
+
     .soft-ad-break {
       margin: 16px auto 8px;
       width: 100%;
       max-width: 300px;
     }
-    
+
     iframe {
       max-width: 100%;
       border: none;
     }
-    
+
     html, body {
       overflow-x: hidden;
       max-width: 100%;
     }
-    
+
     @media (min-width: 1200px) {
       .desktop-right-rail { display: block; }
-      .desktop-left-rail { display: block; }
+      .desktop-left-rail  { display: block; }
     }
-    
+
     @media (max-width: 1199px) {
       .desktop-right-rail { display: none; }
-      .desktop-left-rail { display: none; }
+      .desktop-left-rail  { display: none; }
     }
-    
+
     @media (max-width: 768px) {
-      .desktop-leaderboard { display: none !important; }
-      .desktop-banner-wrap { display: none !important; }
-      .mobile-banner-wrap { display: flex !important; }
+      .desktop-leaderboard  { display: none !important; }
+      .desktop-banner-wrap  { display: none !important; }
+      .mobile-banner-wrap   { display: flex !important; }
     }
-    
+
     @media (min-width: 769px) {
       .desktop-leaderboard { display: flex !important; }
-      .mobile-banner-wrap { display: none !important; }
+      .mobile-banner-wrap  { display: none !important; }
       .desktop-banner-wrap { display: flex !important; }
     }
-    
+
     .result-card, .search-section, .app-banner, .header {
       position: relative;
       z-index: 2;
     }
-    
+
     .pwa-install-btn {
       position: fixed;
       bottom: 80px;
@@ -282,12 +415,12 @@
       transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
       animation: float 2s ease-in-out infinite;
     }
-    
+
     .pwa-install-btn:hover {
       transform: scale(1.08);
       box-shadow: 0 6px 20px rgba(232, 184, 0, 0.6);
     }
-    
+
     .pwa-install-btn svg {
       width: 28px;
       height: 28px;
@@ -295,21 +428,229 @@
       stroke-width: 2;
       fill: none;
     }
-    
+
     @keyframes float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      50%       { transform: translateY(-8px); }
     }
-    
+
     @media (max-width: 768px) {
       .pwa-install-btn { bottom: 70px; left: 16px; width: 52px; height: 52px; }
       .pwa-install-btn svg { width: 26px; height: 26px; }
     }
-    
+
     @media (max-width: 600px) {
       .pwa-install-btn { bottom: 60px; left: 14px; width: 48px; height: 48px; }
       .pwa-install-btn svg { width: 24px; height: 24px; }
       .wrapper { padding-top: 20px !important; }
+    }
+
+    /* ============================================ */
+    /* SEO CONTENT SECTIONS                         */
+    /* ============================================ */
+
+    .seo-sub-tagline {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      color: rgba(240, 232, 204, 0.35);
+      text-align: center;
+      margin: 4px 0 0;
+      letter-spacing: 0.03em;
+    }
+
+    /* Features grid */
+    .seo-features {
+      padding: 40px 24px 20px;
+      max-width: 720px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .seo-section-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #f0e8cc;
+      text-align: center;
+      margin: 0 0 10px;
+    }
+
+    .seo-section-desc {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem;
+      color: rgba(240, 232, 204, 0.45);
+      text-align: center;
+      margin: 0 0 28px;
+      line-height: 1.65;
+      max-width: 580px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .feature-item {
+      background: rgba(255, 255, 255, 0.028);
+      border: 1px solid rgba(232, 184, 0, 0.1);
+      border-radius: 14px;
+      padding: 20px 18px;
+      transition: border-color 0.2s ease;
+    }
+
+    .feature-item:hover {
+      border-color: rgba(232, 184, 0, 0.22);
+    }
+
+    .feature-icon {
+      font-size: 1.3rem;
+      margin-bottom: 9px;
+      line-height: 1;
+    }
+
+    .feature-item h3 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #E8B800;
+      margin: 0 0 6px;
+    }
+
+    .feature-item p {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      color: rgba(240, 232, 204, 0.45);
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 480px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .seo-features  { padding: 32px 18px 16px; }
+    }
+
+    /* Platforms strip */
+    .platforms-strip {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 10px;
+      padding: 0 24px 36px;
+      max-width: 720px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .platform-tag {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: rgba(240, 232, 204, 0.38);
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(232, 184, 0, 0.08);
+      border-radius: 20px;
+      padding: 4px 11px;
+      white-space: nowrap;
+    }
+
+    /* FAQ section */
+    .faq-section {
+      padding: 12px 24px 40px;
+      max-width: 720px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .faq-item {
+      background: rgba(255, 255, 255, 0.028);
+      border: 1px solid rgba(232, 184, 0, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .faq-item[open] {
+      border-color: rgba(232, 184, 0, 0.2);
+    }
+
+    .faq-item summary {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #f0e8cc;
+      padding: 15px 18px;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      gap: 12px;
+    }
+
+    .faq-item summary::-webkit-details-marker { display: none; }
+
+    .faq-item summary::after {
+      content: '+';
+      font-size: 1.15rem;
+      color: #E8B800;
+      flex-shrink: 0;
+      line-height: 1;
+      transition: transform 0.2s ease;
+    }
+
+    .faq-item[open] summary::after {
+      content: '−';
+    }
+
+    .faq-item .faq-answer {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      color: rgba(240, 232, 204, 0.48);
+      padding: 0 18px 16px;
+      margin: 0;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 480px) {
+      .faq-section  { padding: 12px 18px 32px; }
+      .faq-item summary { font-size: 0.84rem; padding: 14px 16px; }
+      .faq-item .faq-answer { padding: 0 16px 14px; }
+    }
+
+    /* Footer improvements */
+    .footer-keywords {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      color: rgba(240, 232, 204, 0.22);
+      margin: 6px 0 0;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .footer-legal {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem;
+      color: rgba(240, 232, 204, 0.16);
+      margin: 8px 0 0;
+      line-height: 1.55;
+      text-align: center;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
     }
   </style>
 </head>
@@ -325,7 +666,7 @@
   </button>
 
   <!-- Right Rail Ad -->
-  <div class="desktop-right-rail">
+  <div class="desktop-right-rail" aria-hidden="true">
     <div class="ad-label">Ad</div>
     <div class="ad-container">
       <script>
@@ -340,9 +681,9 @@
       <script src="https://walkingdrunkard.com/c17371064e0173ed806fb86b9f5ff4bb/invoke.js"></script>
     </div>
   </div>
-  
+
   <!-- Left Rail Ad -->
-  <div class="desktop-left-rail">
+  <div class="desktop-left-rail" aria-hidden="true">
     <div class="ad-label">Ad</div>
     <div class="ad-container">
       <script>
@@ -357,19 +698,21 @@
       <script src="https://walkingdrunkard.com/45f968f2d08b7ec1326b5112709b489e/invoke.js"></script>
     </div>
   </div>
-  
-  <div class="wrapper">
-    <header class="header">
+
+  <div class="wrapper" role="main">
+
+    <header class="header" role="banner">
       <div class="logo-mark" onclick="location.reload();" style="cursor: pointer;" title="Refresh page">
         <img src="favicon.png" alt="AnyDown logo" class="favicon-img" onerror="this.style.display='none'" />
         <span class="logo-fallback">▼</span>
       </div>
       <h1 class="brand">AnyDown</h1>
-      <p class="tagline">Paste a link. Pick a quality. Download.</p>
+      <p class="tagline">Free YouTube Video Downloader &amp; MP3 Converter</p>
+      <p class="seo-sub-tagline">YouTube to MP4 &nbsp;·&nbsp; YouTube to MP3 &nbsp;·&nbsp; HD &amp; 4K &nbsp;·&nbsp; 1000+ Sites</p>
     </header>
 
     <!-- Leaderboard Ads -->
-    <div class="leaderboard-wrap">
+    <div class="leaderboard-wrap" aria-hidden="true">
       <div class="ad-slot desktop-leaderboard">
         <div class="ad-label">Ad</div>
         <div class="ad-container">
@@ -385,7 +728,7 @@
           <script src="https://walkingdrunkard.com/341e650f933941d93f6b6e3a9cd32517/invoke.js"></script>
         </div>
       </div>
-      
+
       <div class="ad-slot mobile-banner-wrap">
         <div class="ad-label">Ad</div>
         <div class="ad-container">
@@ -404,10 +747,18 @@
     </div>
 
     <!-- Search Section -->
-    <section class="search-section">
+    <section class="search-section" aria-label="Download a video">
       <div class="search-bar" id="searchBar">
-        <input type="url" id="urlInput" class="url-input" placeholder="https://youtube.com/watch?v=…" autocomplete="off" spellcheck="false" />
-        <button id="fetchBtn" class="fetch-btn" aria-label="Fetch video">
+        <input
+          type="url"
+          id="urlInput"
+          class="url-input"
+          placeholder="https://youtube.com/watch?v=…"
+          autocomplete="off"
+          spellcheck="false"
+          aria-label="Paste video URL here"
+        />
+        <button id="fetchBtn" class="fetch-btn" aria-label="Fetch video formats">
           <span class="btn-text">Fetch</span>
           <span class="btn-arrow">→</span>
         </button>
@@ -416,7 +767,7 @@
     </section>
 
     <!-- Result Area -->
-    <section class="result-section" id="resultSection" aria-live="polite">
+    <section class="result-section" id="resultSection" aria-live="polite" aria-label="Download results">
       <div class="state-loading" id="stateLoading" hidden>
         <div class="spinner"><div class="spinner-ring"></div><div class="spinner-ring spinner-ring--2"></div></div>
         <p class="loading-text">Fetching video info…</p>
@@ -445,12 +796,17 @@
       </div>
       <div class="result-card" id="resultCard" hidden>
         <div class="card-media"><img id="thumbImg" src="" alt="Video thumbnail" class="thumb" /><div class="card-overlay"></div></div>
-        <div class="card-body"><h2 class="video-title" id="videoTitle"></h2><p class="video-meta" id="videoMeta"></p><div class="formats-label">Available formats</div><div class="formats-grid" id="formatsGrid"></div></div>
+        <div class="card-body">
+          <h2 class="video-title" id="videoTitle"></h2>
+          <p class="video-meta" id="videoMeta"></p>
+          <div class="formats-label">Available formats</div>
+          <div class="formats-grid" id="formatsGrid"></div>
+        </div>
       </div>
     </section>
 
     <!-- Soft Ad Break -->
-    <div class="ad-slot soft-ad-break">
+    <div class="ad-slot soft-ad-break" aria-hidden="true">
       <div class="ad-label">Ad</div>
       <div class="ad-container">
         <script>
@@ -465,17 +821,118 @@
         <script src="https://walkingdrunkard.com/3403952940f393d6388a375a5c88546d/invoke.js"></script>
       </div>
     </div>
-    
-    <!-- App Banner -->
-    <section class="app-banner">
-      <div class="app-banner-inner">
-        <div class="app-banner-text"><p class="app-banner-eyebrow">▼ Android App</p><h2 class="app-banner-title">Download even faster with our app</h2><p class="app-banner-desc">YouTube, Instagram, TikTok and 1000+ sites — all working seamlessly. No browser limits, no bot detection. Just paste and download.</p><a href="https://play.google.com/store/apps/details?id=com.any.down.video.downloader.videodownloader" target="_blank" rel="noopener noreferrer" class="playstore-btn playstore-btn--dark"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M3.18 23.76c.3.17.64.24.98.2l12.49-11.9-3.47-3.47L3.18 23.76zM.48 1.6A1.5 1.5 0 0 0 0 2.7v18.6c0 .43.17.83.48 1.1l.08.08 10.43-10.43v-.25L.56 1.52.48 1.6zM22.3 10.5l-2.97-1.69-3.3 3.14 3.3 3.15 3-1.71c.85-.48.85-1.27-.03-1.89zM4.16.24L16.65 12.1l-3.47 3.47L3.18.44A1.2 1.2 0 0 1 4.16.24z"/></svg>Get it on Google Play</a></div>
-        <div class="app-banner-qr"><div class="qr-frame"><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.any.down.video.downloader.videodownloader&bgcolor=111111&color=E8B800&qzone=2" alt="Scan to download AnyDown on Android" class="qr-img" width="130" height="130" /><p class="qr-label">Scan to download</p></div></div>
+
+    <!-- ============================================ -->
+    <!-- SEO: Features Section                        -->
+    <!-- ============================================ -->
+    <section class="seo-features" aria-label="Features">
+      <h2 class="seo-section-title">YouTube Downloader &amp; Video Converter</h2>
+      <p class="seo-section-desc">AnyDown is a free online video downloader. Paste any video link, choose your quality, and save it — no account, no software, no limits.</p>
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon">📥</div>
+          <h3>YouTube to MP4</h3>
+          <p>Download YouTube videos in HD, Full HD, 2K and 4K quality. Every available resolution, automatically listed.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🎵</div>
+          <h3>YouTube to MP3</h3>
+          <p>Extract audio from any YouTube video. Download as MP3 or M4A — the fastest YouTube to MP3 converter online.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">⚡</div>
+          <h3>1000+ Platforms</h3>
+          <p>Beyond YouTube — download from TikTok, Instagram, Twitter/X, Facebook, Vimeo, Dailymotion and thousands more.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🆓</div>
+          <h3>Always Free</h3>
+          <p>No sign-up. No subscription. No download cap. AnyDown is 100% free and works on any device with a browser.</p>
+        </div>
       </div>
     </section>
-    
+
+    <!-- Supported Platforms Strip -->
+    <div class="platforms-strip" aria-label="Supported video platforms">
+      <span class="platform-tag">YouTube</span>
+      <span class="platform-tag">TikTok</span>
+      <span class="platform-tag">Instagram</span>
+      <span class="platform-tag">Twitter / X</span>
+      <span class="platform-tag">Facebook</span>
+      <span class="platform-tag">Vimeo</span>
+      <span class="platform-tag">Dailymotion</span>
+      <span class="platform-tag">Reddit</span>
+      <span class="platform-tag">Twitch</span>
+      <span class="platform-tag">SoundCloud</span>
+      <span class="platform-tag">Bilibili</span>
+      <span class="platform-tag">1000+ more</span>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SEO: FAQ Section                             -->
+    <!-- ============================================ -->
+    <section class="faq-section" aria-label="Frequently Asked Questions">
+      <h2 class="seo-section-title">Frequently Asked Questions</h2>
+      <div class="faq-list">
+
+        <details class="faq-item">
+          <summary>How do I download a YouTube video?</summary>
+          <p class="faq-answer">Copy the YouTube video URL, paste it into the AnyDown input bar, click <strong>Fetch</strong>, then choose your preferred quality — from 360p up to 4K — and hit the download button. No account needed.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Can I convert YouTube to MP3?</summary>
+          <p class="faq-answer">Yes. After pasting a YouTube link and clicking Fetch, select the <strong>Audio MP3</strong> or M4A format option to download just the audio track — no video included.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>What video qualities are available?</summary>
+          <p class="faq-answer">AnyDown shows every available quality for each video: 360p, 480p, 720p HD, 1080p Full HD, 1440p 2K and 2160p 4K. Higher resolutions are shown with an <strong>HD</strong> or <strong>4K</strong> badge and depend on the original upload quality.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Which platforms does AnyDown support?</summary>
+          <p class="faq-answer">AnyDown supports over 1000 video sites including YouTube, Instagram, TikTok, Twitter/X, Facebook, Vimeo, Dailymotion, Reddit, Twitch, SoundCloud, Bilibili and many more.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Is AnyDown free to use?</summary>
+          <p class="faq-answer">Yes — completely free. No registration, no account and no subscription. Paste your link, pick a quality, and download.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Do I need to install anything?</summary>
+          <p class="faq-answer">No. AnyDown runs entirely in your browser — no software, browser extensions or plugins required. A free <strong>Android app</strong> is also available for seamless YouTube downloads on mobile.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>How do I download a YouTube video in 4K?</summary>
+          <p class="faq-answer">Paste the YouTube video URL, click Fetch, and select the <strong>2160p</strong> (4K) option if it appears. 4K quality is listed only when the original video was uploaded in 4K.</p>
+        </details>
+
+      </div>
+    </section>
+
+    <!-- App Banner -->
+    <section class="app-banner" aria-label="Download the Android app">
+      <div class="app-banner-inner">
+        <div class="app-banner-text">
+          <p class="app-banner-eyebrow">▼ Android App</p>
+          <h2 class="app-banner-title">Download even faster with our app</h2>
+          <p class="app-banner-desc">YouTube, Instagram, TikTok and 1000+ sites — all working seamlessly. No browser limits, no bot detection. Just paste and download.</p>
+          <a href="https://play.google.com/store/apps/details?id=com.any.down.video.downloader.videodownloader" target="_blank" rel="noopener noreferrer" class="playstore-btn playstore-btn--dark"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M3.18 23.76c.3.17.64.24.98.2l12.49-11.9-3.47-3.47L3.18 23.76zM.48 1.6A1.5 1.5 0 0 0 0 2.7v18.6c0 .43.17.83.48 1.1l.08.08 10.43-10.43v-.25L.56 1.52.48 1.6zM22.3 10.5l-2.97-1.69-3.3 3.14 3.3 3.15 3-1.71c.85-.48.85-1.27-.03-1.89zM4.16.24L16.65 12.1l-3.47 3.47L3.18.44A1.2 1.2 0 0 1 4.16.24z"/></svg>Get it on Google Play</a>
+        </div>
+        <div class="app-banner-qr">
+          <div class="qr-frame">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.any.down.video.downloader.videodownloader&bgcolor=111111&color=E8B800&qzone=2" alt="Scan to download AnyDown YouTube downloader on Android" class="qr-img" width="130" height="130" />
+            <p class="qr-label">Scan to download</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Desktop Banner -->
-    <div class="ad-slot desktop-banner-wrap">
+    <div class="ad-slot desktop-banner-wrap" aria-hidden="true">
       <div class="ad-label">Ad</div>
       <div class="ad-container">
         <script>
@@ -491,18 +948,23 @@
       </div>
     </div>
 
-    <footer class="footer"><p>AnyDown · For personal use only · Respect content creators' rights</p></footer>
-    
+    <footer class="footer" role="contentinfo">
+      <p>AnyDown &copy; 2025 &nbsp;·&nbsp; Free YouTube Video Downloader &amp; MP3 Converter</p>
+      <p class="footer-keywords">YouTube to MP3 &nbsp;·&nbsp; YouTube to MP4 &nbsp;·&nbsp; HD Video Downloader &nbsp;·&nbsp; Download YouTube Videos Free &nbsp;·&nbsp; Online Video Downloader</p>
+      <p class="footer-legal">For personal use only. Respect content creators' rights. AnyDown is not affiliated with YouTube, Google, Instagram, TikTok or any other platform referenced on this site.</p>
+    </footer>
+
   </div>
 
   <!-- SilverFox Dynamics Link -->
   <div style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-    <a href="https://silverfoxdynamics.com" 
-       target="_blank" 
+    <a href="https://silverfoxdynamics.com"
+       target="_blank"
        rel="noopener noreferrer"
+       aria-label="SilverFox Dynamics — AnyDown developer"
        style="display: block; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); border-radius: 40px; padding: 8px 16px; border: 1px solid rgba(232,184,0,0.4); transition: all 0.3s ease; text-decoration: none;">
-      <img src="sfd.png" 
-           alt="SilverFox Dynamics" 
+      <img src="sfd.png"
+           alt="SilverFox Dynamics"
            style="height: 32px; width: auto; display: block;"
            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
       <span style="display: none; color: var(--mustard); font-size: 14px; font-weight: 500;">SilverFox</span>
@@ -511,29 +973,49 @@
 
   <script src="script.js"></script>
 
-  <!-- Service Worker & PWA -->
+  <!-- ============================================ -->
+  <!-- SERVICE WORKER + AUTO-UPDATE + PWA INSTALL   -->
+  <!-- ============================================ -->
   <script>
+    // ── Auto-reload when a new SW takes over ─────────────────────────────
+    // When the new sw.js activates and calls clients.claim(), the browser
+    // fires 'controllerchange'. We catch it and reload once so users
+    // instantly get the fresh version — no manual refresh ever needed.
+    var _swRefreshing = false;
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
+      navigator.serviceWorker.addEventListener('controllerchange', function () {
+        if (!_swRefreshing) {
+          _swRefreshing = true;
+          console.log('[AnyDown] New SW activated — reloading for fresh content.');
+          window.location.reload();
+        }
+      });
+    }
+
+    // ── Service Worker Registration ──────────────────────────────────────
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
         navigator.serviceWorker.register('/sw.js')
-          .then(function(registration) {
-            console.log('AnyDown Service Worker registered:', registration.scope);
+          .then(function (reg) {
+            console.log('[AnyDown] SW registered:', reg.scope);
+            // Proactively check for an updated sw.js on every page load.
+            // Without this the browser only checks every 24 h by default.
+            reg.update();
           })
-          .catch(function(error) {
-            console.log('AnyDown Service Worker registration failed:', error);
+          .catch(function (err) {
+            console.warn('[AnyDown] SW registration failed:', err);
           });
       });
     }
 
+    // ── PWA Install Prompt ───────────────────────────────────────────────
     let deferredPrompt;
     const installBtn = document.getElementById('installPWA-btn');
 
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      if (installBtn) {
-        installBtn.style.display = 'flex';
-      }
+      if (installBtn) installBtn.style.display = 'flex';
     });
 
     if (installBtn) {
