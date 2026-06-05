@@ -40,9 +40,11 @@
   <!-- ============================================ -->
   <!-- PRIMARY META TAGS                            -->
   <!-- ============================================ -->
-  <title>AnyDown – Free YouTube Video Downloader | YouTube to MP3 &amp; MP4 Converter</title>
-  <meta name="title" content="AnyDown – Free YouTube Video Downloader | YouTube to MP3 &amp; MP4 Converter" />
-  <meta name="description" content="Download YouTube videos in HD, 1080p &amp; 4K. Convert YouTube to MP3 or MP4 instantly. Free, no registration required. Supports TikTok, Instagram, Twitter &amp; 1000+ platforms." />
+  <!-- Title: 55 chars — within Bing's 65-char limit and Google's ~60-char threshold -->
+  <title>AnyDown – YouTube Downloader | Free MP3 &amp; MP4 Converter</title>
+  <meta name="title" content="AnyDown – YouTube Downloader | Free MP3 &amp; MP4 Converter" />
+  <!-- Description: 148 chars — within Bing's 160-char limit -->
+  <meta name="description" content="Download YouTube videos in HD, 1080p &amp; 4K. Convert to MP3 or MP4 instantly. Free, no registration. Supports TikTok, Instagram, Twitter &amp; 1000+ sites." />
   <meta name="keywords" content="youtube downloader, youtube video downloader, youtube to mp3, youtube to mp4, download youtube videos, free youtube downloader, hd video downloader, online video downloader, youtube mp3 converter, mp4 downloader, best youtube downloader, 4k video downloader, instagram video downloader, tiktok downloader, twitter video downloader, mp3 downloader, free video downloader, download audio from youtube, video converter online, download youtube videos free" />
   <meta name="author" content="AnyDown by SilverFox Dynamics" />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
@@ -262,13 +264,35 @@
   <link rel="dns-prefetch" href="https://walkingdrunkard.com" />
 
   <!-- ============================================ -->
-  <!-- ADSTERRA SMARTLINK CONFIGURATION             -->
+  <!-- ADSTERRA SMARTLINK — DISABLED                -->
   <!-- ============================================ -->
-  <script>
-    window.ADSTERRA_CONFIG = {
-      smartlinkUrl: 'https://walkingdrunkard.com/hmsgefqpcn?key=4d6e7561a3b59bff0fdc75b8e69f21e9'
-    };
-  </script>
+  <!--
+    ⚠️  THIS SMARTLINK WAS THE CAUSE OF THE GOOGLE "DECEPTIVE PAGES" FLAG.
+
+    Adsterra's direct-link / smartlink format works by redirecting users
+    (or opening a new tab) to an Adsterra-controlled URL whose final
+    destination changes dynamically. Google Safe Browsing crawled that
+    destination URL and found deceptive content, then flagged YOUR site
+    as the origin.
+
+    DO NOT re-enable this until:
+      1. You have clicked "Request Review" in Google Search Console.
+      2. Google has cleared the Safe Browsing warning (usually 3–7 days).
+      3. You have confirmed with Adsterra that the smartlink destination
+         is clean and will not redirect to phishing/malware pages.
+
+    Standard banner display ads (the atOptions iframe scripts below) are
+    NOT affected and can remain active — they render in a sandboxed iframe
+    and do not redirect the parent page.
+
+    To re-enable: uncomment the <script> block below and remove this note.
+
+    <script>
+      window.ADSTERRA_CONFIG = {
+        smartlinkUrl: 'https://walkingdrunkard.com/hmsgefqpcn?key=4d6e7561a3b59bff0fdc75b8e69f21e9'
+      };
+    </script>
+  -->
 
   <link rel="icon" href="favicon.png" type="image/x-icon" />
   <link rel="stylesheet" href="style.css" />
