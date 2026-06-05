@@ -676,6 +676,52 @@
       margin-left: auto;
       margin-right: auto;
     }
+    /* ============================================================
+       LAYOUT ORDER FIX — search input above SEO sections
+       ============================================================
+       style.css defines .wrapper as a flex column and sets order
+       values on the original sections. The new SEO sections added
+       for SEO (seo-features, platforms-strip, faq-section) had no
+       order property, so they fell to the flex default of order:0
+       and rendered BEFORE sections with order:1+ — pushing the
+       search input below them on mobile and in PWA standalone mode.
+
+       Fix: explicitly set order on every direct .wrapper child.
+       The child combinator (>) gives higher specificity than the
+       single-class selectors in style.css so this always wins.
+       ============================================================ */
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .wrapper > .header              { order: 1; }
+    .wrapper > .leaderboard-wrap    { order: 2; }
+    .wrapper > .search-section      { order: 3; }
+    .wrapper > .result-section      { order: 4; }
+    .wrapper > .soft-ad-break       { order: 5; }
+    .wrapper > .seo-features        { order: 6; }
+    .wrapper > .platforms-strip     { order: 7; }
+    .wrapper > .faq-section         { order: 8; }
+    .wrapper > .app-banner          { order: 9; }
+    .wrapper > .desktop-banner-wrap { order: 10; }
+    .wrapper > .footer              { order: 11; }
+
+    /* PWA standalone mode: same order, apply safe-area padding to footer */
+    @media (display-mode: standalone) {
+      .wrapper > .header              { order: 1; }
+      .wrapper > .leaderboard-wrap    { order: 2; }
+      .wrapper > .search-section      { order: 3; }
+      .wrapper > .result-section      { order: 4; }
+      .wrapper > .soft-ad-break       { order: 5; }
+      .wrapper > .seo-features        { order: 6; }
+      .wrapper > .platforms-strip     { order: 7; }
+      .wrapper > .faq-section         { order: 8; }
+      .wrapper > .app-banner          { order: 9; }
+      .wrapper > .desktop-banner-wrap { order: 10; }
+      .wrapper > .footer              { order: 11; padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
+    }
+
   </style>
 </head>
 <body>
