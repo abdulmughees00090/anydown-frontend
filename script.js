@@ -406,7 +406,7 @@ async function fetchVideo() {
   }
 
   try { new URL(rawUrl); } catch {
-    setError("That doesn't look like a valid URL. Please paste a full video link.");
+    setError("That doesn't look like a valid video URL. Please paste a full link — e.g. https://youtube.com/watch?v=…");
     return;
   }
 
@@ -418,7 +418,7 @@ async function fetchVideo() {
     const data = await res.json();
 
     if (!res.ok || data.error) {
-      const msg = data.error || `Server error (${res.status}). Try again.`;
+      const msg = data.error || `Something went wrong on our end (${res.status}). Please try again in a moment.`;
       if (msg.toLowerCase().includes("youtube download server is busy")) { showState("ytbusy"); return; }
       if (msg.toLowerCase().includes("instagram download server is busy")) { showState("igbusy"); return; }
       setError(msg);
@@ -441,7 +441,7 @@ async function fetchVideo() {
 
   } catch (err) {
     console.error(err);
-    setError("Could not reach the server. Check your connection or ensure the backend is running.");
+    setError("Could not reach our server. Please check your internet connection and try again.");
   } finally {
     fetchBtn.disabled = false;
   }
