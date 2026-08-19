@@ -418,10 +418,11 @@ async function fetchVideo() {
     const data = await res.json();
 
     if (!res.ok || data.error) {
-      const msg = data.error || `Something went wrong on our end (${res.status}). Please try again in a moment.`;
+      const msg = data.error || `Server responded with ${res.status}`;
       if (msg.toLowerCase().includes("youtube download server is busy")) { showState("ytbusy"); return; }
       if (msg.toLowerCase().includes("instagram download server is busy")) { showState("igbusy"); return; }
-      setError(msg);
+      console.error("AnyDown backend error:", msg);
+      setError("We couldn't fetch that video right now. Please try again in a little while.");
       return;
     }
 
@@ -440,8 +441,8 @@ async function fetchVideo() {
     resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
 
   } catch (err) {
-    console.error(err);
-    setError("Could not reach our server. Please check your internet connection and try again.");
+    console.error("AnyDown fetch error:", err);
+    setError("We couldn't reach the server just now. Please try again in a little while.");
   } finally {
     fetchBtn.disabled = false;
   }
